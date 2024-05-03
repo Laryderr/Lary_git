@@ -1,0 +1,2042 @@
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"motor_controll.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/motor_controll.c"
+  20              		.section	.text.turn_left_forward,"ax",%progbits
+  21              		.align	1
+  22              		.p2align 2,,3
+  23              		.global	turn_left_forward
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	turn_left_forward:
+  29              	.LFB133:
+   1:Core/Src/motor_controll.c **** #include "motor_controll.h"
+   2:Core/Src/motor_controll.c **** 
+   3:Core/Src/motor_controll.c **** uint16_t wifi_order[6]={2,2,2,2,2,2};
+   4:Core/Src/motor_controll.c **** // uint16_t wifi_order_fin=0;
+   5:Core/Src/motor_controll.c **** extern uint16_t wifi_order_fin;
+   6:Core/Src/motor_controll.c **** uint16_t wifi_order_num=0;
+   7:Core/Src/motor_controll.c **** uint16_t wifi_flag=0;
+   8:Core/Src/motor_controll.c **** extern u8 key;
+   9:Core/Src/motor_controll.c **** u8 Flag=0;
+  10:Core/Src/motor_controll.c **** 
+  11:Core/Src/motor_controll.c **** 
+  12:Core/Src/motor_controll.c **** void turn_left_forward()
+  13:Core/Src/motor_controll.c **** {
+  30              		.loc 1 13 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  14:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+  15:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  16:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+  17:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+  18:Core/Src/motor_controll.c **** 
+  19:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+  34              		.loc 1 19 9 view .LVU1
+  13:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+  35              		.loc 1 13 1 is_stmt 0 view .LVU2
+  36 0000 38B5     		push	{r3, r4, r5, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 16
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 2
+
+
+  39              		.cfi_offset 3, -16
+  40              		.cfi_offset 4, -12
+  41              		.cfi_offset 5, -8
+  42              		.cfi_offset 14, -4
+  43              		.loc 1 19 9 view .LVU3
+  44 0002 0D4D     		ldr	r5, .L4
+  20:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  21:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+  45              		.loc 1 21 9 view .LVU4
+  46 0004 0D4C     		ldr	r4, .L4+4
+  19:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  47              		.loc 1 19 9 view .LVU5
+  48 0006 2846     		mov	r0, r5
+  49 0008 0122     		movs	r2, #1
+  50 000a 4FF40061 		mov	r1, #2048
+  51 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+  52              	.LVL0:
+  20:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  53              		.loc 1 20 9 is_stmt 1 view .LVU6
+  54 0012 2846     		mov	r0, r5
+  55 0014 0022     		movs	r2, #0
+  56 0016 4FF48051 		mov	r1, #4096
+  57 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+  58              	.LVL1:
+  59              		.loc 1 21 9 view .LVU7
+  60 001e 2046     		mov	r0, r4
+  61 0020 0022     		movs	r2, #0
+  62 0022 0121     		movs	r1, #1
+  63 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  64              	.LVL2:
+  22:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+  65              		.loc 1 22 9 view .LVU8
+  66 0028 2046     		mov	r0, r4
+  67 002a 0022     		movs	r2, #0
+  23:Core/Src/motor_controll.c **** 
+  24:Core/Src/motor_controll.c **** }
+  68              		.loc 1 24 1 is_stmt 0 view .LVU9
+  69 002c BDE83840 		pop	{r3, r4, r5, lr}
+  70              	.LCFI1:
+  71              		.cfi_restore 14
+  72              		.cfi_restore 5
+  73              		.cfi_restore 4
+  74              		.cfi_restore 3
+  75              		.cfi_def_cfa_offset 0
+  22:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+  76              		.loc 1 22 9 view .LVU10
+  77 0030 0221     		movs	r1, #2
+  78 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+  79              	.LVL3:
+  80              	.L5:
+  81 0036 00BF     		.align	2
+  82              	.L4:
+  83 0038 000C0240 		.word	1073875968
+  84 003c 00140240 		.word	1073878016
+  85              		.cfi_endproc
+  86              	.LFE133:
+  88              		.section	.text.turn_left_back,"ax",%progbits
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 3
+
+
+  89              		.align	1
+  90              		.p2align 2,,3
+  91              		.global	turn_left_back
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	turn_left_back:
+  97              	.LFB134:
+  25:Core/Src/motor_controll.c **** 
+  26:Core/Src/motor_controll.c **** void turn_left_back()
+  27:Core/Src/motor_controll.c **** {
+  98              		.loc 1 27 1 is_stmt 1 view -0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+  28:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+  29:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  30:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+  31:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+  32:Core/Src/motor_controll.c **** 
+  33:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 102              		.loc 1 33 9 view .LVU12
+  27:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 103              		.loc 1 27 1 is_stmt 0 view .LVU13
+ 104 0000 38B5     		push	{r3, r4, r5, lr}
+ 105              	.LCFI2:
+ 106              		.cfi_def_cfa_offset 16
+ 107              		.cfi_offset 3, -16
+ 108              		.cfi_offset 4, -12
+ 109              		.cfi_offset 5, -8
+ 110              		.cfi_offset 14, -4
+ 111              		.loc 1 33 9 view .LVU14
+ 112 0002 0D4D     		ldr	r5, .L8
+  34:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+  35:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 113              		.loc 1 35 9 view .LVU15
+ 114 0004 0D4C     		ldr	r4, .L8+4
+  33:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 115              		.loc 1 33 9 view .LVU16
+ 116 0006 2846     		mov	r0, r5
+ 117 0008 0022     		movs	r2, #0
+ 118 000a 4FF40061 		mov	r1, #2048
+ 119 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 120              	.LVL4:
+  34:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 121              		.loc 1 34 9 is_stmt 1 view .LVU17
+ 122 0012 2846     		mov	r0, r5
+ 123 0014 0122     		movs	r2, #1
+ 124 0016 4FF48051 		mov	r1, #4096
+ 125 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 126              	.LVL5:
+ 127              		.loc 1 35 9 view .LVU18
+ 128 001e 2046     		mov	r0, r4
+ 129 0020 0022     		movs	r2, #0
+ 130 0022 0121     		movs	r1, #1
+ 131 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 132              	.LVL6:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 4
+
+
+  36:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 133              		.loc 1 36 9 view .LVU19
+ 134 0028 2046     		mov	r0, r4
+ 135 002a 0022     		movs	r2, #0
+  37:Core/Src/motor_controll.c ****         
+  38:Core/Src/motor_controll.c **** }
+ 136              		.loc 1 38 1 is_stmt 0 view .LVU20
+ 137 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 138              	.LCFI3:
+ 139              		.cfi_restore 14
+ 140              		.cfi_restore 5
+ 141              		.cfi_restore 4
+ 142              		.cfi_restore 3
+ 143              		.cfi_def_cfa_offset 0
+  36:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 144              		.loc 1 36 9 view .LVU21
+ 145 0030 0221     		movs	r1, #2
+ 146 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 147              	.LVL7:
+ 148              	.L9:
+ 149 0036 00BF     		.align	2
+ 150              	.L8:
+ 151 0038 000C0240 		.word	1073875968
+ 152 003c 00140240 		.word	1073878016
+ 153              		.cfi_endproc
+ 154              	.LFE134:
+ 156              		.section	.text.turn_right_forward,"ax",%progbits
+ 157              		.align	1
+ 158              		.p2align 2,,3
+ 159              		.global	turn_right_forward
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	turn_right_forward:
+ 165              	.LFB135:
+  39:Core/Src/motor_controll.c **** 
+  40:Core/Src/motor_controll.c **** void turn_right_forward()
+  41:Core/Src/motor_controll.c **** {
+ 166              		.loc 1 41 1 is_stmt 1 view -0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+  42:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+  43:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  44:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+  45:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+  46:Core/Src/motor_controll.c **** 
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 170              		.loc 1 47 9 view .LVU23
+  41:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+ 171              		.loc 1 41 1 is_stmt 0 view .LVU24
+ 172 0000 38B5     		push	{r3, r4, r5, lr}
+ 173              	.LCFI4:
+ 174              		.cfi_def_cfa_offset 16
+ 175              		.cfi_offset 3, -16
+ 176              		.cfi_offset 4, -12
+ 177              		.cfi_offset 5, -8
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 5
+
+
+ 178              		.cfi_offset 14, -4
+ 179              		.loc 1 47 9 view .LVU25
+ 180 0002 0D4D     		ldr	r5, .L12
+  48:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  49:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+ 181              		.loc 1 49 9 view .LVU26
+ 182 0004 0D4C     		ldr	r4, .L12+4
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 183              		.loc 1 47 9 view .LVU27
+ 184 0006 2846     		mov	r0, r5
+ 185 0008 0022     		movs	r2, #0
+ 186 000a 4FF40061 		mov	r1, #2048
+ 187 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 188              	.LVL8:
+  48:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 189              		.loc 1 48 9 is_stmt 1 view .LVU28
+ 190 0012 2846     		mov	r0, r5
+ 191 0014 0022     		movs	r2, #0
+ 192 0016 4FF48051 		mov	r1, #4096
+ 193 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 194              	.LVL9:
+ 195              		.loc 1 49 9 view .LVU29
+ 196 001e 0122     		movs	r2, #1
+ 197 0020 1146     		mov	r1, r2
+ 198 0022 2046     		mov	r0, r4
+ 199 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 200              	.LVL10:
+  50:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 201              		.loc 1 50 9 view .LVU30
+ 202 0028 2046     		mov	r0, r4
+ 203 002a 0022     		movs	r2, #0
+  51:Core/Src/motor_controll.c ****         
+  52:Core/Src/motor_controll.c **** }
+ 204              		.loc 1 52 1 is_stmt 0 view .LVU31
+ 205 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 206              	.LCFI5:
+ 207              		.cfi_restore 14
+ 208              		.cfi_restore 5
+ 209              		.cfi_restore 4
+ 210              		.cfi_restore 3
+ 211              		.cfi_def_cfa_offset 0
+  50:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 212              		.loc 1 50 9 view .LVU32
+ 213 0030 0221     		movs	r1, #2
+ 214 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 215              	.LVL11:
+ 216              	.L13:
+ 217 0036 00BF     		.align	2
+ 218              	.L12:
+ 219 0038 000C0240 		.word	1073875968
+ 220 003c 00140240 		.word	1073878016
+ 221              		.cfi_endproc
+ 222              	.LFE135:
+ 224              		.section	.text.turn_right_back,"ax",%progbits
+ 225              		.align	1
+ 226              		.p2align 2,,3
+ 227              		.global	turn_right_back
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 6
+
+
+ 228              		.syntax unified
+ 229              		.thumb
+ 230              		.thumb_func
+ 232              	turn_right_back:
+ 233              	.LFB136:
+  53:Core/Src/motor_controll.c **** 
+  54:Core/Src/motor_controll.c **** void turn_right_back()
+  55:Core/Src/motor_controll.c **** {
+ 234              		.loc 1 55 1 is_stmt 1 view -0
+ 235              		.cfi_startproc
+ 236              		@ args = 0, pretend = 0, frame = 0
+ 237              		@ frame_needed = 0, uses_anonymous_args = 0
+  56:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+  57:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+  58:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+  59:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+  60:Core/Src/motor_controll.c **** 
+  61:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 238              		.loc 1 61 9 view .LVU34
+  55:Core/Src/motor_controll.c ****         // HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 239              		.loc 1 55 1 is_stmt 0 view .LVU35
+ 240 0000 38B5     		push	{r3, r4, r5, lr}
+ 241              	.LCFI6:
+ 242              		.cfi_def_cfa_offset 16
+ 243              		.cfi_offset 3, -16
+ 244              		.cfi_offset 4, -12
+ 245              		.cfi_offset 5, -8
+ 246              		.cfi_offset 14, -4
+ 247              		.loc 1 61 9 view .LVU36
+ 248 0002 0D4D     		ldr	r5, .L16
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  63:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 249              		.loc 1 63 9 view .LVU37
+ 250 0004 0D4C     		ldr	r4, .L16+4
+  61:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 251              		.loc 1 61 9 view .LVU38
+ 252 0006 2846     		mov	r0, r5
+ 253 0008 0022     		movs	r2, #0
+ 254 000a 4FF40061 		mov	r1, #2048
+ 255 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 256              	.LVL12:
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 257              		.loc 1 62 9 is_stmt 1 view .LVU39
+ 258 0012 2846     		mov	r0, r5
+ 259 0014 0022     		movs	r2, #0
+ 260 0016 4FF48051 		mov	r1, #4096
+ 261 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 262              	.LVL13:
+ 263              		.loc 1 63 9 view .LVU40
+ 264 001e 2046     		mov	r0, r4
+ 265 0020 0022     		movs	r2, #0
+ 266 0022 0121     		movs	r1, #1
+ 267 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 268              	.LVL14:
+  64:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 269              		.loc 1 64 9 view .LVU41
+ 270 0028 2046     		mov	r0, r4
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 7
+
+
+ 271 002a 0122     		movs	r2, #1
+  65:Core/Src/motor_controll.c **** }
+ 272              		.loc 1 65 1 is_stmt 0 view .LVU42
+ 273 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 274              	.LCFI7:
+ 275              		.cfi_restore 14
+ 276              		.cfi_restore 5
+ 277              		.cfi_restore 4
+ 278              		.cfi_restore 3
+ 279              		.cfi_def_cfa_offset 0
+  64:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 280              		.loc 1 64 9 view .LVU43
+ 281 0030 0221     		movs	r1, #2
+ 282 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 283              	.LVL15:
+ 284              	.L17:
+ 285 0036 00BF     		.align	2
+ 286              	.L16:
+ 287 0038 000C0240 		.word	1073875968
+ 288 003c 00140240 		.word	1073878016
+ 289              		.cfi_endproc
+ 290              	.LFE136:
+ 292              		.section	.text.all_turnoff,"ax",%progbits
+ 293              		.align	1
+ 294              		.p2align 2,,3
+ 295              		.global	all_turnoff
+ 296              		.syntax unified
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	all_turnoff:
+ 301              	.LFB137:
+  66:Core/Src/motor_controll.c **** 
+  67:Core/Src/motor_controll.c **** void all_turnoff()
+  68:Core/Src/motor_controll.c **** {
+ 302              		.loc 1 68 1 is_stmt 1 view -0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+  69:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 306              		.loc 1 69 9 view .LVU45
+  68:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 307              		.loc 1 68 1 is_stmt 0 view .LVU46
+ 308 0000 38B5     		push	{r3, r4, r5, lr}
+ 309              	.LCFI8:
+ 310              		.cfi_def_cfa_offset 16
+ 311              		.cfi_offset 3, -16
+ 312              		.cfi_offset 4, -12
+ 313              		.cfi_offset 5, -8
+ 314              		.cfi_offset 14, -4
+ 315              		.loc 1 69 9 view .LVU47
+ 316 0002 0D4D     		ldr	r5, .L20
+  70:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  71:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 317              		.loc 1 71 9 view .LVU48
+ 318 0004 0D4C     		ldr	r4, .L20+4
+  69:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 319              		.loc 1 69 9 view .LVU49
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 8
+
+
+ 320 0006 2846     		mov	r0, r5
+ 321 0008 0022     		movs	r2, #0
+ 322 000a 4FF40061 		mov	r1, #2048
+ 323 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 324              	.LVL16:
+  70:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 325              		.loc 1 70 9 is_stmt 1 view .LVU50
+ 326 0012 2846     		mov	r0, r5
+ 327 0014 0022     		movs	r2, #0
+ 328 0016 4FF48051 		mov	r1, #4096
+ 329 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 330              	.LVL17:
+ 331              		.loc 1 71 9 view .LVU51
+ 332 001e 2046     		mov	r0, r4
+ 333 0020 0022     		movs	r2, #0
+ 334 0022 0121     		movs	r1, #1
+ 335 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 336              	.LVL18:
+  72:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 337              		.loc 1 72 9 view .LVU52
+ 338 0028 2046     		mov	r0, r4
+ 339 002a 0022     		movs	r2, #0
+  73:Core/Src/motor_controll.c **** }
+ 340              		.loc 1 73 1 is_stmt 0 view .LVU53
+ 341 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 342              	.LCFI9:
+ 343              		.cfi_restore 14
+ 344              		.cfi_restore 5
+ 345              		.cfi_restore 4
+ 346              		.cfi_restore 3
+ 347              		.cfi_def_cfa_offset 0
+  72:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 348              		.loc 1 72 9 view .LVU54
+ 349 0030 0221     		movs	r1, #2
+ 350 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 351              	.LVL19:
+ 352              	.L21:
+ 353 0036 00BF     		.align	2
+ 354              	.L20:
+ 355 0038 000C0240 		.word	1073875968
+ 356 003c 00140240 		.word	1073878016
+ 357              		.cfi_endproc
+ 358              	.LFE137:
+ 360              		.section	.text.move_forward,"ax",%progbits
+ 361              		.align	1
+ 362              		.p2align 2,,3
+ 363              		.global	move_forward
+ 364              		.syntax unified
+ 365              		.thumb
+ 366              		.thumb_func
+ 368              	move_forward:
+ 369              	.LFB138:
+  74:Core/Src/motor_controll.c **** 
+  75:Core/Src/motor_controll.c **** void move_forward()
+  76:Core/Src/motor_controll.c **** {
+ 370              		.loc 1 76 1 is_stmt 1 view -0
+ 371              		.cfi_startproc
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 9
+
+
+ 372              		@ args = 0, pretend = 0, frame = 0
+ 373              		@ frame_needed = 0, uses_anonymous_args = 0
+  77:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+ 374              		.loc 1 77 9 view .LVU56
+  76:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+ 375              		.loc 1 76 1 is_stmt 0 view .LVU57
+ 376 0000 38B5     		push	{r3, r4, r5, lr}
+ 377              	.LCFI10:
+ 378              		.cfi_def_cfa_offset 16
+ 379              		.cfi_offset 3, -16
+ 380              		.cfi_offset 4, -12
+ 381              		.cfi_offset 5, -8
+ 382              		.cfi_offset 14, -4
+ 383              		.loc 1 77 9 view .LVU58
+ 384 0002 0D4D     		ldr	r5, .L24
+  78:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+  79:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+ 385              		.loc 1 79 9 view .LVU59
+ 386 0004 0D4C     		ldr	r4, .L24+4
+  77:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 387              		.loc 1 77 9 view .LVU60
+ 388 0006 2846     		mov	r0, r5
+ 389 0008 0122     		movs	r2, #1
+ 390 000a 4FF40061 		mov	r1, #2048
+ 391 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 392              	.LVL20:
+  78:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 393              		.loc 1 78 9 is_stmt 1 view .LVU61
+ 394 0012 2846     		mov	r0, r5
+ 395 0014 0022     		movs	r2, #0
+ 396 0016 4FF48051 		mov	r1, #4096
+ 397 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 398              	.LVL21:
+ 399              		.loc 1 79 9 view .LVU62
+ 400 001e 0122     		movs	r2, #1
+ 401 0020 1146     		mov	r1, r2
+ 402 0022 2046     		mov	r0, r4
+ 403 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 404              	.LVL22:
+  80:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 405              		.loc 1 80 9 view .LVU63
+ 406 0028 2046     		mov	r0, r4
+ 407 002a 0022     		movs	r2, #0
+  81:Core/Src/motor_controll.c **** }
+ 408              		.loc 1 81 1 is_stmt 0 view .LVU64
+ 409 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 410              	.LCFI11:
+ 411              		.cfi_restore 14
+ 412              		.cfi_restore 5
+ 413              		.cfi_restore 4
+ 414              		.cfi_restore 3
+ 415              		.cfi_def_cfa_offset 0
+  80:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 416              		.loc 1 80 9 view .LVU65
+ 417 0030 0221     		movs	r1, #2
+ 418 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 419              	.LVL23:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 10
+
+
+ 420              	.L25:
+ 421 0036 00BF     		.align	2
+ 422              	.L24:
+ 423 0038 000C0240 		.word	1073875968
+ 424 003c 00140240 		.word	1073878016
+ 425              		.cfi_endproc
+ 426              	.LFE138:
+ 428              		.section	.text.move_back,"ax",%progbits
+ 429              		.align	1
+ 430              		.p2align 2,,3
+ 431              		.global	move_back
+ 432              		.syntax unified
+ 433              		.thumb
+ 434              		.thumb_func
+ 436              	move_back:
+ 437              	.LFB139:
+  82:Core/Src/motor_controll.c **** 
+  83:Core/Src/motor_controll.c **** void move_back()
+  84:Core/Src/motor_controll.c **** {
+ 438              		.loc 1 84 1 is_stmt 1 view -0
+ 439              		.cfi_startproc
+ 440              		@ args = 0, pretend = 0, frame = 0
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+  85:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 442              		.loc 1 85 9 view .LVU67
+  84:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 443              		.loc 1 84 1 is_stmt 0 view .LVU68
+ 444 0000 38B5     		push	{r3, r4, r5, lr}
+ 445              	.LCFI12:
+ 446              		.cfi_def_cfa_offset 16
+ 447              		.cfi_offset 3, -16
+ 448              		.cfi_offset 4, -12
+ 449              		.cfi_offset 5, -8
+ 450              		.cfi_offset 14, -4
+ 451              		.loc 1 85 9 view .LVU69
+ 452 0002 0D4D     		ldr	r5, .L28
+  86:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+  87:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 453              		.loc 1 87 9 view .LVU70
+ 454 0004 0D4C     		ldr	r4, .L28+4
+  85:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 455              		.loc 1 85 9 view .LVU71
+ 456 0006 2846     		mov	r0, r5
+ 457 0008 0022     		movs	r2, #0
+ 458 000a 4FF40061 		mov	r1, #2048
+ 459 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 460              	.LVL24:
+  86:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 461              		.loc 1 86 9 is_stmt 1 view .LVU72
+ 462 0012 2846     		mov	r0, r5
+ 463 0014 0122     		movs	r2, #1
+ 464 0016 4FF48051 		mov	r1, #4096
+ 465 001a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 466              	.LVL25:
+ 467              		.loc 1 87 9 view .LVU73
+ 468 001e 2046     		mov	r0, r4
+ 469 0020 0022     		movs	r2, #0
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 11
+
+
+ 470 0022 0121     		movs	r1, #1
+ 471 0024 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 472              	.LVL26:
+  88:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 473              		.loc 1 88 9 view .LVU74
+ 474 0028 2046     		mov	r0, r4
+ 475 002a 0122     		movs	r2, #1
+  89:Core/Src/motor_controll.c **** }
+ 476              		.loc 1 89 1 is_stmt 0 view .LVU75
+ 477 002c BDE83840 		pop	{r3, r4, r5, lr}
+ 478              	.LCFI13:
+ 479              		.cfi_restore 14
+ 480              		.cfi_restore 5
+ 481              		.cfi_restore 4
+ 482              		.cfi_restore 3
+ 483              		.cfi_def_cfa_offset 0
+  88:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 484              		.loc 1 88 9 view .LVU76
+ 485 0030 0221     		movs	r1, #2
+ 486 0032 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 487              	.LVL27:
+ 488              	.L29:
+ 489 0036 00BF     		.align	2
+ 490              	.L28:
+ 491 0038 000C0240 		.word	1073875968
+ 492 003c 00140240 		.word	1073878016
+ 493              		.cfi_endproc
+ 494              	.LFE139:
+ 496              		.section	.text.wifi_order_swtich,"ax",%progbits
+ 497              		.align	1
+ 498              		.p2align 2,,3
+ 499              		.global	wifi_order_swtich
+ 500              		.syntax unified
+ 501              		.thumb
+ 502              		.thumb_func
+ 504              	wifi_order_swtich:
+ 505              	.LFB140:
+  90:Core/Src/motor_controll.c **** 
+  91:Core/Src/motor_controll.c **** void wifi_order_swtich(void)
+  92:Core/Src/motor_controll.c **** {
+ 506              		.loc 1 92 1 is_stmt 1 view -0
+ 507              		.cfi_startproc
+ 508              		@ args = 0, pretend = 0, frame = 0
+ 509              		@ frame_needed = 0, uses_anonymous_args = 0
+  93:Core/Src/motor_controll.c ****         // wifi_order[0] = HAL_GPIO_ReadPin(left_1_GPIO_Port,left_1_Pin);
+  94:Core/Src/motor_controll.c ****         // wifi_order[1] = HAL_GPIO_ReadPin(left_2_GPIO_Port,left_2_Pin);
+  95:Core/Src/motor_controll.c ****         // wifi_order[2] = HAL_GPIO_ReadPin(right_1_GPIO_Port,right_1_Pin);
+  96:Core/Src/motor_controll.c ****         // wifi_order[3] = HAL_GPIO_ReadPin(right_2_GPIO_Port,right_2_Pin);
+  97:Core/Src/motor_controll.c **** 
+  98:Core/Src/motor_controll.c ****         
+  99:Core/Src/motor_controll.c ****         wifi_order[0] = HAL_GPIO_ReadPin(GPIOF,GPIO_PIN_9);
+ 510              		.loc 1 99 9 view .LVU78
+  92:Core/Src/motor_controll.c ****         // wifi_order[0] = HAL_GPIO_ReadPin(left_1_GPIO_Port,left_1_Pin);
+ 511              		.loc 1 92 1 is_stmt 0 view .LVU79
+ 512 0000 38B5     		push	{r3, r4, r5, lr}
+ 513              	.LCFI14:
+ 514              		.cfi_def_cfa_offset 16
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 12
+
+
+ 515              		.cfi_offset 3, -16
+ 516              		.cfi_offset 4, -12
+ 517              		.cfi_offset 5, -8
+ 518              		.cfi_offset 14, -4
+ 519              		.loc 1 99 25 view .LVU80
+ 520 0002 4FF40071 		mov	r1, #512
+ 521 0006 1F48     		ldr	r0, .L32
+ 100:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 522              		.loc 1 100 25 view .LVU81
+ 523 0008 1F4D     		ldr	r5, .L32+4
+  99:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 524              		.loc 1 99 23 view .LVU82
+ 525 000a 204C     		ldr	r4, .L32+8
+  99:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 526              		.loc 1 99 25 view .LVU83
+ 527 000c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 528              	.LVL28:
+ 529              		.loc 1 100 25 view .LVU84
+ 530 0010 4FF48071 		mov	r1, #256
+  99:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 531              		.loc 1 99 25 view .LVU85
+ 532 0014 0346     		mov	r3, r0
+ 533              		.loc 1 100 25 view .LVU86
+ 534 0016 2846     		mov	r0, r5
+  99:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 535              		.loc 1 99 25 view .LVU87
+ 536 0018 2380     		strh	r3, [r4]	@ movhi
+ 537              		.loc 1 100 9 is_stmt 1 view .LVU88
+ 538              		.loc 1 100 25 is_stmt 0 view .LVU89
+ 539 001a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 540              	.LVL29:
+ 101:Core/Src/motor_controll.c ****         wifi_order[2] = HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9);
+ 541              		.loc 1 101 25 view .LVU90
+ 542 001e 4FF40071 		mov	r1, #512
+ 100:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 543              		.loc 1 100 25 view .LVU91
+ 544 0022 0346     		mov	r3, r0
+ 545              		.loc 1 101 25 view .LVU92
+ 546 0024 1A48     		ldr	r0, .L32+12
+ 100:Core/Src/motor_controll.c ****         wifi_order[1] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_8);
+ 547              		.loc 1 100 25 view .LVU93
+ 548 0026 6380     		strh	r3, [r4, #2]	@ movhi
+ 549              		.loc 1 101 9 is_stmt 1 view .LVU94
+ 550              		.loc 1 101 25 is_stmt 0 view .LVU95
+ 551 0028 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 552              	.LVL30:
+ 102:Core/Src/motor_controll.c ****         wifi_order[3] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_9);
+ 553              		.loc 1 102 25 view .LVU96
+ 554 002c 4FF40071 		mov	r1, #512
+ 101:Core/Src/motor_controll.c ****         wifi_order[2] = HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9);
+ 555              		.loc 1 101 25 view .LVU97
+ 556 0030 0346     		mov	r3, r0
+ 557              		.loc 1 102 25 view .LVU98
+ 558 0032 2846     		mov	r0, r5
+ 101:Core/Src/motor_controll.c ****         wifi_order[2] = HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9);
+ 559              		.loc 1 101 25 view .LVU99
+ 560 0034 A380     		strh	r3, [r4, #4]	@ movhi
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 13
+
+
+ 561              		.loc 1 102 9 is_stmt 1 view .LVU100
+ 562              		.loc 1 102 25 is_stmt 0 view .LVU101
+ 563 0036 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 564              	.LVL31:
+ 103:Core/Src/motor_controll.c ****         wifi_order[4] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_10);
+ 565              		.loc 1 103 25 view .LVU102
+ 566 003a 4FF48061 		mov	r1, #1024
+ 102:Core/Src/motor_controll.c ****         wifi_order[3] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_9);
+ 567              		.loc 1 102 25 view .LVU103
+ 568 003e 0346     		mov	r3, r0
+ 569              		.loc 1 103 25 view .LVU104
+ 570 0040 2846     		mov	r0, r5
+ 102:Core/Src/motor_controll.c ****         wifi_order[3] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_9);
+ 571              		.loc 1 102 25 view .LVU105
+ 572 0042 E380     		strh	r3, [r4, #6]	@ movhi
+ 573              		.loc 1 103 9 is_stmt 1 view .LVU106
+ 574              		.loc 1 103 25 is_stmt 0 view .LVU107
+ 575 0044 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 576              	.LVL32:
+ 104:Core/Src/motor_controll.c ****         wifi_order[5] = HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_5);
+ 577              		.loc 1 104 25 view .LVU108
+ 578 0048 2021     		movs	r1, #32
+ 103:Core/Src/motor_controll.c ****         wifi_order[4] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_10);
+ 579              		.loc 1 103 25 view .LVU109
+ 580 004a 0346     		mov	r3, r0
+ 581              		.loc 1 104 25 view .LVU110
+ 582 004c 1148     		ldr	r0, .L32+16
+ 103:Core/Src/motor_controll.c ****         wifi_order[4] = HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_10);
+ 583              		.loc 1 103 25 view .LVU111
+ 584 004e 2381     		strh	r3, [r4, #8]	@ movhi
+ 585              		.loc 1 104 9 is_stmt 1 view .LVU112
+ 586              		.loc 1 104 25 is_stmt 0 view .LVU113
+ 587 0050 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 588              	.LVL33:
+ 105:Core/Src/motor_controll.c **** 
+ 106:Core/Src/motor_controll.c **** 
+ 107:Core/Src/motor_controll.c ****         wifi_order_fin=wifi_order[0]*1000 + wifi_order[1]*100 + wifi_order[2]*10 + wifi_order[3];
+ 589              		.loc 1 107 43 view .LVU114
+ 590 0054 6388     		ldrh	r3, [r4, #2]
+ 591 0056 2288     		ldrh	r2, [r4]
+ 592              		.loc 1 107 82 view .LVU115
+ 593 0058 E588     		ldrh	r5, [r4, #6]
+ 104:Core/Src/motor_controll.c ****         wifi_order[5] = HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_5);
+ 594              		.loc 1 104 25 view .LVU116
+ 595 005a 6081     		strh	r0, [r4, #10]	@ movhi
+ 596              		.loc 1 107 9 is_stmt 1 view .LVU117
+ 597              		.loc 1 107 43 is_stmt 0 view .LVU118
+ 598 005c 03EB8303 		add	r3, r3, r3, lsl #2
+ 599 0060 C2EB4211 		rsb	r1, r2, r2, lsl #5
+ 600 0064 03EB8303 		add	r3, r3, r3, lsl #2
+ 601 0068 02EB8102 		add	r2, r2, r1, lsl #2
+ 602 006c 9B00     		lsls	r3, r3, #2
+ 603 006e 03EBC203 		add	r3, r3, r2, lsl #3
+ 604              		.loc 1 107 63 view .LVU119
+ 605 0072 A288     		ldrh	r2, [r4, #4]
+ 606              		.loc 1 107 23 view .LVU120
+ 607 0074 0849     		ldr	r1, .L32+20
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 14
+
+
+ 608              		.loc 1 107 82 view .LVU121
+ 609 0076 2B44     		add	r3, r3, r5
+ 610              		.loc 1 107 63 view .LVU122
+ 611 0078 02EB8202 		add	r2, r2, r2, lsl #2
+ 612              		.loc 1 107 82 view .LVU123
+ 613 007c 03EB4203 		add	r3, r3, r2, lsl #1
+ 614              		.loc 1 107 23 view .LVU124
+ 615 0080 0B80     		strh	r3, [r1]	@ movhi
+ 108:Core/Src/motor_controll.c **** 
+ 109:Core/Src/motor_controll.c **** }
+ 616              		.loc 1 109 1 view .LVU125
+ 617 0082 38BD     		pop	{r3, r4, r5, pc}
+ 618              	.L33:
+ 619              		.align	2
+ 620              	.L32:
+ 621 0084 00140240 		.word	1073878016
+ 622 0088 00080240 		.word	1073874944
+ 623 008c 00000000 		.word	wifi_order
+ 624 0090 00180240 		.word	1073879040
+ 625 0094 00000240 		.word	1073872896
+ 626 0098 00000000 		.word	wifi_order_fin
+ 627              		.cfi_endproc
+ 628              	.LFE140:
+ 630              		.section	.text.motor_controll_V1,"ax",%progbits
+ 631              		.align	1
+ 632              		.p2align 2,,3
+ 633              		.global	motor_controll_V1
+ 634              		.syntax unified
+ 635              		.thumb
+ 636              		.thumb_func
+ 638              	motor_controll_V1:
+ 639              	.LFB141:
+ 110:Core/Src/motor_controll.c **** 
+ 111:Core/Src/motor_controll.c **** 
+ 112:Core/Src/motor_controll.c **** void motor_controll_V1(void)
+ 113:Core/Src/motor_controll.c **** {
+ 640              		.loc 1 113 1 is_stmt 1 view -0
+ 641              		.cfi_startproc
+ 642              		@ args = 0, pretend = 0, frame = 0
+ 643              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114:Core/Src/motor_controll.c ****     u8 key =PS2_DataKey();//获取手柄按键状态
+ 644              		.loc 1 114 5 view .LVU127
+ 113:Core/Src/motor_controll.c ****     u8 key =PS2_DataKey();//获取手柄按键状态
+ 645              		.loc 1 113 1 is_stmt 0 view .LVU128
+ 646 0000 08B5     		push	{r3, lr}
+ 647              	.LCFI15:
+ 648              		.cfi_def_cfa_offset 8
+ 649              		.cfi_offset 3, -8
+ 650              		.cfi_offset 14, -4
+ 651              		.loc 1 114 13 view .LVU129
+ 652 0002 FFF7FEFF 		bl	PS2_DataKey
+ 653              	.LVL34:
+ 115:Core/Src/motor_controll.c **** 
+ 116:Core/Src/motor_controll.c **** /*    if(key==PSB_START)
+ 117:Core/Src/motor_controll.c ****     {
+ 118:Core/Src/motor_controll.c ****         wifi_flag=1;
+ 119:Core/Src/motor_controll.c ****     }
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 15
+
+
+ 120:Core/Src/motor_controll.c **** 
+ 121:Core/Src/motor_controll.c ****     if(wifi_flag==1&&key==PSB_START)
+ 122:Core/Src/motor_controll.c ****     {
+ 123:Core/Src/motor_controll.c ****         wifi_flag = 0;
+ 124:Core/Src/motor_controll.c ****     }
+ 125:Core/Src/motor_controll.c **** 
+ 126:Core/Src/motor_controll.c ****     if(wifi_flag==0){*/
+ 127:Core/Src/motor_controll.c ****         switch (key) {
+ 654              		.loc 1 127 9 is_stmt 1 view .LVU130
+ 655 0006 0138     		subs	r0, r0, #1
+ 656              	.LVL35:
+ 657              		.loc 1 127 9 is_stmt 0 view .LVU131
+ 658 0008 0F28     		cmp	r0, #15
+ 659 000a 09D8     		bhi	.L35
+ 660 000c DFE800F0 		tbb	[pc, r0]
+ 661              	.L37:
+ 662 0010 20       		.byte	(.L47-.L37)/2
+ 663 0011 08       		.byte	(.L35-.L37)/2
+ 664 0012 08       		.byte	(.L35-.L37)/2
+ 665 0013 08       		.byte	(.L35-.L37)/2
+ 666 0014 4E       		.byte	(.L46-.L37)/2
+ 667 0015 5E       		.byte	(.L45-.L37)/2
+ 668 0016 61       		.byte	(.L44-.L37)/2
+ 669 0017 79       		.byte	(.L43-.L37)/2
+ 670 0018 7C       		.byte	(.L42-.L37)/2
+ 671 0019 8F       		.byte	(.L41-.L37)/2
+ 672 001a 9D       		.byte	(.L40-.L37)/2
+ 673 001b B0       		.byte	(.L39-.L37)/2
+ 674 001c 08       		.byte	(.L35-.L37)/2
+ 675 001d B4       		.byte	(.L38-.L37)/2
+ 676 001e 08       		.byte	(.L35-.L37)/2
+ 677 001f BD       		.byte	(.L36-.L37)/2
+ 678              		.p2align 1
+ 679              	.L35:
+ 128:Core/Src/motor_controll.c ****                 case PSB_PAD_LEFT://往前左转
+ 129:Core/Src/motor_controll.c ****                         turn_left_forward();
+ 130:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_SET);//红灯亮
+ 131:Core/Src/motor_controll.c ****                         //toggle1=0;
+ 132:Core/Src/motor_controll.c ****                         break;
+ 133:Core/Src/motor_controll.c ****                 case PSB_PAD_RIGHT://往前右转
+ 134:Core/Src/motor_controll.c ****                         turn_right_forward();
+ 135:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_RESET);//红灯灭
+ 136:Core/Src/motor_controll.c ****                         //toggle1=1;
+ 137:Core/Src/motor_controll.c ****                         break;
+ 138:Core/Src/motor_controll.c ****                 case PSB_PAD_UP://前进
+ 139:Core/Src/motor_controll.c ****                         move_forward();
+ 140:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);//buzzer
+ 141:Core/Src/motor_controll.c ****                         break;
+ 142:Core/Src/motor_controll.c ****                 case PSB_PAD_DOWN://后退
+ 143:Core/Src/motor_controll.c ****                         move_back();
+ 144:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_SET);//蓝灯开
+ 145:Core/Src/motor_controll.c ****                          // toggle2=0;
+ 146:Core/Src/motor_controll.c ****                         break;
+ 147:Core/Src/motor_controll.c ****                 case PSB_PINK: //往后左转
+ 148:Core/Src/motor_controll.c ****                         turn_left_back();
+ 149:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_RESET);//蓝灯灭
+ 150:Core/Src/motor_controll.c ****                         //toggle2=1;
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 16
+
+
+ 151:Core/Src/motor_controll.c ****                         break;
+ 152:Core/Src/motor_controll.c ****                 case PSB_RED://往后右转
+ 153:Core/Src/motor_controll.c ****                         turn_right_back();
+ 154:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);//buzz
+ 155:Core/Src/motor_controll.c ****                         break;
+ 156:Core/Src/motor_controll.c ****                 case PSB_L1://开启刀片电机
+ 157:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_SET);
+ 158:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 159:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 160:Core/Src/motor_controll.c ****                         break;
+ 161:Core/Src/motor_controll.c ****                         
+ 162:Core/Src/motor_controll.c ****                 case PSB_L2://关闭刀片电机
+ 163:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET)
+ 164:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 165:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 166:Core/Src/motor_controll.c ****                         break;
+ 167:Core/Src/motor_controll.c ****                 case PSB_R1://开启皮带电机
+ 168:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_SET);
+ 169:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 170:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 171:Core/Src/motor_controll.c ****                         //HAL_Delay(1000);
+ 172:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 173:Core/Src/motor_controll.c ****                         break;
+ 174:Core/Src/motor_controll.c ****                 case PSB_R2://关闭皮带电机
+ 175:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 176:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 177:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 178:Core/Src/motor_controll.c ****                         //HAL_Delay(500);
+ 179:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 180:Core/Src/motor_controll.c ****                         break;
+ 181:Core/Src/motor_controll.c ****                 case PSB_BLUE://轮子停止
+ 182:Core/Src/motor_controll.c ****                         all_turnoff();
+ 680              		.loc 1 182 25 is_stmt 1 view .LVU132
+ 681              	.LBB20:
+ 682              	.LBI20:
+  67:Core/Src/motor_controll.c **** {
+ 683              		.loc 1 67 6 view .LVU133
+ 684              	.LBB21:
+  69:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 685              		.loc 1 69 9 view .LVU134
+ 686 0020 5E48     		ldr	r0, .L56
+ 687 0022 0022     		movs	r2, #0
+ 688              	.L54:
+ 689 0024 4FF40061 		mov	r1, #2048
+ 690 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 691              	.LVL36:
+  70:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 692              		.loc 1 70 9 view .LVU135
+ 693 002c 5B48     		ldr	r0, .L56
+ 694 002e 0022     		movs	r2, #0
+ 695              	.L55:
+ 696 0030 4FF48051 		mov	r1, #4096
+ 697 0034 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 698              	.LVL37:
+  71:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 699              		.loc 1 71 9 view .LVU136
+ 700 0038 5948     		ldr	r0, .L56+4
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 17
+
+
+ 701 003a 0022     		movs	r2, #0
+ 702 003c 0121     		movs	r1, #1
+ 703              	.L49:
+ 704              	.LBE21:
+ 705              	.LBE20:
+ 706              	.LBB22:
+ 707              	.LBB23:
+  49:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 708              		.loc 1 49 9 is_stmt 0 view .LVU137
+ 709 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 710              	.LVL38:
+  50:Core/Src/motor_controll.c ****         
+ 711              		.loc 1 50 9 is_stmt 1 view .LVU138
+ 712              	.LBE23:
+ 713              	.LBE22:
+ 183:Core/Src/motor_controll.c ****                         break;
+ 184:Core/Src/motor_controll.c ****                 case PSB_SELECT://
+ 185:Core/Src/motor_controll.c ****                         all_turnoff();
+ 186:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET)
+ 187:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 188:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 189:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 190:Core/Src/motor_controll.c ****                         break;
+ 191:Core/Src/motor_controll.c ****                 default:
+ 192:Core/Src/motor_controll.c ****                         all_turnoff();
+ 193:Core/Src/motor_controll.c ****                         break;  
+ 194:Core/Src/motor_controll.c ****         }
+ 195:Core/Src/motor_controll.c ****     //}
+ 196:Core/Src/motor_controll.c **** 
+ 197:Core/Src/motor_controll.c **** }
+ 714              		.loc 1 197 1 is_stmt 0 view .LVU139
+ 715 0042 BDE80840 		pop	{r3, lr}
+ 716              	.LCFI16:
+ 717              		.cfi_remember_state
+ 718              		.cfi_restore 14
+ 719              		.cfi_restore 3
+ 720              		.cfi_def_cfa_offset 0
+ 721              	.LBB27:
+ 722              	.LBB24:
+  50:Core/Src/motor_controll.c ****         
+ 723              		.loc 1 50 9 view .LVU140
+ 724 0046 5648     		ldr	r0, .L56+4
+ 725 0048 0022     		movs	r2, #0
+ 726 004a 0221     		movs	r1, #2
+ 727 004c FFF7FEBF 		b	HAL_GPIO_WritePin
+ 728              	.LVL39:
+ 729              	.L47:
+ 730              	.LCFI17:
+ 731              		.cfi_restore_state
+ 732              	.LBE24:
+ 733              	.LBE27:
+ 185:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET)
+ 734              		.loc 1 185 25 is_stmt 1 view .LVU141
+ 735              	.LBB28:
+ 736              	.LBI28:
+  67:Core/Src/motor_controll.c **** {
+ 737              		.loc 1 67 6 view .LVU142
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 18
+
+
+ 738              	.LBB29:
+  69:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 739              		.loc 1 69 9 view .LVU143
+ 740 0050 5248     		ldr	r0, .L56
+ 741 0052 0022     		movs	r2, #0
+ 742 0054 4FF40061 		mov	r1, #2048
+ 743 0058 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 744              	.LVL40:
+  70:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 745              		.loc 1 70 9 view .LVU144
+ 746 005c 4F48     		ldr	r0, .L56
+ 747 005e 0022     		movs	r2, #0
+ 748 0060 4FF48051 		mov	r1, #4096
+ 749 0064 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 750              	.LVL41:
+  71:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 751              		.loc 1 71 9 view .LVU145
+ 752 0068 4D48     		ldr	r0, .L56+4
+ 753 006a 0022     		movs	r2, #0
+ 754 006c 0121     		movs	r1, #1
+ 755 006e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 756              	.LVL42:
+  72:Core/Src/motor_controll.c **** }
+ 757              		.loc 1 72 9 view .LVU146
+ 758 0072 4B48     		ldr	r0, .L56+4
+ 759 0074 0022     		movs	r2, #0
+ 760 0076 0221     		movs	r1, #2
+ 761 0078 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 762              	.LVL43:
+ 763              	.LBE29:
+ 764              	.LBE28:
+ 186:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 765              		.loc 1 186 25 view .LVU147
+ 766 007c 4848     		ldr	r0, .L56+4
+ 767 007e 0022     		movs	r2, #0
+ 768 0080 4FF48041 		mov	r1, #16384
+ 769 0084 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 770              	.LVL44:
+ 187:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 771              		.loc 1 187 25 view .LVU148
+ 772 0088 4548     		ldr	r0, .L56+4
+ 773 008a 0022     		movs	r2, #0
+ 774 008c 4FF40041 		mov	r1, #32768
+ 775 0090 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 776              	.LVL45:
+ 188:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 777              		.loc 1 188 25 view .LVU149
+ 778 0094 4148     		ldr	r0, .L56
+ 779 0096 0022     		movs	r2, #0
+ 780 0098 0121     		movs	r1, #1
+ 781 009a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 782              	.LVL46:
+ 189:Core/Src/motor_controll.c ****                         break;
+ 783              		.loc 1 189 25 view .LVU150
+ 784              		.loc 1 197 1 is_stmt 0 view .LVU151
+ 785 009e BDE80840 		pop	{r3, lr}
+ 786              	.LCFI18:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 19
+
+
+ 787              		.cfi_remember_state
+ 788              		.cfi_restore 14
+ 789              		.cfi_restore 3
+ 790              		.cfi_def_cfa_offset 0
+ 189:Core/Src/motor_controll.c ****                         break;
+ 791              		.loc 1 189 25 view .LVU152
+ 792 00a2 3E48     		ldr	r0, .L56
+ 793 00a4 0022     		movs	r2, #0
+ 794 00a6 0221     		movs	r1, #2
+ 795 00a8 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 796              	.LVL47:
+ 797              	.L46:
+ 798              	.LCFI19:
+ 799              		.cfi_restore_state
+ 139:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);//buzzer
+ 800              		.loc 1 139 25 is_stmt 1 view .LVU153
+ 801              	.LBB30:
+ 802              	.LBI30:
+  75:Core/Src/motor_controll.c **** {
+ 803              		.loc 1 75 6 view .LVU154
+ 804              	.LBB31:
+  77:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 805              		.loc 1 77 9 view .LVU155
+ 806 00ac 3B48     		ldr	r0, .L56
+ 807 00ae 0122     		movs	r2, #1
+ 808              	.L50:
+ 809              	.LBE31:
+ 810              	.LBE30:
+ 811              	.LBB32:
+ 812              	.LBB25:
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 813              		.loc 1 47 9 is_stmt 0 view .LVU156
+ 814 00b0 4FF40061 		mov	r1, #2048
+ 815 00b4 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 816              	.LVL48:
+  48:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+ 817              		.loc 1 48 9 is_stmt 1 view .LVU157
+ 818 00b8 3848     		ldr	r0, .L56
+ 819 00ba 0022     		movs	r2, #0
+ 820 00bc 4FF48051 		mov	r1, #4096
+ 821 00c0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 822              	.LVL49:
+  49:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 823              		.loc 1 49 9 view .LVU158
+ 824 00c4 0122     		movs	r2, #1
+ 825 00c6 3648     		ldr	r0, .L56+4
+ 826 00c8 1146     		mov	r1, r2
+ 827 00ca B8E7     		b	.L49
+ 828              	.L45:
+ 829              	.LBE25:
+ 830              	.LBE32:
+ 134:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_RESET);//红灯灭
+ 831              		.loc 1 134 25 view .LVU159
+ 832              	.LBB33:
+ 833              	.LBI22:
+  40:Core/Src/motor_controll.c **** {
+ 834              		.loc 1 40 6 view .LVU160
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 20
+
+
+ 835              	.LBB26:
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 836              		.loc 1 47 9 view .LVU161
+ 837 00cc 3348     		ldr	r0, .L56
+ 838 00ce 0022     		movs	r2, #0
+ 839 00d0 EEE7     		b	.L50
+ 840              	.L44:
+ 841              	.LBE26:
+ 842              	.LBE33:
+ 143:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_SET);//蓝灯开
+ 843              		.loc 1 143 25 view .LVU162
+ 844              	.LBB34:
+ 845              	.LBI34:
+  83:Core/Src/motor_controll.c **** {
+ 846              		.loc 1 83 6 view .LVU163
+ 847              	.LBB35:
+  85:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 848              		.loc 1 85 9 view .LVU164
+ 849 00d2 3248     		ldr	r0, .L56
+ 850 00d4 0022     		movs	r2, #0
+ 851 00d6 4FF40061 		mov	r1, #2048
+ 852 00da FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 853              	.LVL50:
+  86:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 854              		.loc 1 86 9 view .LVU165
+ 855 00de 2F48     		ldr	r0, .L56
+ 856 00e0 0122     		movs	r2, #1
+ 857              	.L53:
+ 858              	.LBE35:
+ 859              	.LBE34:
+ 860              	.LBB36:
+ 861              	.LBB37:
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 862              		.loc 1 62 9 is_stmt 0 view .LVU166
+ 863 00e2 4FF48051 		mov	r1, #4096
+ 864 00e6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 865              	.LVL51:
+  63:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 866              		.loc 1 63 9 is_stmt 1 view .LVU167
+ 867 00ea 2D48     		ldr	r0, .L56+4
+ 868 00ec 0022     		movs	r2, #0
+ 869 00ee 0121     		movs	r1, #1
+ 870 00f0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 871              	.LVL52:
+  64:Core/Src/motor_controll.c **** }
+ 872              		.loc 1 64 9 view .LVU168
+ 873              	.LBE37:
+ 874              	.LBE36:
+ 875              		.loc 1 197 1 is_stmt 0 view .LVU169
+ 876 00f4 BDE80840 		pop	{r3, lr}
+ 877              	.LCFI20:
+ 878              		.cfi_remember_state
+ 879              		.cfi_restore 14
+ 880              		.cfi_restore 3
+ 881              		.cfi_def_cfa_offset 0
+ 882              	.LBB40:
+ 883              	.LBB38:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 21
+
+
+  64:Core/Src/motor_controll.c **** }
+ 884              		.loc 1 64 9 view .LVU170
+ 885 00f8 2948     		ldr	r0, .L56+4
+ 886 00fa 0122     		movs	r2, #1
+ 887 00fc 0221     		movs	r1, #2
+ 888 00fe FFF7FEBF 		b	HAL_GPIO_WritePin
+ 889              	.LVL53:
+ 890              	.L43:
+ 891              	.LCFI21:
+ 892              		.cfi_restore_state
+ 893              	.LBE38:
+ 894              	.LBE40:
+ 129:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_SET);//红灯亮
+ 895              		.loc 1 129 25 is_stmt 1 view .LVU171
+ 896              	.LBB41:
+ 897              	.LBI41:
+  12:Core/Src/motor_controll.c **** {
+ 898              		.loc 1 12 6 view .LVU172
+ 899              	.LBB42:
+  19:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 900              		.loc 1 19 9 view .LVU173
+ 901 0102 2648     		ldr	r0, .L56
+ 902 0104 0122     		movs	r2, #1
+ 903 0106 8DE7     		b	.L54
+ 904              	.L42:
+ 905              	.LBE42:
+ 906              	.LBE41:
+ 163:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 907              		.loc 1 163 25 view .LVU174
+ 908 0108 2548     		ldr	r0, .L56+4
+ 909 010a 0022     		movs	r2, #0
+ 910 010c 4FF48041 		mov	r1, #16384
+ 911 0110 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 912              	.LVL54:
+ 164:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 913              		.loc 1 164 25 view .LVU175
+ 914 0114 2248     		ldr	r0, .L56+4
+ 915 0116 0022     		movs	r2, #0
+ 916 0118 4FF40041 		mov	r1, #32768
+ 917              	.L52:
+ 177:Core/Src/motor_controll.c ****                         //HAL_Delay(500);
+ 918              		.loc 1 177 25 is_stmt 0 view .LVU176
+ 919 011c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 920              	.LVL55:
+ 179:Core/Src/motor_controll.c ****                         break;
+ 921              		.loc 1 179 25 is_stmt 1 view .LVU177
+ 922              		.loc 1 197 1 is_stmt 0 view .LVU178
+ 923 0120 BDE80840 		pop	{r3, lr}
+ 924              	.LCFI22:
+ 925              		.cfi_remember_state
+ 926              		.cfi_restore 14
+ 927              		.cfi_restore 3
+ 928              		.cfi_def_cfa_offset 0
+ 179:Core/Src/motor_controll.c ****                         break;
+ 929              		.loc 1 179 25 view .LVU179
+ 930 0124 1F48     		ldr	r0, .L56+8
+ 931 0126 0022     		movs	r2, #0
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 22
+
+
+ 932 0128 8021     		movs	r1, #128
+ 933 012a FFF7FEBF 		b	HAL_GPIO_WritePin
+ 934              	.LVL56:
+ 935              	.L41:
+ 936              	.LCFI23:
+ 937              		.cfi_restore_state
+ 175:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 938              		.loc 1 175 25 is_stmt 1 view .LVU180
+ 939 012e 1B48     		ldr	r0, .L56
+ 940 0130 0022     		movs	r2, #0
+ 941 0132 0121     		movs	r1, #1
+ 942              	.L51:
+ 943 0134 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 944              	.LVL57:
+ 176:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 945              		.loc 1 176 25 view .LVU181
+ 946 0138 1848     		ldr	r0, .L56
+ 947 013a 0022     		movs	r2, #0
+ 948 013c 0221     		movs	r1, #2
+ 949 013e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 950              	.LVL58:
+ 177:Core/Src/motor_controll.c ****                         //HAL_Delay(500);
+ 951              		.loc 1 177 25 view .LVU182
+ 952 0142 1848     		ldr	r0, .L56+8
+ 953 0144 0122     		movs	r2, #1
+ 954 0146 8021     		movs	r1, #128
+ 955 0148 E8E7     		b	.L52
+ 956              	.L40:
+ 157:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET)
+ 957              		.loc 1 157 25 view .LVU183
+ 958 014a 1548     		ldr	r0, .L56+4
+ 959 014c 0122     		movs	r2, #1
+ 960 014e 4FF48041 		mov	r1, #16384
+ 961 0152 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 962              	.LVL59:
+ 158:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 963              		.loc 1 158 25 view .LVU184
+ 964 0156 1248     		ldr	r0, .L56+4
+ 965 0158 0022     		movs	r2, #0
+ 966 015a 4FF40041 		mov	r1, #32768
+ 967 015e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 968              	.LVL60:
+ 159:Core/Src/motor_controll.c ****                         break;
+ 969              		.loc 1 159 25 view .LVU185
+ 970              		.loc 1 197 1 is_stmt 0 view .LVU186
+ 971 0162 BDE80840 		pop	{r3, lr}
+ 972              	.LCFI24:
+ 973              		.cfi_remember_state
+ 974              		.cfi_restore 14
+ 975              		.cfi_restore 3
+ 976              		.cfi_def_cfa_offset 0
+ 159:Core/Src/motor_controll.c ****                         break;
+ 977              		.loc 1 159 25 view .LVU187
+ 978 0166 0F48     		ldr	r0, .L56+8
+ 979 0168 0122     		movs	r2, #1
+ 980 016a 8021     		movs	r1, #128
+ 981 016c FFF7FEBF 		b	HAL_GPIO_WritePin
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 23
+
+
+ 982              	.LVL61:
+ 983              	.L39:
+ 984              	.LCFI25:
+ 985              		.cfi_restore_state
+ 168:Core/Src/motor_controll.c ****                         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 986              		.loc 1 168 25 is_stmt 1 view .LVU188
+ 987 0170 0122     		movs	r2, #1
+ 988 0172 0A48     		ldr	r0, .L56
+ 989 0174 1146     		mov	r1, r2
+ 990 0176 DDE7     		b	.L51
+ 991              	.L38:
+ 153:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);//buzz
+ 992              		.loc 1 153 25 view .LVU189
+ 993              	.LBB43:
+ 994              	.LBI36:
+  54:Core/Src/motor_controll.c **** {
+ 995              		.loc 1 54 6 view .LVU190
+ 996              	.LBB39:
+  61:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 997              		.loc 1 61 9 view .LVU191
+ 998 0178 0848     		ldr	r0, .L56
+ 999 017a 0022     		movs	r2, #0
+ 1000 017c 4FF40061 		mov	r1, #2048
+ 1001 0180 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1002              	.LVL62:
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 1003              		.loc 1 62 9 view .LVU192
+ 1004 0184 0548     		ldr	r0, .L56
+ 1005 0186 0022     		movs	r2, #0
+ 1006 0188 ABE7     		b	.L53
+ 1007              	.L36:
+ 1008              	.LBE39:
+ 1009              	.LBE43:
+ 148:Core/Src/motor_controll.c ****                         //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_RESET);//蓝灯灭
+ 1010              		.loc 1 148 25 view .LVU193
+ 1011              	.LBB44:
+ 1012              	.LBI44:
+  26:Core/Src/motor_controll.c **** {
+ 1013              		.loc 1 26 6 view .LVU194
+ 1014              	.LBB45:
+  33:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 1015              		.loc 1 33 9 view .LVU195
+ 1016 018a 0448     		ldr	r0, .L56
+ 1017 018c 0022     		movs	r2, #0
+ 1018 018e 4FF40061 		mov	r1, #2048
+ 1019 0192 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1020              	.LVL63:
+  34:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 1021              		.loc 1 34 9 view .LVU196
+ 1022 0196 0148     		ldr	r0, .L56
+ 1023 0198 0122     		movs	r2, #1
+ 1024 019a 49E7     		b	.L55
+ 1025              	.L57:
+ 1026              		.align	2
+ 1027              	.L56:
+ 1028 019c 000C0240 		.word	1073875968
+ 1029 01a0 00140240 		.word	1073878016
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 24
+
+
+ 1030 01a4 00180240 		.word	1073879040
+ 1031              	.LBE45:
+ 1032              	.LBE44:
+ 1033              		.cfi_endproc
+ 1034              	.LFE141:
+ 1036              		.section	.text.motor_controll_wifi,"ax",%progbits
+ 1037              		.align	1
+ 1038              		.p2align 2,,3
+ 1039              		.global	motor_controll_wifi
+ 1040              		.syntax unified
+ 1041              		.thumb
+ 1042              		.thumb_func
+ 1044              	motor_controll_wifi:
+ 1045              	.LFB142:
+ 198:Core/Src/motor_controll.c **** 
+ 199:Core/Src/motor_controll.c **** void motor_controll_wifi(void)
+ 200:Core/Src/motor_controll.c **** {
+ 1046              		.loc 1 200 1 view -0
+ 1047              		.cfi_startproc
+ 1048              		@ args = 0, pretend = 0, frame = 0
+ 1049              		@ frame_needed = 0, uses_anonymous_args = 0
+ 201:Core/Src/motor_controll.c ****         switch (wifi_order_fin) {
+ 1050              		.loc 1 201 9 view .LVU198
+ 200:Core/Src/motor_controll.c ****         switch (wifi_order_fin) {
+ 1051              		.loc 1 200 1 is_stmt 0 view .LVU199
+ 1052 0000 08B5     		push	{r3, lr}
+ 1053              	.LCFI26:
+ 1054              		.cfi_def_cfa_offset 8
+ 1055              		.cfi_offset 3, -8
+ 1056              		.cfi_offset 14, -4
+ 1057              		.loc 1 201 9 view .LVU200
+ 1058 0002 654B     		ldr	r3, .L84
+ 1059 0004 1B88     		ldrh	r3, [r3]
+ 1060 0006 6F2B     		cmp	r3, #111
+ 1061 0008 00F0BC80 		beq	.L59
+ 1062 000c 0BD8     		bhi	.L60
+ 1063 000e 0B2B     		cmp	r3, #11
+ 1064 0010 23D8     		bhi	.L61
+ 1065 0012 0B2B     		cmp	r3, #11
+ 1066 0014 54D8     		bhi	.L62
+ 1067 0016 DFE803F0 		tbb	[pc, r3]
+ 1068              	.L64:
+ 1069 001a 57       		.byte	(.L67-.L64)/2
+ 1070 001b 74       		.byte	(.L66-.L64)/2
+ 1071 001c 53       		.byte	(.L62-.L64)/2
+ 1072 001d 53       		.byte	(.L62-.L64)/2
+ 1073 001e 53       		.byte	(.L62-.L64)/2
+ 1074 001f 53       		.byte	(.L62-.L64)/2
+ 1075 0020 53       		.byte	(.L62-.L64)/2
+ 1076 0021 53       		.byte	(.L62-.L64)/2
+ 1077 0022 53       		.byte	(.L62-.L64)/2
+ 1078 0023 53       		.byte	(.L62-.L64)/2
+ 1079 0024 8C       		.byte	(.L65-.L64)/2
+ 1080 0025 95       		.byte	(.L63-.L64)/2
+ 1081              		.p2align 1
+ 1082              	.L60:
+ 1083 0026 40F24C42 		movw	r2, #1100
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 25
+
+
+ 1084 002a 9342     		cmp	r3, r2
+ 1085 002c 00F09E80 		beq	.L69
+ 1086 0030 25D9     		bls	.L83
+ 1087 0032 40F25742 		movw	r2, #1111
+ 1088 0036 9342     		cmp	r3, r2
+ 1089 0038 42D1     		bne	.L62
+ 202:Core/Src/motor_controll.c ****         case 11://往前左转
+ 203:Core/Src/motor_controll.c ****                 turn_left_forward();
+ 204:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 205:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_SET);//红灯亮
+ 206:Core/Src/motor_controll.c ****                 //toggle1=0;
+ 207:Core/Src/motor_controll.c ****                 break;
+ 208:Core/Src/motor_controll.c ****         case 1100://往前右转
+ 209:Core/Src/motor_controll.c ****                 turn_right_forward();
+ 210:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 211:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(red_GPIO_Port,red_Pin,GPIO_PIN_RESET);//红灯灭
+ 212:Core/Src/motor_controll.c ****                 //toggle1=1;
+ 213:Core/Src/motor_controll.c ****                 break;
+ 214:Core/Src/motor_controll.c ****         case 1111://前进
+ 215:Core/Src/motor_controll.c ****                 move_forward();
+ 1090              		.loc 1 215 17 is_stmt 1 view .LVU201
+ 1091              	.LBB60:
+ 1092              	.LBI60:
+  75:Core/Src/motor_controll.c **** {
+ 1093              		.loc 1 75 6 view .LVU202
+ 1094              	.LBB61:
+  77:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1095              		.loc 1 77 9 view .LVU203
+ 1096 003a 5848     		ldr	r0, .L84+4
+ 1097 003c 0122     		movs	r2, #1
+ 1098              	.L78:
+ 1099              	.LBE61:
+ 1100              	.LBE60:
+ 1101              	.LBB62:
+ 1102              	.LBB63:
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1103              		.loc 1 47 9 is_stmt 0 view .LVU204
+ 1104 003e 4FF40061 		mov	r1, #2048
+ 1105 0042 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1106              	.LVL64:
+  48:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+ 1107              		.loc 1 48 9 is_stmt 1 view .LVU205
+ 1108 0046 5548     		ldr	r0, .L84+4
+ 1109 0048 0022     		movs	r2, #0
+ 1110 004a 4FF48051 		mov	r1, #4096
+ 1111 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1112              	.LVL65:
+  49:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 1113              		.loc 1 49 9 view .LVU206
+ 1114 0052 0122     		movs	r2, #1
+ 1115 0054 5248     		ldr	r0, .L84+8
+ 1116 0056 1146     		mov	r1, r2
+ 1117 0058 83E0     		b	.L77
+ 1118              	.L61:
+ 1119              	.LBE63:
+ 1120              	.LBE62:
+ 201:Core/Src/motor_controll.c ****         case 11://往前左转
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 26
+
+
+ 1121              		.loc 1 201 9 is_stmt 0 view .LVU207
+ 1122 005a 652B     		cmp	r3, #101
+ 1123 005c 30D1     		bne	.L62
+ 216:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 217:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);//buzzer开
+ 218:Core/Src/motor_controll.c ****                 break;
+ 219:Core/Src/motor_controll.c ****         case 0://后退
+ 220:Core/Src/motor_controll.c ****                 move_back();
+ 221:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 222:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_SET);//蓝灯开
+ 223:Core/Src/motor_controll.c ****                // toggle2=0;
+ 224:Core/Src/motor_controll.c ****                 break;
+ 225:Core/Src/motor_controll.c ****         case 1000: //往后左转
+ 226:Core/Src/motor_controll.c ****                 turn_left_back();
+ 227:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 228:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(blue_GPIO_Port,blue_Pin,GPIO_PIN_RESET);//蓝灯灭
+ 229:Core/Src/motor_controll.c ****                 //toggle2=1;
+ 230:Core/Src/motor_controll.c ****                 break;
+ 231:Core/Src/motor_controll.c ****         case 10://往后右转
+ 232:Core/Src/motor_controll.c ****                 turn_right_back();
+ 233:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 234:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);//buzzer关
+ 235:Core/Src/motor_controll.c ****                 break;
+ 236:Core/Src/motor_controll.c ****         case 1010://轮子停止
+ 237:Core/Src/motor_controll.c ****                 all_turnoff();
+ 238:Core/Src/motor_controll.c ****                 Flag=0;
+ 239:Core/Src/motor_controll.c **** 
+ 240:Core/Src/motor_controll.c ****                 break;
+ 241:Core/Src/motor_controll.c ****         case 101://刀片電機
+ 242:Core/Src/motor_controll.c **** 
+ 243:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_SET);
+ 1124              		.loc 1 243 17 is_stmt 1 view .LVU208
+ 1125 005e 5048     		ldr	r0, .L84+8
+ 1126 0060 0122     		movs	r2, #1
+ 1127 0062 4FF48041 		mov	r1, #16384
+ 1128 0066 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1129              	.LVL66:
+ 244:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET);
+ 1130              		.loc 1 244 17 view .LVU209
+ 1131 006a 4D48     		ldr	r0, .L84+8
+ 1132 006c 0022     		movs	r2, #0
+ 1133 006e 4FF40041 		mov	r1, #32768
+ 1134 0072 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1135              	.LVL67:
+ 245:Core/Src/motor_controll.c ****                 // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 246:Core/Src/motor_controll.c **** 
+ 247:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_SET);
+ 1136              		.loc 1 247 17 view .LVU210
+ 1137 0076 0122     		movs	r2, #1
+ 1138 0078 4848     		ldr	r0, .L84+4
+ 1139 007a 1146     		mov	r1, r2
+ 1140 007c 50E0     		b	.L80
+ 1141              	.L83:
+ 201:Core/Src/motor_controll.c ****         case 11://往前左转
+ 1142              		.loc 1 201 9 is_stmt 0 view .LVU211
+ 1143 007e B3F57A7F 		cmp	r3, #1000
+ 1144 0082 76D0     		beq	.L71
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 27
+
+
+ 1145 0084 40F2F232 		movw	r2, #1010
+ 1146 0088 9342     		cmp	r3, r2
+ 1147 008a 19D1     		bne	.L62
+ 237:Core/Src/motor_controll.c ****                 Flag=0;
+ 1148              		.loc 1 237 17 is_stmt 1 view .LVU212
+ 1149              	.LBB67:
+ 1150              	.LBI67:
+  67:Core/Src/motor_controll.c **** {
+ 1151              		.loc 1 67 6 view .LVU213
+ 1152              	.LBB68:
+  69:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1153              		.loc 1 69 9 view .LVU214
+ 1154 008c 4348     		ldr	r0, .L84+4
+ 1155 008e 0022     		movs	r2, #0
+ 1156 0090 4FF40061 		mov	r1, #2048
+ 1157 0094 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1158              	.LVL68:
+  70:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 1159              		.loc 1 70 9 view .LVU215
+ 1160 0098 4048     		ldr	r0, .L84+4
+ 1161 009a 0022     		movs	r2, #0
+ 1162 009c 4FF48051 		mov	r1, #4096
+ 1163 00a0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1164              	.LVL69:
+  71:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 1165              		.loc 1 71 9 view .LVU216
+ 1166 00a4 3E48     		ldr	r0, .L84+8
+ 1167 00a6 0022     		movs	r2, #0
+ 1168 00a8 0121     		movs	r1, #1
+ 1169 00aa FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1170              	.LVL70:
+  72:Core/Src/motor_controll.c **** }
+ 1171              		.loc 1 72 9 view .LVU217
+ 1172 00ae 0022     		movs	r2, #0
+ 1173 00b0 3B48     		ldr	r0, .L84+8
+ 1174 00b2 0221     		movs	r1, #2
+ 1175 00b4 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1176              	.LVL71:
+ 1177              	.LBE68:
+ 1178              	.LBE67:
+ 238:Core/Src/motor_controll.c **** 
+ 1179              		.loc 1 238 17 view .LVU218
+ 238:Core/Src/motor_controll.c **** 
+ 1180              		.loc 1 238 21 is_stmt 0 view .LVU219
+ 1181 00b8 3A4B     		ldr	r3, .L84+12
+ 1182 00ba 0022     		movs	r2, #0
+ 1183 00bc 1A70     		strb	r2, [r3]
+ 240:Core/Src/motor_controll.c ****         case 101://刀片電機
+ 1184              		.loc 1 240 17 is_stmt 1 view .LVU220
+ 248:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 249:Core/Src/motor_controll.c ****                 // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 250:Core/Src/motor_controll.c ****                 //HAL_Delay(1000);
+ 251:Core/Src/motor_controll.c ****                 // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 252:Core/Src/motor_controll.c ****                 break;
+ 253:Core/Src/motor_controll.c ****         case 1://刀片電機guan
+ 254:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET);
+ 255:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET);
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 28
+
+
+ 256:Core/Src/motor_controll.c **** 
+ 257:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 258:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 259:Core/Src/motor_controll.c ****                 break;
+ 260:Core/Src/motor_controll.c ****         case 111:
+ 261:Core/Src/motor_controll.c ****                 Flag=1;//
+ 262:Core/Src/motor_controll.c ****                 //HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 263:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(GPIOG,GPIO_PIN_7,GPIO_PIN_SET);
+ 264:Core/Src/motor_controll.c ****                 break;
+ 265:Core/Src/motor_controll.c **** 
+ 266:Core/Src/motor_controll.c ****         default:
+ 267:Core/Src/motor_controll.c ****                 Flag=0;
+ 268:Core/Src/motor_controll.c ****                 break;
+ 269:Core/Src/motor_controll.c ****     }
+ 270:Core/Src/motor_controll.c **** 
+ 271:Core/Src/motor_controll.c **** //     if(wifi_order[4]==1)
+ 272:Core/Src/motor_controll.c **** //     {
+ 273:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_SET);
+ 274:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET);
+ 275:Core/Src/motor_controll.c **** //         // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 276:Core/Src/motor_controll.c **** 
+ 277:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_SET);
+ 278:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 279:Core/Src/motor_controll.c **** //         // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 280:Core/Src/motor_controll.c **** //         //HAL_Delay(1000);
+ 281:Core/Src/motor_controll.c **** //         // HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 282:Core/Src/motor_controll.c **** //     }else{
+ 283:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET);
+ 284:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET);
+ 285:Core/Src/motor_controll.c **** 
+ 286:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 287:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 288:Core/Src/motor_controll.c **** 
+ 289:Core/Src/motor_controll.c **** //         }
+ 290:Core/Src/motor_controll.c **** 
+ 291:Core/Src/motor_controll.c **** 
+ 292:Core/Src/motor_controll.c **** 
+ 293:Core/Src/motor_controll.c **** //       if(wifi_order[5]==1)
+ 294:Core/Src/motor_controll.c **** //     {
+ 295:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_SET);
+ 296:Core/Src/motor_controll.c ****         
+ 297:Core/Src/motor_controll.c **** //     }else{
+ 298:Core/Src/motor_controll.c **** //         HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 299:Core/Src/motor_controll.c **** //         }
+ 300:Core/Src/motor_controll.c **** 
+ 301:Core/Src/motor_controll.c **** }...
+ 1185              		.loc 1 301 1 is_stmt 0 view .LVU221
+ 1186 00be 08BD     		pop	{r3, pc}
+ 1187              	.L62:
+ 267:Core/Src/motor_controll.c ****                 Flag=0;
+ 1188              		.loc 1 267 17 is_stmt 1 view .LVU222
+ 267:Core/Src/motor_controll.c ****                 Flag=0;
+ 1189              		.loc 1 267 21 is_stmt 0 view .LVU223
+ 1190 00c0 384B     		ldr	r3, .L84+12
+ 1191 00c2 0022     		movs	r2, #0
+ 1192 00c4 1A70     		strb	r2, [r3]
+ 268:Core/Src/motor_controll.c ****                 break;
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 29
+
+
+ 1193              		.loc 1 268 17 is_stmt 1 view .LVU224
+ 1194              		.loc 1 301 1 is_stmt 0 view .LVU225
+ 1195 00c6 08BD     		pop	{r3, pc}
+ 1196              	.L67:
+ 220:Core/Src/motor_controll.c ****                 move_back();
+ 1197              		.loc 1 220 17 is_stmt 1 view .LVU226
+ 1198              	.LBB69:
+ 1199              	.LBI69:
+  83:Core/Src/motor_controll.c **** void move_back()
+ 1200              		.loc 1 83 6 view .LVU227
+ 1201              	.LBB70:
+  85:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 1202              		.loc 1 85 9 view .LVU228
+ 1203 00c8 3448     		ldr	r0, .L84+4
+ 1204 00ca 0022     		movs	r2, #0
+ 1205 00cc 4FF40061 		mov	r1, #2048
+ 1206 00d0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1207              	.LVL72:
+  86:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 1208              		.loc 1 86 9 view .LVU229
+ 1209 00d4 3148     		ldr	r0, .L84+4
+ 1210 00d6 0122     		movs	r2, #1
+ 1211              	.L82:
+ 1212              	.LBE70:
+ 1213              	.LBE69:
+ 1214              	.LBB71:
+ 1215              	.LBB72:
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1216              		.loc 1 62 9 is_stmt 0 view .LVU230
+ 1217 00d8 4FF48051 		mov	r1, #4096
+ 1218 00dc FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1219              	.LVL73:
+  63:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 1220              		.loc 1 63 9 is_stmt 1 view .LVU231
+ 1221 00e0 2F48     		ldr	r0, .L84+8
+ 1222 00e2 0022     		movs	r2, #0
+ 1223 00e4 0121     		movs	r1, #1
+ 1224 00e6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1225              	.LVL74:
+  64:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_SET);
+ 1226              		.loc 1 64 9 view .LVU232
+ 1227 00ea 2D48     		ldr	r0, .L84+8
+ 1228 00ec 0122     		movs	r2, #1
+ 1229              	.L79:
+ 1230              	.LBE72:
+ 1231              	.LBE71:
+ 1232              	.LBB74:
+ 1233              	.LBB64:
+  50:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 1234              		.loc 1 50 9 is_stmt 0 view .LVU233
+ 1235 00ee 0221     		movs	r1, #2
+ 1236 00f0 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1237              	.LVL75:
+ 1238              	.LBE64:
+ 1239              	.LBE74:
+ 210:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 1240              		.loc 1 210 17 is_stmt 1 view .LVU234
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 30
+
+
+ 1241              		.loc 1 301 1 is_stmt 0 view .LVU235
+ 1242 00f4 BDE80840 		pop	{r3, lr}
+ 1243              	.LCFI27:
+ 1244              		.cfi_remember_state
+ 1245              		.cfi_restore 14
+ 1246              		.cfi_restore 3
+ 1247              		.cfi_def_cfa_offset 0
+ 210:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_GPIO_Pin,GPIO_PIN_RESET);
+ 1248              		.loc 1 210 17 view .LVU236
+ 1249 00f8 2B48     		ldr	r0, .L84+16
+ 1250 00fa 0022     		movs	r2, #0
+ 1251 00fc 8021     		movs	r1, #128
+ 1252 00fe FFF7FEBF 		b	HAL_GPIO_WritePin
+ 1253              	.LVL76:
+ 1254              	.L66:
+ 1255              	.LCFI28:
+ 1256              		.cfi_restore_state
+ 254:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_A_GPIO_Port,blade_motor_A_Pin,GPIO_PIN_RESET);
+ 1257              		.loc 1 254 17 is_stmt 1 view .LVU237
+ 1258 0102 2748     		ldr	r0, .L84+8
+ 1259 0104 0022     		movs	r2, #0
+ 1260 0106 4FF48041 		mov	r1, #16384
+ 1261 010a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1262              	.LVL77:
+ 255:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(blade_motor_B_GPIO_Port,blade_motor_B_Pin,GPIO_PIN_RESET);
+ 1263              		.loc 1 255 17 view .LVU238
+ 1264 010e 2448     		ldr	r0, .L84+8
+ 1265 0110 0022     		movs	r2, #0
+ 1266 0112 4FF40041 		mov	r1, #32768
+ 1267 0116 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1268              	.LVL78:
+ 257:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_A_GPIO_Port,belt_motor_A_Pin,GPIO_PIN_RESET);
+ 1269              		.loc 1 257 17 view .LVU239
+ 1270 011a 2048     		ldr	r0, .L84+4
+ 1271 011c 0022     		movs	r2, #0
+ 1272 011e 0121     		movs	r1, #1
+ 1273              	.L80:
+ 1274 0120 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1275              	.LVL79:
+ 258:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 1276              		.loc 1 258 17 view .LVU240
+ 1277              		.loc 1 301 1 is_stmt 0 view .LVU241
+ 1278 0124 BDE80840 		pop	{r3, lr}
+ 1279              	.LCFI29:
+ 1280              		.cfi_remember_state
+ 1281              		.cfi_restore 14
+ 1282              		.cfi_restore 3
+ 1283              		.cfi_def_cfa_offset 0
+ 258:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(belt_motor_B_GPIO_Port,belt_motor_B_Pin,GPIO_PIN_RESET);
+ 1284              		.loc 1 258 17 view .LVU242
+ 1285 0128 1C48     		ldr	r0, .L84+4
+ 1286 012a 0022     		movs	r2, #0
+ 1287 012c 0221     		movs	r1, #2
+ 1288 012e FFF7FEBF 		b	HAL_GPIO_WritePin
+ 1289              	.LVL80:
+ 1290              	.L65:
+ 1291              	.LCFI30:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 31
+
+
+ 1292              		.cfi_restore_state
+ 232:Core/Src/motor_controll.c ****                 turn_right_back();
+ 1293              		.loc 1 232 17 is_stmt 1 view .LVU243
+ 1294              	.LBB75:
+ 1295              	.LBI71:
+  54:Core/Src/motor_controll.c **** void turn_right_back()
+ 1296              		.loc 1 54 6 view .LVU244
+ 1297              	.LBB73:
+  61:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 1298              		.loc 1 61 9 view .LVU245
+ 1299 0132 1A48     		ldr	r0, .L84+4
+ 1300 0134 0022     		movs	r2, #0
+ 1301 0136 4FF40061 		mov	r1, #2048
+ 1302 013a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1303              	.LVL81:
+  62:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1304              		.loc 1 62 9 view .LVU246
+ 1305 013e 1748     		ldr	r0, .L84+4
+ 1306 0140 0022     		movs	r2, #0
+ 1307 0142 C9E7     		b	.L82
+ 1308              	.L63:
+ 1309              	.LBE73:
+ 1310              	.LBE75:
+ 203:Core/Src/motor_controll.c ****                 turn_left_forward();
+ 1311              		.loc 1 203 17 view .LVU247
+ 1312              	.LBB76:
+ 1313              	.LBI76:
+  12:Core/Src/motor_controll.c **** void turn_left_forward()
+ 1314              		.loc 1 12 6 view .LVU248
+ 1315              	.LBB77:
+  19:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_SET);
+ 1316              		.loc 1 19 9 view .LVU249
+ 1317 0144 1548     		ldr	r0, .L84+4
+ 1318 0146 0122     		movs	r2, #1
+ 1319 0148 4FF40061 		mov	r1, #2048
+ 1320 014c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1321              	.LVL82:
+  20:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_RESET);
+ 1322              		.loc 1 20 9 view .LVU250
+ 1323 0150 1248     		ldr	r0, .L84+4
+ 1324 0152 0022     		movs	r2, #0
+ 1325              	.L81:
+ 1326              	.LBE77:
+ 1327              	.LBE76:
+ 1328              	.LBB78:
+ 1329              	.LBB79:
+  34:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 1330              		.loc 1 34 9 is_stmt 0 view .LVU251
+ 1331 0154 4FF48051 		mov	r1, #4096
+ 1332 0158 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1333              	.LVL83:
+  35:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_RESET);
+ 1334              		.loc 1 35 9 is_stmt 1 view .LVU252
+ 1335 015c 1048     		ldr	r0, .L84+8
+ 1336 015e 0022     		movs	r2, #0
+ 1337 0160 0121     		movs	r1, #1
+ 1338              	.L77:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 32
+
+
+ 1339              	.LBE79:
+ 1340              	.LBE78:
+ 1341              	.LBB81:
+ 1342              	.LBB65:
+  49:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_A_GPIO_Port,MotorR1_A_Pin,GPIO_PIN_SET);
+ 1343              		.loc 1 49 9 is_stmt 0 view .LVU253
+ 1344 0162 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1345              	.LVL84:
+  50:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorR1_B_GPIO_Port,MotorR1_B_Pin,GPIO_PIN_RESET);
+ 1346              		.loc 1 50 9 is_stmt 1 view .LVU254
+ 1347 0166 0E48     		ldr	r0, .L84+8
+ 1348 0168 0022     		movs	r2, #0
+ 1349 016a C0E7     		b	.L79
+ 1350              	.L69:
+ 1351              	.LBE65:
+ 1352              	.LBE81:
+ 209:Core/Src/motor_controll.c ****                 turn_right_forward();
+ 1353              		.loc 1 209 17 view .LVU255
+ 1354              	.LBB82:
+ 1355              	.LBI62:
+  40:Core/Src/motor_controll.c **** void turn_right_forward()
+ 1356              		.loc 1 40 6 view .LVU256
+ 1357              	.LBB66:
+  47:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 1358              		.loc 1 47 9 view .LVU257
+ 1359 016c 0B48     		ldr	r0, .L84+4
+ 1360 016e 0022     		movs	r2, #0
+ 1361 0170 65E7     		b	.L78
+ 1362              	.L71:
+ 1363              	.LBE66:
+ 1364              	.LBE82:
+ 226:Core/Src/motor_controll.c ****                 turn_left_back();
+ 1365              		.loc 1 226 17 view .LVU258
+ 1366              	.LBB83:
+ 1367              	.LBI78:
+  26:Core/Src/motor_controll.c **** void turn_left_back()
+ 1368              		.loc 1 26 6 view .LVU259
+ 1369              	.LBB80:
+  33:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_A_GPIO_Port,MotorL2_A_Pin,GPIO_PIN_RESET);
+ 1370              		.loc 1 33 9 view .LVU260
+ 1371 0172 0A48     		ldr	r0, .L84+4
+ 1372 0174 0022     		movs	r2, #0
+ 1373 0176 4FF40061 		mov	r1, #2048
+ 1374 017a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1375              	.LVL85:
+  34:Core/Src/motor_controll.c ****         HAL_GPIO_WritePin(MotorL2_B_GPIO_Port,MotorL2_B_Pin,GPIO_PIN_SET);
+ 1376              		.loc 1 34 9 view .LVU261
+ 1377 017e 0748     		ldr	r0, .L84+4
+ 1378 0180 0122     		movs	r2, #1
+ 1379 0182 E7E7     		b	.L81
+ 1380              	.L59:
+ 1381              	.LBE80:
+ 1382              	.LBE83:
+ 261:Core/Src/motor_controll.c ****                 Flag=1;//
+ 1383              		.loc 1 261 17 view .LVU262
+ 261:Core/Src/motor_controll.c ****                 Flag=1;//
+ 1384              		.loc 1 261 21 is_stmt 0 view .LVU263
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 33
+
+
+ 1385 0184 074B     		ldr	r3, .L84+12
+ 263:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(GPIOG,GPIO_PIN_7,GPIO_PIN_SET);
+ 1386              		.loc 1 263 17 view .LVU264
+ 1387 0186 0848     		ldr	r0, .L84+16
+ 261:Core/Src/motor_controll.c ****                 Flag=1;//
+ 1388              		.loc 1 261 21 view .LVU265
+ 1389 0188 0122     		movs	r2, #1
+ 1390 018a 1A70     		strb	r2, [r3]
+ 263:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(GPIOG,GPIO_PIN_7,GPIO_PIN_SET);
+ 1391              		.loc 1 263 17 is_stmt 1 view .LVU266
+ 1392              		.loc 1 301 1 is_stmt 0 view .LVU267
+ 1393 018c BDE80840 		pop	{r3, lr}
+ 1394              	.LCFI31:
+ 1395              		.cfi_restore 14
+ 1396              		.cfi_restore 3
+ 1397              		.cfi_def_cfa_offset 0
+ 263:Core/Src/motor_controll.c ****                 HAL_GPIO_WritePin(GPIOG,GPIO_PIN_7,GPIO_PIN_SET);
+ 1398              		.loc 1 263 17 view .LVU268
+ 1399 0190 8021     		movs	r1, #128
+ 1400 0192 FFF7FEBF 		b	HAL_GPIO_WritePin
+ 1401              	.LVL86:
+ 1402              	.L85:
+ 1403 0196 00BF     		.align	2
+ 1404              	.L84:
+ 1405 0198 00000000 		.word	wifi_order_fin
+ 1406 019c 000C0240 		.word	1073875968
+ 1407 01a0 00140240 		.word	1073878016
+ 1408 01a4 00000000 		.word	Flag
+ 1409 01a8 00180240 		.word	1073879040
+ 1410              		.cfi_endproc
+ 1411              	.LFE142:
+ 1413              		.global	Flag
+ 1414              		.section	.bss.Flag,"aw",%nobits
+ 1417              	Flag:
+ 1418 0000 00       		.space	1
+ 1419              		.global	wifi_flag
+ 1420              		.section	.bss.wifi_flag,"aw",%nobits
+ 1421              		.align	1
+ 1424              	wifi_flag:
+ 1425 0000 0000     		.space	2
+ 1426              		.global	wifi_order_num
+ 1427              		.section	.bss.wifi_order_num,"aw",%nobits
+ 1428              		.align	1
+ 1431              	wifi_order_num:
+ 1432 0000 0000     		.space	2
+ 1433              		.global	wifi_order
+ 1434              		.section	.data.wifi_order,"aw"
+ 1435              		.align	2
+ 1438              	wifi_order:
+ 1439 0000 0200     		.short	2
+ 1440 0002 0200     		.short	2
+ 1441 0004 0200     		.short	2
+ 1442 0006 0200     		.short	2
+ 1443 0008 0200     		.short	2
+ 1444 000a 0200     		.short	2
+ 1445              		.text
+ 1446              	.Letext0:
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 34
+
+
+ 1447              		.file 2 "d:\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1448              		.file 3 "d:\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1449              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 1450              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 1451              		.file 6 "Core/Inc/motor_controll.h"
+ 1452              		.file 7 "Core/Inc/PS2.h"
+ARM GAS  D:\MSYS2\tmp\ccTdtVjQ.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motor_controll.c
+D:\MSYS2\tmp\ccTdtVjQ.s:21     .text.turn_left_forward:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:28     .text.turn_left_forward:00000000 turn_left_forward
+D:\MSYS2\tmp\ccTdtVjQ.s:83     .text.turn_left_forward:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:89     .text.turn_left_back:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:96     .text.turn_left_back:00000000 turn_left_back
+D:\MSYS2\tmp\ccTdtVjQ.s:151    .text.turn_left_back:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:157    .text.turn_right_forward:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:164    .text.turn_right_forward:00000000 turn_right_forward
+D:\MSYS2\tmp\ccTdtVjQ.s:219    .text.turn_right_forward:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:225    .text.turn_right_back:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:232    .text.turn_right_back:00000000 turn_right_back
+D:\MSYS2\tmp\ccTdtVjQ.s:287    .text.turn_right_back:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:293    .text.all_turnoff:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:300    .text.all_turnoff:00000000 all_turnoff
+D:\MSYS2\tmp\ccTdtVjQ.s:355    .text.all_turnoff:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:361    .text.move_forward:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:368    .text.move_forward:00000000 move_forward
+D:\MSYS2\tmp\ccTdtVjQ.s:423    .text.move_forward:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:429    .text.move_back:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:436    .text.move_back:00000000 move_back
+D:\MSYS2\tmp\ccTdtVjQ.s:491    .text.move_back:00000038 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:497    .text.wifi_order_swtich:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:504    .text.wifi_order_swtich:00000000 wifi_order_swtich
+D:\MSYS2\tmp\ccTdtVjQ.s:621    .text.wifi_order_swtich:00000084 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1438   .data.wifi_order:00000000 wifi_order
+D:\MSYS2\tmp\ccTdtVjQ.s:631    .text.motor_controll_V1:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:638    .text.motor_controll_V1:00000000 motor_controll_V1
+D:\MSYS2\tmp\ccTdtVjQ.s:662    .text.motor_controll_V1:00000010 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:678    .text.motor_controll_V1:00000020 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:1028   .text.motor_controll_V1:0000019c $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1037   .text.motor_controll_wifi:00000000 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:1044   .text.motor_controll_wifi:00000000 motor_controll_wifi
+D:\MSYS2\tmp\ccTdtVjQ.s:1069   .text.motor_controll_wifi:0000001a $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1081   .text.motor_controll_wifi:00000026 $t
+D:\MSYS2\tmp\ccTdtVjQ.s:1405   .text.motor_controll_wifi:00000198 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1417   .bss.Flag:00000000 Flag
+D:\MSYS2\tmp\ccTdtVjQ.s:1418   .bss.Flag:00000000 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1424   .bss.wifi_flag:00000000 wifi_flag
+D:\MSYS2\tmp\ccTdtVjQ.s:1421   .bss.wifi_flag:00000000 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1431   .bss.wifi_order_num:00000000 wifi_order_num
+D:\MSYS2\tmp\ccTdtVjQ.s:1428   .bss.wifi_order_num:00000000 $d
+D:\MSYS2\tmp\ccTdtVjQ.s:1435   .data.wifi_order:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_ReadPin
+wifi_order_fin
+PS2_DataKey

@@ -1,0 +1,15 @@
+{
+    
+    "tasks": [
+        {
+            "label": "build task",        
+            "type": "shell",               
+            "command": "mingw32-make -j24",
+            "problemMatcher": [],          
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

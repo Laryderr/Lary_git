@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "main.h": "c",
+        "stm32f4xx_hal_gpio.h": "c",
+        "stm32f4xx_hal.h": "c",
+        "stm32f4xx_hal_conf.h": "c",
+        "bsp_esp8266_test.h": "c",
+        "bsp_debug_usart.h": "c"
+    },
+    "stm32-for-vscode.openOCDPath": false
+}

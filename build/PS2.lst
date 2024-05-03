@@ -1,0 +1,3260 @@
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"PS2.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/PS2.c"
+  20              		.section	.text.delay_us,"ax",%progbits
+  21              		.align	1
+  22              		.p2align 2,,3
+  23              		.global	delay_us
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	delay_us:
+  29              	.LVL0:
+  30              	.LFB133:
+   1:Core/Src/PS2.c **** #include "PS2.h"
+   2:Core/Src/PS2.c **** #include "usart.h"
+   3:Core/Src/PS2.c **** #include "gpio.h"
+   4:Core/Src/PS2.c **** 
+   5:Core/Src/PS2.c **** /*********************************************************
+   6:Core/Src/PS2.c **** File：PS2驱动程序
+   7:Core/Src/PS2.c **** Author：pinggai    Version:1.0     Data:2015/05/16
+   8:Core/Src/PS2.c **** Description: PS2驱动程序
+   9:Core/Src/PS2.c **** **********************************************************/	
+  10:Core/Src/PS2.c **** 
+  11:Core/Src/PS2.c **** //手柄接口初始化    输入  DI->PA0
+  12:Core/Src/PS2.c **** //                   输出  DO->PA1    CS->PA2     CLK->PA3
+  13:Core/Src/PS2.c **** 
+  14:Core/Src/PS2.c **** u16 Handkey;
+  15:Core/Src/PS2.c **** u8 Comd[2]={0x01,0x42};	//开始命令。请求数据
+  16:Core/Src/PS2.c **** u8 Data[9]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; //数据存储数组
+  17:Core/Src/PS2.c **** 
+  18:Core/Src/PS2.c **** void delay_us(uint32_t us)
+  19:Core/Src/PS2.c **** {
+  31              		.loc 1 19 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+  20:Core/Src/PS2.c ****     uint32_t delay = (HAL_RCC_GetHCLKFreq() / 4000000 * us);
+  36              		.loc 1 20 5 view .LVU1
+  37              		.loc 1 20 23 is_stmt 0 view .LVU2
+  38 0000 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 2
+
+
+  39              	.LVL1:
+  40              		.loc 1 20 23 view .LVU3
+  41              		.cfi_endproc
+  42              	.LFE133:
+  44              		.section	.text.PS2_Cmd,"ax",%progbits
+  45              		.align	1
+  46              		.p2align 2,,3
+  47              		.global	PS2_Cmd
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	PS2_Cmd:
+  53              	.LVL2:
+  54              	.LFB134:
+  21:Core/Src/PS2.c ****     while (delay--)
+  22:Core/Src/PS2.c **** 	{
+  23:Core/Src/PS2.c **** 		;
+  24:Core/Src/PS2.c **** 	}
+  25:Core/Src/PS2.c **** }
+  26:Core/Src/PS2.c **** 
+  27:Core/Src/PS2.c **** u16 MASK[]={
+  28:Core/Src/PS2.c ****     PSB_SELECT,
+  29:Core/Src/PS2.c ****     PSB_L3,
+  30:Core/Src/PS2.c ****     PSB_R3 ,
+  31:Core/Src/PS2.c ****     PSB_START,
+  32:Core/Src/PS2.c ****     PSB_PAD_UP,
+  33:Core/Src/PS2.c ****     PSB_PAD_RIGHT,
+  34:Core/Src/PS2.c ****     PSB_PAD_DOWN,
+  35:Core/Src/PS2.c ****     PSB_PAD_LEFT,
+  36:Core/Src/PS2.c ****     PSB_L2,
+  37:Core/Src/PS2.c ****     PSB_R2,
+  38:Core/Src/PS2.c ****     PSB_L1,
+  39:Core/Src/PS2.c ****     PSB_R1 ,
+  40:Core/Src/PS2.c ****     PSB_GREEN,
+  41:Core/Src/PS2.c ****     PSB_RED,
+  42:Core/Src/PS2.c ****     PSB_BLUE,
+  43:Core/Src/PS2.c ****     PSB_PINK
+  44:Core/Src/PS2.c **** 	};	//按键值与按键明
+  45:Core/Src/PS2.c **** 
+  46:Core/Src/PS2.c **** 
+  47:Core/Src/PS2.c **** //向手柄发送命令
+  48:Core/Src/PS2.c **** 
+  49:Core/Src/PS2.c **** void PS2_Cmd(u8 CMD)
+  50:Core/Src/PS2.c **** {
+  55              		.loc 1 50 1 is_stmt 1 view -0
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 8
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  51:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+  59              		.loc 1 51 2 view .LVU5
+  50:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+  60              		.loc 1 50 1 is_stmt 0 view .LVU6
+  61 0000 70B5     		push	{r4, r5, r6, lr}
+  62              	.LCFI0:
+  63              		.cfi_def_cfa_offset 16
+  64              		.cfi_offset 4, -16
+  65              		.cfi_offset 5, -12
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 3
+
+
+  66              		.cfi_offset 6, -8
+  67              		.cfi_offset 14, -4
+  68 0002 82B0     		sub	sp, sp, #8
+  69              	.LCFI1:
+  70              		.cfi_def_cfa_offset 24
+  71              		.loc 1 51 15 view .LVU7
+  72 0004 0123     		movs	r3, #1
+  73 0006 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  52:Core/Src/PS2.c **** 	Data[1] = 0;
+  74              		.loc 1 52 2 is_stmt 1 view .LVU8
+  53:Core/Src/PS2.c **** 	for(ref=0x01;ref<0x0100;ref<<=1)
+  75              		.loc 1 53 9 is_stmt 0 view .LVU9
+  76 000a ADF80630 		strh	r3, [sp, #6]	@ movhi
+  77              		.loc 1 53 18 view .LVU10
+  78 000e BDF80630 		ldrh	r3, [sp, #6]
+  52:Core/Src/PS2.c **** 	Data[1] = 0;
+  79              		.loc 1 52 10 view .LVU11
+  80 0012 2D4E     		ldr	r6, .L13
+  81              		.loc 1 53 18 view .LVU12
+  82 0014 9BB2     		uxth	r3, r3
+  52:Core/Src/PS2.c **** 	Data[1] = 0;
+  83              		.loc 1 52 10 view .LVU13
+  84 0016 0022     		movs	r2, #0
+  85              		.loc 1 53 18 view .LVU14
+  86 0018 FF2B     		cmp	r3, #255
+  52:Core/Src/PS2.c **** 	Data[1] = 0;
+  87              		.loc 1 52 10 view .LVU15
+  88 001a 7270     		strb	r2, [r6, #1]
+  89              		.loc 1 53 2 is_stmt 1 view .LVU16
+  90              		.loc 1 53 18 view .LVU17
+  91 001c 3ED8     		bhi	.L9
+  54:Core/Src/PS2.c **** 	{
+  55:Core/Src/PS2.c **** 		if(ref&CMD)
+  56:Core/Src/PS2.c **** 		{
+  57:Core/Src/PS2.c **** 			DO_H;                   //输出一位控制位
+  58:Core/Src/PS2.c **** 		}
+  59:Core/Src/PS2.c **** 		else DO_L;
+  92              		.loc 1 59 8 is_stmt 0 view .LVU18
+  93 001e 2B4C     		ldr	r4, .L13+4
+  94 0020 0546     		mov	r5, r0
+  95              	.LVL3:
+  96              	.L10:
+  55:Core/Src/PS2.c **** 		{
+  97              		.loc 1 55 3 is_stmt 1 view .LVU19
+  57:Core/Src/PS2.c **** 		}
+  98              		.loc 1 57 4 view .LVU20
+  99              		.loc 1 59 8 view .LVU21
+  55:Core/Src/PS2.c **** 		{
+ 100              		.loc 1 55 9 is_stmt 0 view .LVU22
+ 101 0022 BDF80630 		ldrh	r3, [sp, #6]
+  55:Core/Src/PS2.c **** 		{
+ 102              		.loc 1 55 5 view .LVU23
+ 103 0026 2B40     		ands	r3, r5, r3
+  57:Core/Src/PS2.c **** 		}
+ 104              		.loc 1 57 4 view .LVU24
+ 105 0028 4FF00102 		mov	r2, #1
+ 106 002c 4FF48041 		mov	r1, #16384
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 4
+
+
+ 107              		.loc 1 59 8 view .LVU25
+ 108 0030 04BF     		itt	eq
+ 109 0032 1A46     		moveq	r2, r3
+ 110 0034 4FF48041 		moveq	r1, #16384
+  57:Core/Src/PS2.c **** 		}
+ 111              		.loc 1 57 4 view .LVU26
+ 112 0038 2046     		mov	r0, r4
+ 113              		.loc 1 59 8 view .LVU27
+ 114 003a 08BF     		it	eq
+ 115 003c 2046     		moveq	r0, r4
+ 116 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 117              	.LVL4:
+ 118              		.loc 1 59 12 is_stmt 1 view .LVU28
+  60:Core/Src/PS2.c **** 
+  61:Core/Src/PS2.c **** 		CLK_H;                        //时钟拉高
+ 119              		.loc 1 61 3 view .LVU29
+ 120 0042 0122     		movs	r2, #1
+ 121 0044 4FF40051 		mov	r1, #8192
+ 122 0048 2046     		mov	r0, r4
+ 123 004a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 124              	.LVL5:
+ 125              		.loc 1 61 8 view .LVU30
+  62:Core/Src/PS2.c **** 		delay_us(5);
+ 126              		.loc 1 62 3 view .LVU31
+ 127              	.LBB38:
+ 128              	.LBI38:
+  18:Core/Src/PS2.c **** {
+ 129              		.loc 1 18 6 view .LVU32
+ 130              	.LBB39:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 131              		.loc 1 20 5 view .LVU33
+  20:Core/Src/PS2.c ****     while (delay--)
+ 132              		.loc 1 20 23 is_stmt 0 view .LVU34
+ 133 004e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 134              	.LVL6:
+  21:Core/Src/PS2.c **** 	{
+ 135              		.loc 1 21 5 is_stmt 1 view .LVU35
+  23:Core/Src/PS2.c **** 	}
+ 136              		.loc 1 23 3 view .LVU36
+  21:Core/Src/PS2.c **** 	{
+ 137              		.loc 1 21 12 view .LVU37
+  21:Core/Src/PS2.c **** 	{
+ 138              		.loc 1 21 12 is_stmt 0 view .LVU38
+ 139              	.LBE39:
+ 140              	.LBE38:
+  63:Core/Src/PS2.c **** 		CLK_L;
+ 141              		.loc 1 63 3 is_stmt 1 view .LVU39
+ 142 0052 0022     		movs	r2, #0
+ 143 0054 4FF40051 		mov	r1, #8192
+ 144 0058 2046     		mov	r0, r4
+ 145 005a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 146              	.LVL7:
+ 147              		.loc 1 63 8 view .LVU40
+  64:Core/Src/PS2.c **** 		delay_us(5);
+ 148              		.loc 1 64 3 view .LVU41
+ 149              	.LBB40:
+ 150              	.LBI40:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 5
+
+
+  18:Core/Src/PS2.c **** {
+ 151              		.loc 1 18 6 view .LVU42
+ 152              	.LBB41:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 153              		.loc 1 20 5 view .LVU43
+  20:Core/Src/PS2.c ****     while (delay--)
+ 154              		.loc 1 20 23 is_stmt 0 view .LVU44
+ 155 005e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 156              	.LVL8:
+  21:Core/Src/PS2.c **** 	{
+ 157              		.loc 1 21 5 is_stmt 1 view .LVU45
+  23:Core/Src/PS2.c **** 	}
+ 158              		.loc 1 23 3 view .LVU46
+  21:Core/Src/PS2.c **** 	{
+ 159              		.loc 1 21 12 view .LVU47
+  21:Core/Src/PS2.c **** 	{
+ 160              		.loc 1 21 12 is_stmt 0 view .LVU48
+ 161              	.LBE41:
+ 162              	.LBE40:
+  65:Core/Src/PS2.c **** 		CLK_H;
+ 163              		.loc 1 65 3 is_stmt 1 view .LVU49
+ 164 0062 4FF40051 		mov	r1, #8192
+ 165 0066 2046     		mov	r0, r4
+ 166 0068 0122     		movs	r2, #1
+ 167 006a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 168              	.LVL9:
+ 169              		.loc 1 65 8 view .LVU50
+  66:Core/Src/PS2.c **** 		if(DI)
+ 170              		.loc 1 66 3 view .LVU51
+ 171              		.loc 1 66 6 is_stmt 0 view .LVU52
+ 172 006e 4FF40041 		mov	r1, #32768
+ 173 0072 2046     		mov	r0, r4
+ 174 0074 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 175              	.LVL10:
+  67:Core/Src/PS2.c **** 			Data[1] = ref|Data[1];
+ 176              		.loc 1 67 4 is_stmt 1 view .LVU53
+  53:Core/Src/PS2.c **** 	{
+ 177              		.loc 1 53 29 view .LVU54
+  66:Core/Src/PS2.c **** 		if(DI)
+ 178              		.loc 1 66 5 is_stmt 0 view .LVU55
+ 179 0078 A8B1     		cbz	r0, .L7
+ 180              		.loc 1 67 17 view .LVU56
+ 181 007a BDF80610 		ldrh	r1, [sp, #6]
+  53:Core/Src/PS2.c **** 	{
+ 182              		.loc 1 53 29 view .LVU57
+ 183 007e BDF80630 		ldrh	r3, [sp, #6]
+ 184              		.loc 1 67 17 view .LVU58
+ 185 0082 7278     		ldrb	r2, [r6, #1]	@ zero_extendqisi2
+  53:Core/Src/PS2.c **** 	{
+ 186              		.loc 1 53 29 view .LVU59
+ 187 0084 9BB2     		uxth	r3, r3
+ 188 0086 5B00     		lsls	r3, r3, #1
+ 189 0088 9BB2     		uxth	r3, r3
+ 190 008a ADF80630 		strh	r3, [sp, #6]	@ movhi
+  53:Core/Src/PS2.c **** 	{
+ 191              		.loc 1 53 18 view .LVU60
+ 192 008e BDF80630 		ldrh	r3, [sp, #6]
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 6
+
+
+ 193 0092 9BB2     		uxth	r3, r3
+ 194              		.loc 1 67 17 view .LVU61
+ 195 0094 0A43     		orrs	r2, r2, r1
+  53:Core/Src/PS2.c **** 	{
+ 196              		.loc 1 53 18 view .LVU62
+ 197 0096 FF2B     		cmp	r3, #255
+ 198              		.loc 1 67 12 view .LVU63
+ 199 0098 7270     		strb	r2, [r6, #1]
+  53:Core/Src/PS2.c **** 	{
+ 200              		.loc 1 53 29 is_stmt 1 view .LVU64
+  53:Core/Src/PS2.c **** 	{
+ 201              		.loc 1 53 18 view .LVU65
+ 202 009a C2D9     		bls	.L10
+ 203              	.L9:
+  68:Core/Src/PS2.c **** 	}
+  69:Core/Src/PS2.c **** 	delay_us(16);
+ 204              		.loc 1 69 2 view .LVU66
+ 205              	.LVL11:
+ 206              	.LBB42:
+ 207              	.LBI42:
+  18:Core/Src/PS2.c **** {
+ 208              		.loc 1 18 6 view .LVU67
+ 209              	.LBB43:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 210              		.loc 1 20 5 view .LVU68
+ 211              	.LBE43:
+ 212              	.LBE42:
+  70:Core/Src/PS2.c **** }
+ 213              		.loc 1 70 1 is_stmt 0 view .LVU69
+ 214 009c 02B0     		add	sp, sp, #8
+ 215              	.LCFI2:
+ 216              		.cfi_remember_state
+ 217              		.cfi_def_cfa_offset 16
+ 218              		@ sp needed
+ 219 009e BDE87040 		pop	{r4, r5, r6, lr}
+ 220              	.LCFI3:
+ 221              		.cfi_restore 14
+ 222              		.cfi_restore 6
+ 223              		.cfi_restore 5
+ 224              		.cfi_restore 4
+ 225              		.cfi_def_cfa_offset 0
+ 226              	.LBB47:
+ 227              	.LBB44:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 228              		.loc 1 20 23 view .LVU70
+ 229 00a2 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 230              	.LVL12:
+ 231              	.L7:
+ 232              	.LCFI4:
+ 233              		.cfi_restore_state
+  20:Core/Src/PS2.c ****     while (delay--)
+ 234              		.loc 1 20 23 view .LVU71
+ 235              	.LBE44:
+ 236              	.LBE47:
+  53:Core/Src/PS2.c **** 	{
+ 237              		.loc 1 53 29 discriminator 2 view .LVU72
+ 238 00a6 BDF80630 		ldrh	r3, [sp, #6]
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 7
+
+
+ 239 00aa 9BB2     		uxth	r3, r3
+ 240 00ac 5B00     		lsls	r3, r3, #1
+ 241 00ae 9BB2     		uxth	r3, r3
+ 242 00b0 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  53:Core/Src/PS2.c **** 	{
+ 243              		.loc 1 53 18 is_stmt 1 discriminator 2 view .LVU73
+ 244 00b4 BDF80630 		ldrh	r3, [sp, #6]
+ 245 00b8 9BB2     		uxth	r3, r3
+ 246 00ba FF2B     		cmp	r3, #255
+ 247 00bc B1D9     		bls	.L10
+  69:Core/Src/PS2.c **** }
+ 248              		.loc 1 69 2 view .LVU74
+ 249              	.LVL13:
+ 250              	.LBB48:
+  18:Core/Src/PS2.c **** {
+ 251              		.loc 1 18 6 view .LVU75
+ 252              	.LBB45:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 253              		.loc 1 20 5 view .LVU76
+ 254              	.LBE45:
+ 255              	.LBE48:
+ 256              		.loc 1 70 1 is_stmt 0 view .LVU77
+ 257 00be 02B0     		add	sp, sp, #8
+ 258              	.LCFI5:
+ 259              		.cfi_def_cfa_offset 16
+ 260              		@ sp needed
+ 261 00c0 BDE87040 		pop	{r4, r5, r6, lr}
+ 262              	.LCFI6:
+ 263              		.cfi_restore 14
+ 264              		.cfi_restore 6
+ 265              		.cfi_restore 5
+ 266              		.cfi_restore 4
+ 267              		.cfi_def_cfa_offset 0
+ 268              	.LBB49:
+ 269              	.LBB46:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 270              		.loc 1 20 23 view .LVU78
+ 271 00c4 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 272              	.LVL14:
+ 273              	.L14:
+ 274              		.align	2
+ 275              	.L13:
+ 276 00c8 00000000 		.word	Data
+ 277 00cc 00040240 		.word	1073873920
+ 278              	.LBE46:
+ 279              	.LBE49:
+ 280              		.cfi_endproc
+ 281              	.LFE134:
+ 283              		.section	.text.PS2_RedLight,"ax",%progbits
+ 284              		.align	1
+ 285              		.p2align 2,,3
+ 286              		.global	PS2_RedLight
+ 287              		.syntax unified
+ 288              		.thumb
+ 289              		.thumb_func
+ 291              	PS2_RedLight:
+ 292              	.LFB135:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 8
+
+
+  71:Core/Src/PS2.c **** 
+  72:Core/Src/PS2.c **** //判断是否为红灯模式,0x41=模拟绿灯，0x73=模拟红灯
+  73:Core/Src/PS2.c **** //返回值；0，红灯模式
+  74:Core/Src/PS2.c **** //		  其他，其他模式
+  75:Core/Src/PS2.c **** 
+  76:Core/Src/PS2.c **** u8 PS2_RedLight(void)
+  77:Core/Src/PS2.c **** {
+ 293              		.loc 1 77 1 is_stmt 1 view -0
+ 294              		.cfi_startproc
+ 295              		@ args = 0, pretend = 0, frame = 0
+ 296              		@ frame_needed = 0, uses_anonymous_args = 0
+  78:Core/Src/PS2.c **** 	CS_L;
+ 297              		.loc 1 78 2 view .LVU80
+  77:Core/Src/PS2.c **** 	CS_L;
+ 298              		.loc 1 77 1 is_stmt 0 view .LVU81
+ 299 0000 38B5     		push	{r3, r4, r5, lr}
+ 300              	.LCFI7:
+ 301              		.cfi_def_cfa_offset 16
+ 302              		.cfi_offset 3, -16
+ 303              		.cfi_offset 4, -12
+ 304              		.cfi_offset 5, -8
+ 305              		.cfi_offset 14, -4
+ 306              		.loc 1 78 2 view .LVU82
+ 307 0002 0C4C     		ldr	r4, .L17
+  79:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 308              		.loc 1 79 2 view .LVU83
+ 309 0004 0C4D     		ldr	r5, .L17+4
+  78:Core/Src/PS2.c **** 	CS_L;
+ 310              		.loc 1 78 2 view .LVU84
+ 311 0006 0022     		movs	r2, #0
+ 312 0008 4021     		movs	r1, #64
+ 313 000a 2046     		mov	r0, r4
+ 314 000c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 315              	.LVL15:
+  78:Core/Src/PS2.c **** 	CS_L;
+ 316              		.loc 1 78 6 is_stmt 1 view .LVU85
+ 317              		.loc 1 79 2 view .LVU86
+ 318 0010 2878     		ldrb	r0, [r5]	@ zero_extendqisi2
+ 319 0012 FFF7FEFF 		bl	PS2_Cmd
+ 320              	.LVL16:
+  80:Core/Src/PS2.c **** 	PS2_Cmd(Comd[1]);  //请求数据
+ 321              		.loc 1 80 2 view .LVU87
+ 322 0016 6878     		ldrb	r0, [r5, #1]	@ zero_extendqisi2
+ 323 0018 FFF7FEFF 		bl	PS2_Cmd
+ 324              	.LVL17:
+  81:Core/Src/PS2.c **** 	CS_H;
+ 325              		.loc 1 81 2 view .LVU88
+ 326 001c 2046     		mov	r0, r4
+ 327 001e 0122     		movs	r2, #1
+ 328 0020 4021     		movs	r1, #64
+ 329 0022 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 330              	.LVL18:
+ 331              		.loc 1 81 6 view .LVU89
+  82:Core/Src/PS2.c **** 	if( Data[1] == 0X73)   return 0 ;
+ 332              		.loc 1 82 2 view .LVU90
+ 333              		.loc 1 82 10 is_stmt 0 view .LVU91
+ 334 0026 054B     		ldr	r3, .L17+8
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 9
+
+
+ 335              		.loc 1 82 4 view .LVU92
+ 336 0028 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+  83:Core/Src/PS2.c **** 	else return 1;
+  84:Core/Src/PS2.c **** 
+  85:Core/Src/PS2.c **** }
+ 337              		.loc 1 85 1 view .LVU93
+ 338 002a 7338     		subs	r0, r0, #115
+ 339 002c 18BF     		it	ne
+ 340 002e 0120     		movne	r0, #1
+ 341 0030 38BD     		pop	{r3, r4, r5, pc}
+ 342              	.L18:
+ 343 0032 00BF     		.align	2
+ 344              	.L17:
+ 345 0034 00000240 		.word	1073872896
+ 346 0038 00000000 		.word	Comd
+ 347 003c 00000000 		.word	Data
+ 348              		.cfi_endproc
+ 349              	.LFE135:
+ 351              		.section	.text.PS2_ReadData,"ax",%progbits
+ 352              		.align	1
+ 353              		.p2align 2,,3
+ 354              		.global	PS2_ReadData
+ 355              		.syntax unified
+ 356              		.thumb
+ 357              		.thumb_func
+ 359              	PS2_ReadData:
+ 360              	.LFB136:
+  86:Core/Src/PS2.c **** //读取手柄数据
+  87:Core/Src/PS2.c **** void PS2_ReadData(void)
+  88:Core/Src/PS2.c **** {
+ 361              		.loc 1 88 1 is_stmt 1 view -0
+ 362              		.cfi_startproc
+ 363              		@ args = 0, pretend = 0, frame = 8
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+  89:Core/Src/PS2.c **** 	volatile u8 byte=0;
+ 365              		.loc 1 89 2 view .LVU95
+  88:Core/Src/PS2.c **** 	volatile u8 byte=0;
+ 366              		.loc 1 88 1 is_stmt 0 view .LVU96
+ 367 0000 70B5     		push	{r4, r5, r6, lr}
+ 368              	.LCFI8:
+ 369              		.cfi_def_cfa_offset 16
+ 370              		.cfi_offset 4, -16
+ 371              		.cfi_offset 5, -12
+ 372              		.cfi_offset 6, -8
+ 373              		.cfi_offset 14, -4
+  90:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+  91:Core/Src/PS2.c **** 	CS_L;
+  92:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 374              		.loc 1 92 2 view .LVU97
+ 375 0002 3A4C     		ldr	r4, .L28
+  91:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 376              		.loc 1 91 2 view .LVU98
+ 377 0004 3A48     		ldr	r0, .L28+4
+  88:Core/Src/PS2.c **** 	volatile u8 byte=0;
+ 378              		.loc 1 88 1 view .LVU99
+ 379 0006 82B0     		sub	sp, sp, #8
+ 380              	.LCFI9:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 10
+
+
+ 381              		.cfi_def_cfa_offset 24
+  89:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+ 382              		.loc 1 89 14 view .LVU100
+ 383 0008 0022     		movs	r2, #0
+  91:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 384              		.loc 1 91 2 view .LVU101
+ 385 000a 4021     		movs	r1, #64
+  90:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+ 386              		.loc 1 90 15 view .LVU102
+ 387 000c 0126     		movs	r6, #1
+  89:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+ 388              		.loc 1 89 14 view .LVU103
+ 389 000e 8DF80520 		strb	r2, [sp, #5]
+  90:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+ 390              		.loc 1 90 2 is_stmt 1 view .LVU104
+  90:Core/Src/PS2.c **** 	volatile u16 ref=0x01;
+ 391              		.loc 1 90 15 is_stmt 0 view .LVU105
+ 392 0012 ADF80660 		strh	r6, [sp, #6]	@ movhi
+  91:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 393              		.loc 1 91 2 is_stmt 1 view .LVU106
+ 394 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 395              	.LVL19:
+  91:Core/Src/PS2.c **** 	PS2_Cmd(Comd[0]);  //开始命令
+ 396              		.loc 1 91 6 view .LVU107
+ 397              		.loc 1 92 2 view .LVU108
+ 398 001a 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 399 001c FFF7FEFF 		bl	PS2_Cmd
+ 400              	.LVL20:
+  93:Core/Src/PS2.c **** 	PS2_Cmd(Comd[1]);  //请求数据
+ 401              		.loc 1 93 2 view .LVU109
+ 402 0020 6078     		ldrb	r0, [r4, #1]	@ zero_extendqisi2
+ 403 0022 FFF7FEFF 		bl	PS2_Cmd
+ 404              	.LVL21:
+  94:Core/Src/PS2.c **** 	for(byte=2;byte<9;byte++)          //开始接受数据
+ 405              		.loc 1 94 2 view .LVU110
+ 406              		.loc 1 94 10 is_stmt 0 view .LVU111
+ 407 0026 0223     		movs	r3, #2
+ 408 0028 8DF80530 		strb	r3, [sp, #5]
+ 409              		.loc 1 94 17 is_stmt 1 view .LVU112
+ 410 002c 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 411 0030 082B     		cmp	r3, #8
+ 412 0032 45D8     		bhi	.L20
+  95:Core/Src/PS2.c **** 	{
+  96:Core/Src/PS2.c **** 		for(ref=0x01;ref<0x100;ref<<=1)
+  97:Core/Src/PS2.c **** 		{
+  98:Core/Src/PS2.c **** 			CLK_H;
+ 413              		.loc 1 98 4 is_stmt 0 view .LVU113
+ 414 0034 2F4C     		ldr	r4, .L28+8
+  99:Core/Src/PS2.c **** 			delay_us(5);;
+ 100:Core/Src/PS2.c **** 			CLK_L;
+ 101:Core/Src/PS2.c **** 			delay_us(5);;
+ 102:Core/Src/PS2.c **** 			CLK_H;
+ 103:Core/Src/PS2.c **** 		      if(DI)
+ 104:Core/Src/PS2.c **** 		      Data[byte] = ref|Data[byte];
+ 415              		.loc 1 104 20 view .LVU114
+ 416 0036 304D     		ldr	r5, .L28+12
+ 417              	.L25:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 11
+
+
+  96:Core/Src/PS2.c **** 		{
+ 418              		.loc 1 96 3 is_stmt 1 view .LVU115
+  96:Core/Src/PS2.c **** 		{
+ 419              		.loc 1 96 10 is_stmt 0 view .LVU116
+ 420 0038 ADF80660 		strh	r6, [sp, #6]	@ movhi
+  96:Core/Src/PS2.c **** 		{
+ 421              		.loc 1 96 19 is_stmt 1 view .LVU117
+ 422 003c BDF80630 		ldrh	r3, [sp, #6]
+ 423 0040 9BB2     		uxth	r3, r3
+ 424 0042 FF2B     		cmp	r3, #255
+ 425 0044 30D8     		bhi	.L21
+ 426              	.L24:
+  98:Core/Src/PS2.c **** 			delay_us(5);;
+ 427              		.loc 1 98 4 view .LVU118
+ 428 0046 0122     		movs	r2, #1
+ 429 0048 4FF40051 		mov	r1, #8192
+ 430 004c 2046     		mov	r0, r4
+ 431 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 432              	.LVL22:
+  98:Core/Src/PS2.c **** 			delay_us(5);;
+ 433              		.loc 1 98 9 view .LVU119
+  99:Core/Src/PS2.c **** 			delay_us(5);;
+ 434              		.loc 1 99 4 view .LVU120
+ 435              	.LBB50:
+ 436              	.LBI50:
+  18:Core/Src/PS2.c **** {
+ 437              		.loc 1 18 6 view .LVU121
+ 438              	.LBB51:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 439              		.loc 1 20 5 view .LVU122
+  20:Core/Src/PS2.c ****     while (delay--)
+ 440              		.loc 1 20 23 is_stmt 0 view .LVU123
+ 441 0052 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 442              	.LVL23:
+  21:Core/Src/PS2.c **** 	{
+ 443              		.loc 1 21 5 is_stmt 1 view .LVU124
+  23:Core/Src/PS2.c **** 	}
+ 444              		.loc 1 23 3 view .LVU125
+  21:Core/Src/PS2.c **** 	{
+ 445              		.loc 1 21 12 view .LVU126
+  21:Core/Src/PS2.c **** 	{
+ 446              		.loc 1 21 12 is_stmt 0 view .LVU127
+ 447              	.LBE51:
+ 448              	.LBE50:
+  99:Core/Src/PS2.c **** 			CLK_L;
+ 449              		.loc 1 99 16 is_stmt 1 view .LVU128
+ 100:Core/Src/PS2.c **** 			delay_us(5);;
+ 450              		.loc 1 100 4 view .LVU129
+ 451 0056 0022     		movs	r2, #0
+ 452 0058 4FF40051 		mov	r1, #8192
+ 453 005c 2046     		mov	r0, r4
+ 454 005e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 455              	.LVL24:
+ 100:Core/Src/PS2.c **** 			delay_us(5);;
+ 456              		.loc 1 100 9 view .LVU130
+ 101:Core/Src/PS2.c **** 			CLK_H;
+ 457              		.loc 1 101 4 view .LVU131
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 12
+
+
+ 458              	.LBB52:
+ 459              	.LBI52:
+  18:Core/Src/PS2.c **** {
+ 460              		.loc 1 18 6 view .LVU132
+ 461              	.LBB53:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 462              		.loc 1 20 5 view .LVU133
+  20:Core/Src/PS2.c ****     while (delay--)
+ 463              		.loc 1 20 23 is_stmt 0 view .LVU134
+ 464 0062 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 465              	.LVL25:
+  21:Core/Src/PS2.c **** 	{
+ 466              		.loc 1 21 5 is_stmt 1 view .LVU135
+  23:Core/Src/PS2.c **** 	}
+ 467              		.loc 1 23 3 view .LVU136
+  21:Core/Src/PS2.c **** 	{
+ 468              		.loc 1 21 12 view .LVU137
+  21:Core/Src/PS2.c **** 	{
+ 469              		.loc 1 21 12 is_stmt 0 view .LVU138
+ 470              	.LBE53:
+ 471              	.LBE52:
+ 101:Core/Src/PS2.c **** 			CLK_H;
+ 472              		.loc 1 101 16 is_stmt 1 view .LVU139
+ 102:Core/Src/PS2.c **** 		      if(DI)
+ 473              		.loc 1 102 4 view .LVU140
+ 474 0066 4FF40051 		mov	r1, #8192
+ 475 006a 2046     		mov	r0, r4
+ 476 006c 0122     		movs	r2, #1
+ 477 006e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 478              	.LVL26:
+ 102:Core/Src/PS2.c **** 		      if(DI)
+ 479              		.loc 1 102 9 view .LVU141
+ 103:Core/Src/PS2.c **** 		      Data[byte] = ref|Data[byte];
+ 480              		.loc 1 103 9 view .LVU142
+ 103:Core/Src/PS2.c **** 		      Data[byte] = ref|Data[byte];
+ 481              		.loc 1 103 12 is_stmt 0 view .LVU143
+ 482 0072 4FF40041 		mov	r1, #32768
+ 483 0076 2046     		mov	r0, r4
+ 484 0078 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 485              	.LVL27:
+ 486              		.loc 1 104 9 is_stmt 1 view .LVU144
+  96:Core/Src/PS2.c **** 		{
+ 487              		.loc 1 96 29 view .LVU145
+ 103:Core/Src/PS2.c **** 		      Data[byte] = ref|Data[byte];
+ 488              		.loc 1 103 11 is_stmt 0 view .LVU146
+ 489 007c 40B3     		cbz	r0, .L22
+ 490              		.loc 1 104 25 view .LVU147
+ 491 007e BDF80600 		ldrh	r0, [sp, #6]
+ 492              		.loc 1 104 30 view .LVU148
+ 493 0082 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 494              		.loc 1 104 13 view .LVU149
+ 495 0086 9DF80510 		ldrb	r1, [sp, #5]	@ zero_extendqisi2
+  96:Core/Src/PS2.c **** 		{
+ 496              		.loc 1 96 29 view .LVU150
+ 497 008a BDF80630 		ldrh	r3, [sp, #6]
+ 498              		.loc 1 104 25 view .LVU151
+ 499 008e AA5C     		ldrb	r2, [r5, r2]	@ zero_extendqisi2
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 13
+
+
+  96:Core/Src/PS2.c **** 		{
+ 500              		.loc 1 96 29 view .LVU152
+ 501 0090 9BB2     		uxth	r3, r3
+ 502 0092 5B00     		lsls	r3, r3, #1
+ 503 0094 9BB2     		uxth	r3, r3
+ 504 0096 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  96:Core/Src/PS2.c **** 		{
+ 505              		.loc 1 96 19 view .LVU153
+ 506 009a BDF80630 		ldrh	r3, [sp, #6]
+ 507 009e 9BB2     		uxth	r3, r3
+ 508              		.loc 1 104 25 view .LVU154
+ 509 00a0 0243     		orrs	r2, r2, r0
+  96:Core/Src/PS2.c **** 		{
+ 510              		.loc 1 96 19 view .LVU155
+ 511 00a2 FF2B     		cmp	r3, #255
+ 512              		.loc 1 104 20 view .LVU156
+ 513 00a4 6A54     		strb	r2, [r5, r1]
+  96:Core/Src/PS2.c **** 		{
+ 514              		.loc 1 96 29 is_stmt 1 view .LVU157
+  96:Core/Src/PS2.c **** 		{
+ 515              		.loc 1 96 19 view .LVU158
+ 516 00a6 CED9     		bls	.L24
+ 517              	.L21:
+ 105:Core/Src/PS2.c **** 		}
+ 106:Core/Src/PS2.c ****         delay_us(16);
+ 518              		.loc 1 106 9 view .LVU159
+ 519              	.LVL28:
+ 520              	.LBB54:
+ 521              	.LBI54:
+  18:Core/Src/PS2.c **** {
+ 522              		.loc 1 18 6 view .LVU160
+ 523              	.LBB55:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 524              		.loc 1 20 5 view .LVU161
+  20:Core/Src/PS2.c ****     while (delay--)
+ 525              		.loc 1 20 23 is_stmt 0 view .LVU162
+ 526 00a8 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 527              	.LVL29:
+  21:Core/Src/PS2.c **** 	{
+ 528              		.loc 1 21 5 is_stmt 1 view .LVU163
+  23:Core/Src/PS2.c **** 	}
+ 529              		.loc 1 23 3 view .LVU164
+  21:Core/Src/PS2.c **** 	{
+ 530              		.loc 1 21 12 view .LVU165
+  21:Core/Src/PS2.c **** 	{
+ 531              		.loc 1 21 12 is_stmt 0 view .LVU166
+ 532              	.LBE55:
+ 533              	.LBE54:
+  94:Core/Src/PS2.c **** 	{
+ 534              		.loc 1 94 24 is_stmt 1 view .LVU167
+ 535 00ac 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 536 00b0 0133     		adds	r3, r3, #1
+ 537 00b2 DBB2     		uxtb	r3, r3
+ 538 00b4 8DF80530 		strb	r3, [sp, #5]
+  94:Core/Src/PS2.c **** 	{
+ 539              		.loc 1 94 17 view .LVU168
+ 540 00b8 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 14
+
+
+ 541 00bc 082B     		cmp	r3, #8
+ 542 00be BBD9     		bls	.L25
+ 543              	.L20:
+ 107:Core/Src/PS2.c **** 	}
+ 108:Core/Src/PS2.c **** 	CS_H;
+ 544              		.loc 1 108 2 view .LVU169
+ 545 00c0 0B48     		ldr	r0, .L28+4
+ 546 00c2 0122     		movs	r2, #1
+ 547 00c4 4021     		movs	r1, #64
+ 109:Core/Src/PS2.c **** }
+ 548              		.loc 1 109 1 is_stmt 0 view .LVU170
+ 549 00c6 02B0     		add	sp, sp, #8
+ 550              	.LCFI10:
+ 551              		.cfi_remember_state
+ 552              		.cfi_def_cfa_offset 16
+ 553              		@ sp needed
+ 554 00c8 BDE87040 		pop	{r4, r5, r6, lr}
+ 555              	.LCFI11:
+ 556              		.cfi_restore 14
+ 557              		.cfi_restore 6
+ 558              		.cfi_restore 5
+ 559              		.cfi_restore 4
+ 560              		.cfi_def_cfa_offset 0
+ 108:Core/Src/PS2.c **** }
+ 561              		.loc 1 108 2 view .LVU171
+ 562 00cc FFF7FEBF 		b	HAL_GPIO_WritePin
+ 563              	.LVL30:
+ 564              	.L22:
+ 565              	.LCFI12:
+ 566              		.cfi_restore_state
+  96:Core/Src/PS2.c **** 		{
+ 567              		.loc 1 96 29 discriminator 2 view .LVU172
+ 568 00d0 BDF80630 		ldrh	r3, [sp, #6]
+ 569 00d4 9BB2     		uxth	r3, r3
+ 570 00d6 5B00     		lsls	r3, r3, #1
+ 571 00d8 9BB2     		uxth	r3, r3
+ 572 00da ADF80630 		strh	r3, [sp, #6]	@ movhi
+  96:Core/Src/PS2.c **** 		{
+ 573              		.loc 1 96 19 is_stmt 1 discriminator 2 view .LVU173
+ 574 00de BDF80630 		ldrh	r3, [sp, #6]
+ 575 00e2 9BB2     		uxth	r3, r3
+ 576 00e4 FF2B     		cmp	r3, #255
+ 577 00e6 AED9     		bls	.L24
+ 578 00e8 DEE7     		b	.L21
+ 579              	.L29:
+ 580 00ea 00BF     		.align	2
+ 581              	.L28:
+ 582 00ec 00000000 		.word	Comd
+ 583 00f0 00000240 		.word	1073872896
+ 584 00f4 00040240 		.word	1073873920
+ 585 00f8 00000000 		.word	Data
+ 586              		.cfi_endproc
+ 587              	.LFE136:
+ 589              		.section	.text.PS2_DataKey,"ax",%progbits
+ 590              		.align	1
+ 591              		.p2align 2,,3
+ 592              		.global	PS2_DataKey
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 15
+
+
+ 593              		.syntax unified
+ 594              		.thumb
+ 595              		.thumb_func
+ 597              	PS2_DataKey:
+ 598              	.LFB137:
+ 110:Core/Src/PS2.c **** 
+ 111:Core/Src/PS2.c **** //对读出来的PS2的数据进行处理,只处理按键部分
+ 112:Core/Src/PS2.c **** //只有一个按键按下时按下为0， 未按下为1
+ 113:Core/Src/PS2.c **** u8 PS2_DataKey()
+ 114:Core/Src/PS2.c **** {
+ 599              		.loc 1 114 1 view -0
+ 600              		.cfi_startproc
+ 601              		@ args = 0, pretend = 0, frame = 0
+ 602              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115:Core/Src/PS2.c **** 	u8 index;
+ 603              		.loc 1 115 2 view .LVU175
+ 116:Core/Src/PS2.c **** 
+ 117:Core/Src/PS2.c **** 	PS2_ClearData();
+ 604              		.loc 1 117 2 view .LVU176
+ 605              	.LBB56:
+ 606              	.LBI56:
+ 118:Core/Src/PS2.c **** 	PS2_ReadData();
+ 119:Core/Src/PS2.c **** 
+ 120:Core/Src/PS2.c **** 	Handkey=(Data[4]<<8)|Data[3];     //这是16个按键  按下为0， 未按下为1
+ 121:Core/Src/PS2.c **** 	for(index=0;index<16;index++)
+ 122:Core/Src/PS2.c **** 	{	    
+ 123:Core/Src/PS2.c **** 		if((Handkey&(1<<(MASK[index]-1)))==0)
+ 124:Core/Src/PS2.c **** 		return index+1;
+ 125:Core/Src/PS2.c **** 	}
+ 126:Core/Src/PS2.c **** 	return 0;          //没有任何按键按下
+ 127:Core/Src/PS2.c **** }
+ 128:Core/Src/PS2.c **** 
+ 129:Core/Src/PS2.c **** //得到一个摇杆的模拟量	 范围0~256
+ 130:Core/Src/PS2.c **** u8 PS2_AnologData(u8 button)
+ 131:Core/Src/PS2.c **** {
+ 132:Core/Src/PS2.c **** 	return Data[button];
+ 133:Core/Src/PS2.c **** }
+ 134:Core/Src/PS2.c **** 
+ 135:Core/Src/PS2.c **** //清除数据缓冲区
+ 136:Core/Src/PS2.c **** void PS2_ClearData()
+ 607              		.loc 1 136 6 view .LVU177
+ 608              	.LBB57:
+ 137:Core/Src/PS2.c **** {
+ 138:Core/Src/PS2.c **** 	u8 a;
+ 609              		.loc 1 138 2 view .LVU178
+ 139:Core/Src/PS2.c **** 	for(a=0;a<9;a++)
+ 610              		.loc 1 139 2 view .LVU179
+ 611              	.LVL31:
+ 612              		.loc 1 139 11 view .LVU180
+ 613              	.LBE57:
+ 614              	.LBE56:
+ 114:Core/Src/PS2.c **** 	u8 index;
+ 615              		.loc 1 114 1 is_stmt 0 view .LVU181
+ 616 0000 10B5     		push	{r4, lr}
+ 617              	.LCFI13:
+ 618              		.cfi_def_cfa_offset 8
+ 619              		.cfi_offset 4, -8
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 16
+
+
+ 620              		.cfi_offset 14, -4
+ 621              	.LBB59:
+ 622              	.LBB58:
+ 140:Core/Src/PS2.c **** 		Data[a]=0x00;
+ 623              		.loc 1 140 10 view .LVU182
+ 624 0002 464C     		ldr	r4, .L50
+ 625 0004 0023     		movs	r3, #0
+ 626 0006 C4E90033 		strd	r3, r3, [r4]
+ 627 000a 2372     		strb	r3, [r4, #8]
+ 628              	.LVL32:
+ 629              		.loc 1 140 10 view .LVU183
+ 630              	.LBE58:
+ 631              	.LBE59:
+ 118:Core/Src/PS2.c **** 
+ 632              		.loc 1 118 2 is_stmt 1 view .LVU184
+ 633 000c FFF7FEFF 		bl	PS2_ReadData
+ 634              	.LVL33:
+ 120:Core/Src/PS2.c **** 	for(index=0;index<16;index++)
+ 635              		.loc 1 120 2 view .LVU185
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 636              		.loc 1 123 24 is_stmt 0 view .LVU186
+ 637 0010 434A     		ldr	r2, .L50+4
+ 638 0012 B4F80330 		ldrh	r3, [r4, #3]	@ unaligned
+ 639 0016 1188     		ldrh	r1, [r2]
+ 120:Core/Src/PS2.c **** 	for(index=0;index<16;index++)
+ 640              		.loc 1 120 9 view .LVU187
+ 641 0018 4248     		ldr	r0, .L50+8
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 642              		.loc 1 123 31 view .LVU188
+ 643 001a 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 644              		.loc 1 123 36 view .LVU189
+ 645 001c 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 646              		.loc 1 123 5 view .LVU190
+ 647 0020 C907     		lsls	r1, r1, #31
+ 120:Core/Src/PS2.c **** 	for(index=0;index<16;index++)
+ 648              		.loc 1 120 9 view .LVU191
+ 649 0022 0380     		strh	r3, [r0]	@ movhi
+ 121:Core/Src/PS2.c **** 	{	    
+ 650              		.loc 1 121 2 is_stmt 1 view .LVU192
+ 651              	.LVL34:
+ 121:Core/Src/PS2.c **** 	{	    
+ 652              		.loc 1 121 19 view .LVU193
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 653              		.loc 1 123 3 view .LVU194
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 654              		.loc 1 123 5 is_stmt 0 view .LVU195
+ 655 0024 5CD5     		bpl	.L33
+ 121:Core/Src/PS2.c **** 	{	    
+ 656              		.loc 1 121 28 is_stmt 1 view .LVU196
+ 657              	.LVL35:
+ 121:Core/Src/PS2.c **** 	{	    
+ 658              		.loc 1 121 19 view .LVU197
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 659              		.loc 1 123 3 view .LVU198
+ 123:Core/Src/PS2.c **** 		return index+1;
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 17
+
+
+ 660              		.loc 1 123 24 is_stmt 0 view .LVU199
+ 661 0026 5188     		ldrh	r1, [r2, #2]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 662              		.loc 1 123 31 view .LVU200
+ 663 0028 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 664              		.loc 1 123 36 view .LVU201
+ 665 002a 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 666              		.loc 1 123 5 view .LVU202
+ 667 002e CC07     		lsls	r4, r1, #31
+ 668 0030 58D5     		bpl	.L34
+ 121:Core/Src/PS2.c **** 	{	    
+ 669              		.loc 1 121 28 is_stmt 1 view .LVU203
+ 670              	.LVL36:
+ 121:Core/Src/PS2.c **** 	{	    
+ 671              		.loc 1 121 19 view .LVU204
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 672              		.loc 1 123 3 view .LVU205
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 673              		.loc 1 123 24 is_stmt 0 view .LVU206
+ 674 0032 9188     		ldrh	r1, [r2, #4]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 675              		.loc 1 123 31 view .LVU207
+ 676 0034 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 677              		.loc 1 123 36 view .LVU208
+ 678 0036 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 679              		.loc 1 123 5 view .LVU209
+ 680 003a C907     		lsls	r1, r1, #31
+ 681 003c 56D5     		bpl	.L35
+ 121:Core/Src/PS2.c **** 	{	    
+ 682              		.loc 1 121 28 is_stmt 1 view .LVU210
+ 683              	.LVL37:
+ 121:Core/Src/PS2.c **** 	{	    
+ 684              		.loc 1 121 19 view .LVU211
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 685              		.loc 1 123 3 view .LVU212
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 686              		.loc 1 123 24 is_stmt 0 view .LVU213
+ 687 003e D188     		ldrh	r1, [r2, #6]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 688              		.loc 1 123 31 view .LVU214
+ 689 0040 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 690              		.loc 1 123 36 view .LVU215
+ 691 0042 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 692              		.loc 1 123 5 view .LVU216
+ 693 0046 CC07     		lsls	r4, r1, #31
+ 694 0048 52D5     		bpl	.L36
+ 121:Core/Src/PS2.c **** 	{	    
+ 695              		.loc 1 121 28 is_stmt 1 view .LVU217
+ 696              	.LVL38:
+ 121:Core/Src/PS2.c **** 	{	    
+ 697              		.loc 1 121 19 view .LVU218
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 18
+
+
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 698              		.loc 1 123 3 view .LVU219
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 699              		.loc 1 123 24 is_stmt 0 view .LVU220
+ 700 004a 1189     		ldrh	r1, [r2, #8]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 701              		.loc 1 123 31 view .LVU221
+ 702 004c 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 703              		.loc 1 123 36 view .LVU222
+ 704 004e 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 705              		.loc 1 123 5 view .LVU223
+ 706 0052 C907     		lsls	r1, r1, #31
+ 707 0054 4ED5     		bpl	.L37
+ 121:Core/Src/PS2.c **** 	{	    
+ 708              		.loc 1 121 28 is_stmt 1 view .LVU224
+ 709              	.LVL39:
+ 121:Core/Src/PS2.c **** 	{	    
+ 710              		.loc 1 121 19 view .LVU225
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 711              		.loc 1 123 3 view .LVU226
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 712              		.loc 1 123 24 is_stmt 0 view .LVU227
+ 713 0056 5189     		ldrh	r1, [r2, #10]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 714              		.loc 1 123 31 view .LVU228
+ 715 0058 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 716              		.loc 1 123 36 view .LVU229
+ 717 005a 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 718              		.loc 1 123 5 view .LVU230
+ 719 005e CC07     		lsls	r4, r1, #31
+ 720 0060 4AD5     		bpl	.L38
+ 121:Core/Src/PS2.c **** 	{	    
+ 721              		.loc 1 121 28 is_stmt 1 view .LVU231
+ 722              	.LVL40:
+ 121:Core/Src/PS2.c **** 	{	    
+ 723              		.loc 1 121 19 view .LVU232
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 724              		.loc 1 123 3 view .LVU233
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 725              		.loc 1 123 24 is_stmt 0 view .LVU234
+ 726 0062 9189     		ldrh	r1, [r2, #12]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 727              		.loc 1 123 31 view .LVU235
+ 728 0064 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 729              		.loc 1 123 36 view .LVU236
+ 730 0066 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 731              		.loc 1 123 5 view .LVU237
+ 732 006a C907     		lsls	r1, r1, #31
+ 733 006c 46D5     		bpl	.L39
+ 121:Core/Src/PS2.c **** 	{	    
+ 734              		.loc 1 121 28 is_stmt 1 view .LVU238
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 19
+
+
+ 735              	.LVL41:
+ 121:Core/Src/PS2.c **** 	{	    
+ 736              		.loc 1 121 19 view .LVU239
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 737              		.loc 1 123 3 view .LVU240
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 738              		.loc 1 123 24 is_stmt 0 view .LVU241
+ 739 006e D189     		ldrh	r1, [r2, #14]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 740              		.loc 1 123 31 view .LVU242
+ 741 0070 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 742              		.loc 1 123 36 view .LVU243
+ 743 0072 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 744              		.loc 1 123 5 view .LVU244
+ 745 0076 CC07     		lsls	r4, r1, #31
+ 746 0078 42D5     		bpl	.L40
+ 121:Core/Src/PS2.c **** 	{	    
+ 747              		.loc 1 121 28 is_stmt 1 view .LVU245
+ 748              	.LVL42:
+ 121:Core/Src/PS2.c **** 	{	    
+ 749              		.loc 1 121 19 view .LVU246
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 750              		.loc 1 123 3 view .LVU247
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 751              		.loc 1 123 24 is_stmt 0 view .LVU248
+ 752 007a 118A     		ldrh	r1, [r2, #16]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 753              		.loc 1 123 31 view .LVU249
+ 754 007c 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 755              		.loc 1 123 36 view .LVU250
+ 756 007e 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 757              		.loc 1 123 5 view .LVU251
+ 758 0082 C907     		lsls	r1, r1, #31
+ 759 0084 3ED5     		bpl	.L41
+ 121:Core/Src/PS2.c **** 	{	    
+ 760              		.loc 1 121 28 is_stmt 1 view .LVU252
+ 761              	.LVL43:
+ 121:Core/Src/PS2.c **** 	{	    
+ 762              		.loc 1 121 19 view .LVU253
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 763              		.loc 1 123 3 view .LVU254
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 764              		.loc 1 123 24 is_stmt 0 view .LVU255
+ 765 0086 518A     		ldrh	r1, [r2, #18]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 766              		.loc 1 123 31 view .LVU256
+ 767 0088 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 768              		.loc 1 123 36 view .LVU257
+ 769 008a 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 770              		.loc 1 123 5 view .LVU258
+ 771 008e CC07     		lsls	r4, r1, #31
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 20
+
+
+ 772 0090 3AD5     		bpl	.L42
+ 121:Core/Src/PS2.c **** 	{	    
+ 773              		.loc 1 121 28 is_stmt 1 view .LVU259
+ 774              	.LVL44:
+ 121:Core/Src/PS2.c **** 	{	    
+ 775              		.loc 1 121 19 view .LVU260
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 776              		.loc 1 123 3 view .LVU261
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 777              		.loc 1 123 24 is_stmt 0 view .LVU262
+ 778 0092 918A     		ldrh	r1, [r2, #20]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 779              		.loc 1 123 31 view .LVU263
+ 780 0094 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 781              		.loc 1 123 36 view .LVU264
+ 782 0096 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 783              		.loc 1 123 5 view .LVU265
+ 784 009a C907     		lsls	r1, r1, #31
+ 785 009c 36D5     		bpl	.L43
+ 121:Core/Src/PS2.c **** 	{	    
+ 786              		.loc 1 121 28 is_stmt 1 view .LVU266
+ 787              	.LVL45:
+ 121:Core/Src/PS2.c **** 	{	    
+ 788              		.loc 1 121 19 view .LVU267
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 789              		.loc 1 123 3 view .LVU268
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 790              		.loc 1 123 24 is_stmt 0 view .LVU269
+ 791 009e D18A     		ldrh	r1, [r2, #22]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 792              		.loc 1 123 31 view .LVU270
+ 793 00a0 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 794              		.loc 1 123 36 view .LVU271
+ 795 00a2 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 796              		.loc 1 123 5 view .LVU272
+ 797 00a6 CC07     		lsls	r4, r1, #31
+ 798 00a8 32D5     		bpl	.L44
+ 121:Core/Src/PS2.c **** 	{	    
+ 799              		.loc 1 121 28 is_stmt 1 view .LVU273
+ 800              	.LVL46:
+ 121:Core/Src/PS2.c **** 	{	    
+ 801              		.loc 1 121 19 view .LVU274
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 802              		.loc 1 123 3 view .LVU275
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 803              		.loc 1 123 24 is_stmt 0 view .LVU276
+ 804 00aa 118B     		ldrh	r1, [r2, #24]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 805              		.loc 1 123 31 view .LVU277
+ 806 00ac 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 807              		.loc 1 123 36 view .LVU278
+ 808 00ae 43FA01F1 		asr	r1, r3, r1
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 21
+
+
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 809              		.loc 1 123 5 view .LVU279
+ 810 00b2 C907     		lsls	r1, r1, #31
+ 811 00b4 18D5     		bpl	.L45
+ 121:Core/Src/PS2.c **** 	{	    
+ 812              		.loc 1 121 28 is_stmt 1 view .LVU280
+ 813              	.LVL47:
+ 121:Core/Src/PS2.c **** 	{	    
+ 814              		.loc 1 121 19 view .LVU281
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 815              		.loc 1 123 3 view .LVU282
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 816              		.loc 1 123 24 is_stmt 0 view .LVU283
+ 817 00b6 518B     		ldrh	r1, [r2, #26]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 818              		.loc 1 123 31 view .LVU284
+ 819 00b8 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 820              		.loc 1 123 36 view .LVU285
+ 821 00ba 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 822              		.loc 1 123 5 view .LVU286
+ 823 00be CC07     		lsls	r4, r1, #31
+ 824 00c0 28D5     		bpl	.L46
+ 121:Core/Src/PS2.c **** 	{	    
+ 825              		.loc 1 121 28 is_stmt 1 view .LVU287
+ 826              	.LVL48:
+ 121:Core/Src/PS2.c **** 	{	    
+ 827              		.loc 1 121 19 view .LVU288
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 828              		.loc 1 123 3 view .LVU289
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 829              		.loc 1 123 24 is_stmt 0 view .LVU290
+ 830 00c2 918B     		ldrh	r1, [r2, #28]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 831              		.loc 1 123 31 view .LVU291
+ 832 00c4 0139     		subs	r1, r1, #1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 833              		.loc 1 123 36 view .LVU292
+ 834 00c6 43FA01F1 		asr	r1, r3, r1
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 835              		.loc 1 123 5 view .LVU293
+ 836 00ca C907     		lsls	r1, r1, #31
+ 837 00cc 24D5     		bpl	.L47
+ 121:Core/Src/PS2.c **** 	{	    
+ 838              		.loc 1 121 28 is_stmt 1 view .LVU294
+ 839              	.LVL49:
+ 121:Core/Src/PS2.c **** 	{	    
+ 840              		.loc 1 121 19 view .LVU295
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 841              		.loc 1 123 3 view .LVU296
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 842              		.loc 1 123 24 is_stmt 0 view .LVU297
+ 843 00ce D28B     		ldrh	r2, [r2, #30]
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 844              		.loc 1 123 31 view .LVU298
+ 845 00d0 013A     		subs	r2, r2, #1
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 22
+
+
+ 123:Core/Src/PS2.c **** 		return index+1;
+ 846              		.loc 1 123 36 view .LVU299
+ 847 00d2 1341     		asrs	r3, r3, r2
+ 124:Core/Src/PS2.c **** 	}
+ 848              		.loc 1 124 15 view .LVU300
+ 849 00d4 13F0010F 		tst	r3, #1
+ 850 00d8 14BF     		ite	ne
+ 851 00da 0020     		movne	r0, #0
+ 852 00dc 1020     		moveq	r0, #16
+ 853              	.LVL50:
+ 127:Core/Src/PS2.c **** 
+ 854              		.loc 1 127 1 view .LVU301
+ 855 00de 10BD     		pop	{r4, pc}
+ 856              	.LVL51:
+ 857              	.L33:
+ 124:Core/Src/PS2.c **** 	}
+ 858              		.loc 1 124 15 view .LVU302
+ 859 00e0 0120     		movs	r0, #1
+ 860              	.LVL52:
+ 127:Core/Src/PS2.c **** 
+ 861              		.loc 1 127 1 view .LVU303
+ 862 00e2 10BD     		pop	{r4, pc}
+ 863              	.LVL53:
+ 864              	.L34:
+ 124:Core/Src/PS2.c **** 	}
+ 865              		.loc 1 124 15 view .LVU304
+ 866 00e4 0220     		movs	r0, #2
+ 867              	.LVL54:
+ 127:Core/Src/PS2.c **** 
+ 868              		.loc 1 127 1 view .LVU305
+ 869 00e6 10BD     		pop	{r4, pc}
+ 870              	.LVL55:
+ 871              	.L45:
+ 124:Core/Src/PS2.c **** 	}
+ 872              		.loc 1 124 15 view .LVU306
+ 873 00e8 0D20     		movs	r0, #13
+ 874              	.LVL56:
+ 127:Core/Src/PS2.c **** 
+ 875              		.loc 1 127 1 view .LVU307
+ 876 00ea 10BD     		pop	{r4, pc}
+ 877              	.LVL57:
+ 878              	.L35:
+ 124:Core/Src/PS2.c **** 	}
+ 879              		.loc 1 124 15 view .LVU308
+ 880 00ec 0320     		movs	r0, #3
+ 881              	.LVL58:
+ 127:Core/Src/PS2.c **** 
+ 882              		.loc 1 127 1 view .LVU309
+ 883 00ee 10BD     		pop	{r4, pc}
+ 884              	.LVL59:
+ 885              	.L36:
+ 124:Core/Src/PS2.c **** 	}
+ 886              		.loc 1 124 15 view .LVU310
+ 887 00f0 0420     		movs	r0, #4
+ 888              	.LVL60:
+ 127:Core/Src/PS2.c **** 
+ 889              		.loc 1 127 1 view .LVU311
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 23
+
+
+ 890 00f2 10BD     		pop	{r4, pc}
+ 891              	.LVL61:
+ 892              	.L37:
+ 124:Core/Src/PS2.c **** 	}
+ 893              		.loc 1 124 15 view .LVU312
+ 894 00f4 0520     		movs	r0, #5
+ 895              	.LVL62:
+ 127:Core/Src/PS2.c **** 
+ 896              		.loc 1 127 1 view .LVU313
+ 897 00f6 10BD     		pop	{r4, pc}
+ 898              	.LVL63:
+ 899              	.L38:
+ 124:Core/Src/PS2.c **** 	}
+ 900              		.loc 1 124 15 view .LVU314
+ 901 00f8 0620     		movs	r0, #6
+ 902              	.LVL64:
+ 127:Core/Src/PS2.c **** 
+ 903              		.loc 1 127 1 view .LVU315
+ 904 00fa 10BD     		pop	{r4, pc}
+ 905              	.LVL65:
+ 906              	.L39:
+ 124:Core/Src/PS2.c **** 	}
+ 907              		.loc 1 124 15 view .LVU316
+ 908 00fc 0720     		movs	r0, #7
+ 909              	.LVL66:
+ 127:Core/Src/PS2.c **** 
+ 910              		.loc 1 127 1 view .LVU317
+ 911 00fe 10BD     		pop	{r4, pc}
+ 912              	.LVL67:
+ 913              	.L40:
+ 124:Core/Src/PS2.c **** 	}
+ 914              		.loc 1 124 15 view .LVU318
+ 915 0100 0820     		movs	r0, #8
+ 916              	.LVL68:
+ 127:Core/Src/PS2.c **** 
+ 917              		.loc 1 127 1 view .LVU319
+ 918 0102 10BD     		pop	{r4, pc}
+ 919              	.LVL69:
+ 920              	.L41:
+ 124:Core/Src/PS2.c **** 	}
+ 921              		.loc 1 124 15 view .LVU320
+ 922 0104 0920     		movs	r0, #9
+ 923              	.LVL70:
+ 127:Core/Src/PS2.c **** 
+ 924              		.loc 1 127 1 view .LVU321
+ 925 0106 10BD     		pop	{r4, pc}
+ 926              	.LVL71:
+ 927              	.L42:
+ 124:Core/Src/PS2.c **** 	}
+ 928              		.loc 1 124 15 view .LVU322
+ 929 0108 0A20     		movs	r0, #10
+ 930              	.LVL72:
+ 127:Core/Src/PS2.c **** 
+ 931              		.loc 1 127 1 view .LVU323
+ 932 010a 10BD     		pop	{r4, pc}
+ 933              	.LVL73:
+ 934              	.L43:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 24
+
+
+ 124:Core/Src/PS2.c **** 	}
+ 935              		.loc 1 124 15 view .LVU324
+ 936 010c 0B20     		movs	r0, #11
+ 937              	.LVL74:
+ 127:Core/Src/PS2.c **** 
+ 938              		.loc 1 127 1 view .LVU325
+ 939 010e 10BD     		pop	{r4, pc}
+ 940              	.LVL75:
+ 941              	.L44:
+ 124:Core/Src/PS2.c **** 	}
+ 942              		.loc 1 124 15 view .LVU326
+ 943 0110 0C20     		movs	r0, #12
+ 944              	.LVL76:
+ 127:Core/Src/PS2.c **** 
+ 945              		.loc 1 127 1 view .LVU327
+ 946 0112 10BD     		pop	{r4, pc}
+ 947              	.LVL77:
+ 948              	.L46:
+ 124:Core/Src/PS2.c **** 	}
+ 949              		.loc 1 124 15 view .LVU328
+ 950 0114 0E20     		movs	r0, #14
+ 951              	.LVL78:
+ 127:Core/Src/PS2.c **** 
+ 952              		.loc 1 127 1 view .LVU329
+ 953 0116 10BD     		pop	{r4, pc}
+ 954              	.LVL79:
+ 955              	.L47:
+ 124:Core/Src/PS2.c **** 	}
+ 956              		.loc 1 124 15 view .LVU330
+ 957 0118 0F20     		movs	r0, #15
+ 958              	.LVL80:
+ 127:Core/Src/PS2.c **** 
+ 959              		.loc 1 127 1 view .LVU331
+ 960 011a 10BD     		pop	{r4, pc}
+ 961              	.L51:
+ 962              		.align	2
+ 963              	.L50:
+ 964 011c 00000000 		.word	Data
+ 965 0120 00000000 		.word	MASK
+ 966 0124 00000000 		.word	Handkey
+ 967              		.cfi_endproc
+ 968              	.LFE137:
+ 970              		.section	.text.PS2_AnologData,"ax",%progbits
+ 971              		.align	1
+ 972              		.p2align 2,,3
+ 973              		.global	PS2_AnologData
+ 974              		.syntax unified
+ 975              		.thumb
+ 976              		.thumb_func
+ 978              	PS2_AnologData:
+ 979              	.LVL81:
+ 980              	.LFB138:
+ 131:Core/Src/PS2.c **** 	return Data[button];
+ 981              		.loc 1 131 1 is_stmt 1 view -0
+ 982              		.cfi_startproc
+ 983              		@ args = 0, pretend = 0, frame = 0
+ 984              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 25
+
+
+ 985              		@ link register save eliminated.
+ 132:Core/Src/PS2.c **** }
+ 986              		.loc 1 132 2 view .LVU333
+ 132:Core/Src/PS2.c **** }
+ 987              		.loc 1 132 13 is_stmt 0 view .LVU334
+ 988 0000 014B     		ldr	r3, .L53
+ 133:Core/Src/PS2.c **** 
+ 989              		.loc 1 133 1 view .LVU335
+ 990 0002 185C     		ldrb	r0, [r3, r0]	@ zero_extendqisi2
+ 991              	.LVL82:
+ 133:Core/Src/PS2.c **** 
+ 992              		.loc 1 133 1 view .LVU336
+ 993 0004 7047     		bx	lr
+ 994              	.L54:
+ 995 0006 00BF     		.align	2
+ 996              	.L53:
+ 997 0008 00000000 		.word	Data
+ 998              		.cfi_endproc
+ 999              	.LFE138:
+ 1001              		.section	.text.PS2_ClearData,"ax",%progbits
+ 1002              		.align	1
+ 1003              		.p2align 2,,3
+ 1004              		.global	PS2_ClearData
+ 1005              		.syntax unified
+ 1006              		.thumb
+ 1007              		.thumb_func
+ 1009              	PS2_ClearData:
+ 1010              	.LFB139:
+ 137:Core/Src/PS2.c **** 	u8 a;
+ 1011              		.loc 1 137 1 is_stmt 1 view -0
+ 1012              		.cfi_startproc
+ 1013              		@ args = 0, pretend = 0, frame = 0
+ 1014              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1015              		@ link register save eliminated.
+ 138:Core/Src/PS2.c **** 	for(a=0;a<9;a++)
+ 1016              		.loc 1 138 2 view .LVU338
+ 139:Core/Src/PS2.c **** 		Data[a]=0x00;
+ 1017              		.loc 1 139 2 view .LVU339
+ 1018              	.LVL83:
+ 139:Core/Src/PS2.c **** 		Data[a]=0x00;
+ 1019              		.loc 1 139 11 view .LVU340
+ 1020              		.loc 1 140 10 is_stmt 0 view .LVU341
+ 1021 0000 024B     		ldr	r3, .L56
+ 1022 0002 0022     		movs	r2, #0
+ 1023 0004 C3E90022 		strd	r2, r2, [r3]
+ 1024 0008 1A72     		strb	r2, [r3, #8]
+ 1025              	.LVL84:
+ 141:Core/Src/PS2.c **** }
+ 1026              		.loc 1 141 1 view .LVU342
+ 1027 000a 7047     		bx	lr
+ 1028              	.L57:
+ 1029              		.align	2
+ 1030              	.L56:
+ 1031 000c 00000000 		.word	Data
+ 1032              		.cfi_endproc
+ 1033              	.LFE139:
+ 1035              		.section	.text.PS2_Vibration,"ax",%progbits
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 26
+
+
+ 1036              		.align	1
+ 1037              		.p2align 2,,3
+ 1038              		.global	PS2_Vibration
+ 1039              		.syntax unified
+ 1040              		.thumb
+ 1041              		.thumb_func
+ 1043              	PS2_Vibration:
+ 1044              	.LVL85:
+ 1045              	.LFB140:
+ 142:Core/Src/PS2.c **** /******************************************************
+ 143:Core/Src/PS2.c **** Function:    void PS2_Vibration(u8 motor1, u8 motor2)
+ 144:Core/Src/PS2.c **** Description: 手柄震动函数，
+ 145:Core/Src/PS2.c **** Calls:		 void PS2_Cmd(u8 CMD);
+ 146:Core/Src/PS2.c **** Input: motor1:右侧小震动电机 0x00关，其他开
+ 147:Core/Src/PS2.c **** 	   motor2:左侧大震动电机 0x40~0xFF 电机开，值越大 震动越大
+ 148:Core/Src/PS2.c **** ******************************************************/
+ 149:Core/Src/PS2.c **** void PS2_Vibration(u8 motor1, u8 motor2)
+ 150:Core/Src/PS2.c **** {
+ 1046              		.loc 1 150 1 is_stmt 1 view -0
+ 1047              		.cfi_startproc
+ 1048              		@ args = 0, pretend = 0, frame = 0
+ 1049              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151:Core/Src/PS2.c **** 	CS_L;
+ 1050              		.loc 1 151 2 view .LVU344
+ 150:Core/Src/PS2.c **** 	CS_L;
+ 1051              		.loc 1 150 1 is_stmt 0 view .LVU345
+ 1052 0000 70B5     		push	{r4, r5, r6, lr}
+ 1053              	.LCFI14:
+ 1054              		.cfi_def_cfa_offset 16
+ 1055              		.cfi_offset 4, -16
+ 1056              		.cfi_offset 5, -12
+ 1057              		.cfi_offset 6, -8
+ 1058              		.cfi_offset 14, -4
+ 1059              		.loc 1 151 2 view .LVU346
+ 1060 0002 174E     		ldr	r6, .L60
+ 1061 0004 0022     		movs	r2, #0
+ 150:Core/Src/PS2.c **** 	CS_L;
+ 1062              		.loc 1 150 1 view .LVU347
+ 1063 0006 0C46     		mov	r4, r1
+ 1064 0008 0546     		mov	r5, r0
+ 1065              		.loc 1 151 2 view .LVU348
+ 1066 000a 4021     		movs	r1, #64
+ 1067              	.LVL86:
+ 1068              		.loc 1 151 2 view .LVU349
+ 1069 000c 3046     		mov	r0, r6
+ 1070              	.LVL87:
+ 1071              		.loc 1 151 2 view .LVU350
+ 1072 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1073              	.LVL88:
+ 1074              		.loc 1 151 6 is_stmt 1 view .LVU351
+ 152:Core/Src/PS2.c **** 	delay_us(16);
+ 1075              		.loc 1 152 2 view .LVU352
+ 1076              	.LBB60:
+ 1077              	.LBI60:
+  18:Core/Src/PS2.c **** {
+ 1078              		.loc 1 18 6 view .LVU353
+ 1079              	.LBB61:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 27
+
+
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1080              		.loc 1 20 5 view .LVU354
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1081              		.loc 1 20 23 is_stmt 0 view .LVU355
+ 1082 0012 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1083              	.LVL89:
+  21:Core/Src/PS2.c **** 	{
+ 1084              		.loc 1 21 5 is_stmt 1 view .LVU356
+  23:Core/Src/PS2.c **** 	}
+ 1085              		.loc 1 23 3 view .LVU357
+  21:Core/Src/PS2.c **** 	{
+ 1086              		.loc 1 21 12 view .LVU358
+  21:Core/Src/PS2.c **** 	{
+ 1087              		.loc 1 21 12 is_stmt 0 view .LVU359
+ 1088              	.LBE61:
+ 1089              	.LBE60:
+ 153:Core/Src/PS2.c ****   PS2_Cmd(0x01);  //开始命令
+ 1090              		.loc 1 153 3 is_stmt 1 view .LVU360
+ 1091 0016 0120     		movs	r0, #1
+ 1092 0018 FFF7FEFF 		bl	PS2_Cmd
+ 1093              	.LVL90:
+ 154:Core/Src/PS2.c **** 	PS2_Cmd(0x42);  //请求数据
+ 1094              		.loc 1 154 2 view .LVU361
+ 1095 001c 4220     		movs	r0, #66
+ 1096 001e FFF7FEFF 		bl	PS2_Cmd
+ 1097              	.LVL91:
+ 155:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1098              		.loc 1 155 2 view .LVU362
+ 1099 0022 0020     		movs	r0, #0
+ 1100 0024 FFF7FEFF 		bl	PS2_Cmd
+ 1101              	.LVL92:
+ 156:Core/Src/PS2.c **** 	PS2_Cmd(motor1);
+ 1102              		.loc 1 156 2 view .LVU363
+ 1103 0028 2846     		mov	r0, r5
+ 1104 002a FFF7FEFF 		bl	PS2_Cmd
+ 1105              	.LVL93:
+ 157:Core/Src/PS2.c **** 	PS2_Cmd(motor2);
+ 1106              		.loc 1 157 2 view .LVU364
+ 1107 002e 2046     		mov	r0, r4
+ 1108 0030 FFF7FEFF 		bl	PS2_Cmd
+ 1109              	.LVL94:
+ 158:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1110              		.loc 1 158 2 view .LVU365
+ 1111 0034 0020     		movs	r0, #0
+ 1112 0036 FFF7FEFF 		bl	PS2_Cmd
+ 1113              	.LVL95:
+ 159:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1114              		.loc 1 159 2 view .LVU366
+ 1115 003a 0020     		movs	r0, #0
+ 1116 003c FFF7FEFF 		bl	PS2_Cmd
+ 1117              	.LVL96:
+ 160:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1118              		.loc 1 160 2 view .LVU367
+ 1119 0040 0020     		movs	r0, #0
+ 1120 0042 FFF7FEFF 		bl	PS2_Cmd
+ 1121              	.LVL97:
+ 161:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 28
+
+
+ 1122              		.loc 1 161 2 view .LVU368
+ 1123 0046 0020     		movs	r0, #0
+ 1124 0048 FFF7FEFF 		bl	PS2_Cmd
+ 1125              	.LVL98:
+ 162:Core/Src/PS2.c **** 	CS_H;
+ 1126              		.loc 1 162 2 view .LVU369
+ 1127 004c 3046     		mov	r0, r6
+ 1128 004e 0122     		movs	r2, #1
+ 1129 0050 4021     		movs	r1, #64
+ 1130 0052 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1131              	.LVL99:
+ 1132              		.loc 1 162 6 view .LVU370
+ 163:Core/Src/PS2.c **** 	delay_us(16);  
+ 1133              		.loc 1 163 2 view .LVU371
+ 1134              	.LBB62:
+ 1135              	.LBI62:
+  18:Core/Src/PS2.c **** {
+ 1136              		.loc 1 18 6 view .LVU372
+ 1137              	.LBB63:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1138              		.loc 1 20 5 view .LVU373
+ 1139              	.LBE63:
+ 1140              	.LBE62:
+ 164:Core/Src/PS2.c **** }
+ 1141              		.loc 1 164 1 is_stmt 0 view .LVU374
+ 1142 0056 BDE87040 		pop	{r4, r5, r6, lr}
+ 1143              	.LCFI15:
+ 1144              		.cfi_restore 14
+ 1145              		.cfi_restore 6
+ 1146              		.cfi_restore 5
+ 1147              		.cfi_restore 4
+ 1148              		.cfi_def_cfa_offset 0
+ 1149              	.LBB65:
+ 1150              	.LBB64:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1151              		.loc 1 20 23 view .LVU375
+ 1152 005a FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1153              	.LVL100:
+ 1154              	.L61:
+ 1155 005e 00BF     		.align	2
+ 1156              	.L60:
+ 1157 0060 00000240 		.word	1073872896
+ 1158              	.LBE64:
+ 1159              	.LBE65:
+ 1160              		.cfi_endproc
+ 1161              	.LFE140:
+ 1163              		.section	.text.PS2_ShortPoll,"ax",%progbits
+ 1164              		.align	1
+ 1165              		.p2align 2,,3
+ 1166              		.global	PS2_ShortPoll
+ 1167              		.syntax unified
+ 1168              		.thumb
+ 1169              		.thumb_func
+ 1171              	PS2_ShortPoll:
+ 1172              	.LFB141:
+ 165:Core/Src/PS2.c **** //short poll
+ 166:Core/Src/PS2.c **** void PS2_ShortPoll(void)
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 29
+
+
+ 167:Core/Src/PS2.c **** {
+ 1173              		.loc 1 167 1 is_stmt 1 view -0
+ 1174              		.cfi_startproc
+ 1175              		@ args = 0, pretend = 0, frame = 0
+ 1176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 168:Core/Src/PS2.c **** 	CS_L;
+ 1177              		.loc 1 168 2 view .LVU377
+ 167:Core/Src/PS2.c **** 	CS_L;
+ 1178              		.loc 1 167 1 is_stmt 0 view .LVU378
+ 1179 0000 10B5     		push	{r4, lr}
+ 1180              	.LCFI16:
+ 1181              		.cfi_def_cfa_offset 8
+ 1182              		.cfi_offset 4, -8
+ 1183              		.cfi_offset 14, -4
+ 1184              		.loc 1 168 2 view .LVU379
+ 1185 0002 104C     		ldr	r4, .L64
+ 1186 0004 0022     		movs	r2, #0
+ 1187 0006 4021     		movs	r1, #64
+ 1188 0008 2046     		mov	r0, r4
+ 1189 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1190              	.LVL101:
+ 1191              		.loc 1 168 6 is_stmt 1 view .LVU380
+ 169:Core/Src/PS2.c **** 	delay_us(16);
+ 1192              		.loc 1 169 2 view .LVU381
+ 1193              	.LBB70:
+ 1194              	.LBI70:
+  18:Core/Src/PS2.c **** {
+ 1195              		.loc 1 18 6 view .LVU382
+ 1196              	.LBB71:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1197              		.loc 1 20 5 view .LVU383
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1198              		.loc 1 20 23 is_stmt 0 view .LVU384
+ 1199 000e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1200              	.LVL102:
+  21:Core/Src/PS2.c **** 	{
+ 1201              		.loc 1 21 5 is_stmt 1 view .LVU385
+  23:Core/Src/PS2.c **** 	}
+ 1202              		.loc 1 23 3 view .LVU386
+  21:Core/Src/PS2.c **** 	{
+ 1203              		.loc 1 21 12 view .LVU387
+  21:Core/Src/PS2.c **** 	{
+ 1204              		.loc 1 21 12 is_stmt 0 view .LVU388
+ 1205              	.LBE71:
+ 1206              	.LBE70:
+ 170:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1207              		.loc 1 170 2 is_stmt 1 view .LVU389
+ 1208 0012 0120     		movs	r0, #1
+ 1209 0014 FFF7FEFF 		bl	PS2_Cmd
+ 1210              	.LVL103:
+ 171:Core/Src/PS2.c **** 	PS2_Cmd(0x42);  
+ 1211              		.loc 1 171 2 view .LVU390
+ 1212 0018 4220     		movs	r0, #66
+ 1213 001a FFF7FEFF 		bl	PS2_Cmd
+ 1214              	.LVL104:
+ 172:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1215              		.loc 1 172 2 view .LVU391
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 30
+
+
+ 1216 001e 0020     		movs	r0, #0
+ 1217 0020 FFF7FEFF 		bl	PS2_Cmd
+ 1218              	.LVL105:
+ 173:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1219              		.loc 1 173 2 view .LVU392
+ 1220 0024 0020     		movs	r0, #0
+ 1221 0026 FFF7FEFF 		bl	PS2_Cmd
+ 1222              	.LVL106:
+ 174:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1223              		.loc 1 174 2 view .LVU393
+ 1224 002a 0020     		movs	r0, #0
+ 1225 002c FFF7FEFF 		bl	PS2_Cmd
+ 1226              	.LVL107:
+ 175:Core/Src/PS2.c **** 	CS_H;
+ 1227              		.loc 1 175 2 view .LVU394
+ 1228 0030 2046     		mov	r0, r4
+ 1229 0032 0122     		movs	r2, #1
+ 1230 0034 4021     		movs	r1, #64
+ 1231 0036 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1232              	.LVL108:
+ 1233              		.loc 1 175 6 view .LVU395
+ 176:Core/Src/PS2.c **** 	delay_us(16);	
+ 1234              		.loc 1 176 2 view .LVU396
+ 1235              	.LBB72:
+ 1236              	.LBI72:
+  18:Core/Src/PS2.c **** {
+ 1237              		.loc 1 18 6 view .LVU397
+ 1238              	.LBB73:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1239              		.loc 1 20 5 view .LVU398
+ 1240              	.LBE73:
+ 1241              	.LBE72:
+ 177:Core/Src/PS2.c **** }
+ 1242              		.loc 1 177 1 is_stmt 0 view .LVU399
+ 1243 003a BDE81040 		pop	{r4, lr}
+ 1244              	.LCFI17:
+ 1245              		.cfi_restore 14
+ 1246              		.cfi_restore 4
+ 1247              		.cfi_def_cfa_offset 0
+ 1248              	.LBB75:
+ 1249              	.LBB74:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1250              		.loc 1 20 23 view .LVU400
+ 1251 003e FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1252              	.LVL109:
+ 1253              	.L65:
+ 1254 0042 00BF     		.align	2
+ 1255              	.L64:
+ 1256 0044 00000240 		.word	1073872896
+ 1257              	.LBE74:
+ 1258              	.LBE75:
+ 1259              		.cfi_endproc
+ 1260              	.LFE141:
+ 1262              		.section	.text.PS2_EnterConfing,"ax",%progbits
+ 1263              		.align	1
+ 1264              		.p2align 2,,3
+ 1265              		.global	PS2_EnterConfing
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 31
+
+
+ 1266              		.syntax unified
+ 1267              		.thumb
+ 1268              		.thumb_func
+ 1270              	PS2_EnterConfing:
+ 1271              	.LFB142:
+ 178:Core/Src/PS2.c **** //进入配置
+ 179:Core/Src/PS2.c **** void PS2_EnterConfing(void)
+ 180:Core/Src/PS2.c **** {
+ 1272              		.loc 1 180 1 is_stmt 1 view -0
+ 1273              		.cfi_startproc
+ 1274              		@ args = 0, pretend = 0, frame = 0
+ 1275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 181:Core/Src/PS2.c ****     CS_L;
+ 1276              		.loc 1 181 5 view .LVU402
+ 180:Core/Src/PS2.c ****     CS_L;
+ 1277              		.loc 1 180 1 is_stmt 0 view .LVU403
+ 1278 0000 10B5     		push	{r4, lr}
+ 1279              	.LCFI18:
+ 1280              		.cfi_def_cfa_offset 8
+ 1281              		.cfi_offset 4, -8
+ 1282              		.cfi_offset 14, -4
+ 1283              		.loc 1 181 5 view .LVU404
+ 1284 0002 164C     		ldr	r4, .L68
+ 1285 0004 0022     		movs	r2, #0
+ 1286 0006 4021     		movs	r1, #64
+ 1287 0008 2046     		mov	r0, r4
+ 1288 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1289              	.LVL110:
+ 1290              		.loc 1 181 9 is_stmt 1 view .LVU405
+ 182:Core/Src/PS2.c **** 	delay_us(16);
+ 1291              		.loc 1 182 2 view .LVU406
+ 1292              	.LBB80:
+ 1293              	.LBI80:
+  18:Core/Src/PS2.c **** {
+ 1294              		.loc 1 18 6 view .LVU407
+ 1295              	.LBB81:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1296              		.loc 1 20 5 view .LVU408
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1297              		.loc 1 20 23 is_stmt 0 view .LVU409
+ 1298 000e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1299              	.LVL111:
+  21:Core/Src/PS2.c **** 	{
+ 1300              		.loc 1 21 5 is_stmt 1 view .LVU410
+  23:Core/Src/PS2.c **** 	}
+ 1301              		.loc 1 23 3 view .LVU411
+  21:Core/Src/PS2.c **** 	{
+ 1302              		.loc 1 21 12 view .LVU412
+  21:Core/Src/PS2.c **** 	{
+ 1303              		.loc 1 21 12 is_stmt 0 view .LVU413
+ 1304              	.LBE81:
+ 1305              	.LBE80:
+ 183:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1306              		.loc 1 183 2 is_stmt 1 view .LVU414
+ 1307 0012 0120     		movs	r0, #1
+ 1308 0014 FFF7FEFF 		bl	PS2_Cmd
+ 1309              	.LVL112:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 32
+
+
+ 184:Core/Src/PS2.c **** 	PS2_Cmd(0x43);  
+ 1310              		.loc 1 184 2 view .LVU415
+ 1311 0018 4320     		movs	r0, #67
+ 1312 001a FFF7FEFF 		bl	PS2_Cmd
+ 1313              	.LVL113:
+ 185:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1314              		.loc 1 185 2 view .LVU416
+ 1315 001e 0020     		movs	r0, #0
+ 1316 0020 FFF7FEFF 		bl	PS2_Cmd
+ 1317              	.LVL114:
+ 186:Core/Src/PS2.c **** 	PS2_Cmd(0x01);
+ 1318              		.loc 1 186 2 view .LVU417
+ 1319 0024 0120     		movs	r0, #1
+ 1320 0026 FFF7FEFF 		bl	PS2_Cmd
+ 1321              	.LVL115:
+ 187:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1322              		.loc 1 187 2 view .LVU418
+ 1323 002a 0020     		movs	r0, #0
+ 1324 002c FFF7FEFF 		bl	PS2_Cmd
+ 1325              	.LVL116:
+ 188:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1326              		.loc 1 188 2 view .LVU419
+ 1327 0030 0020     		movs	r0, #0
+ 1328 0032 FFF7FEFF 		bl	PS2_Cmd
+ 1329              	.LVL117:
+ 189:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1330              		.loc 1 189 2 view .LVU420
+ 1331 0036 0020     		movs	r0, #0
+ 1332 0038 FFF7FEFF 		bl	PS2_Cmd
+ 1333              	.LVL118:
+ 190:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1334              		.loc 1 190 2 view .LVU421
+ 1335 003c 0020     		movs	r0, #0
+ 1336 003e FFF7FEFF 		bl	PS2_Cmd
+ 1337              	.LVL119:
+ 191:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1338              		.loc 1 191 2 view .LVU422
+ 1339 0042 0020     		movs	r0, #0
+ 1340 0044 FFF7FEFF 		bl	PS2_Cmd
+ 1341              	.LVL120:
+ 192:Core/Src/PS2.c **** 	CS_H;
+ 1342              		.loc 1 192 2 view .LVU423
+ 1343 0048 2046     		mov	r0, r4
+ 1344 004a 0122     		movs	r2, #1
+ 1345 004c 4021     		movs	r1, #64
+ 1346 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1347              	.LVL121:
+ 1348              		.loc 1 192 6 view .LVU424
+ 193:Core/Src/PS2.c **** 	delay_us(16);
+ 1349              		.loc 1 193 2 view .LVU425
+ 1350              	.LBB82:
+ 1351              	.LBI82:
+  18:Core/Src/PS2.c **** {
+ 1352              		.loc 1 18 6 view .LVU426
+ 1353              	.LBB83:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1354              		.loc 1 20 5 view .LVU427
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 33
+
+
+ 1355              	.LBE83:
+ 1356              	.LBE82:
+ 194:Core/Src/PS2.c **** }
+ 1357              		.loc 1 194 1 is_stmt 0 view .LVU428
+ 1358 0052 BDE81040 		pop	{r4, lr}
+ 1359              	.LCFI19:
+ 1360              		.cfi_restore 14
+ 1361              		.cfi_restore 4
+ 1362              		.cfi_def_cfa_offset 0
+ 1363              	.LBB85:
+ 1364              	.LBB84:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1365              		.loc 1 20 23 view .LVU429
+ 1366 0056 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1367              	.LVL122:
+ 1368              	.L69:
+ 1369 005a 00BF     		.align	2
+ 1370              	.L68:
+ 1371 005c 00000240 		.word	1073872896
+ 1372              	.LBE84:
+ 1373              	.LBE85:
+ 1374              		.cfi_endproc
+ 1375              	.LFE142:
+ 1377              		.section	.text.PS2_TurnOnAnalogMode,"ax",%progbits
+ 1378              		.align	1
+ 1379              		.p2align 2,,3
+ 1380              		.global	PS2_TurnOnAnalogMode
+ 1381              		.syntax unified
+ 1382              		.thumb
+ 1383              		.thumb_func
+ 1385              	PS2_TurnOnAnalogMode:
+ 1386              	.LFB143:
+ 195:Core/Src/PS2.c **** //发送模式设置
+ 196:Core/Src/PS2.c **** void PS2_TurnOnAnalogMode(void)
+ 197:Core/Src/PS2.c **** {
+ 1387              		.loc 1 197 1 is_stmt 1 view -0
+ 1388              		.cfi_startproc
+ 1389              		@ args = 0, pretend = 0, frame = 0
+ 1390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198:Core/Src/PS2.c **** 	CS_L;
+ 1391              		.loc 1 198 2 view .LVU431
+ 197:Core/Src/PS2.c **** 	CS_L;
+ 1392              		.loc 1 197 1 is_stmt 0 view .LVU432
+ 1393 0000 10B5     		push	{r4, lr}
+ 1394              	.LCFI20:
+ 1395              		.cfi_def_cfa_offset 8
+ 1396              		.cfi_offset 4, -8
+ 1397              		.cfi_offset 14, -4
+ 1398              		.loc 1 198 2 view .LVU433
+ 1399 0002 154C     		ldr	r4, .L72
+ 1400 0004 0022     		movs	r2, #0
+ 1401 0006 4021     		movs	r1, #64
+ 1402 0008 2046     		mov	r0, r4
+ 1403 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1404              	.LVL123:
+ 1405              		.loc 1 198 6 is_stmt 1 view .LVU434
+ 199:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 34
+
+
+ 1406              		.loc 1 199 2 view .LVU435
+ 1407 000e 0120     		movs	r0, #1
+ 1408 0010 FFF7FEFF 		bl	PS2_Cmd
+ 1409              	.LVL124:
+ 200:Core/Src/PS2.c **** 	PS2_Cmd(0x44);  
+ 1410              		.loc 1 200 2 view .LVU436
+ 1411 0014 4420     		movs	r0, #68
+ 1412 0016 FFF7FEFF 		bl	PS2_Cmd
+ 1413              	.LVL125:
+ 201:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1414              		.loc 1 201 2 view .LVU437
+ 1415 001a 0020     		movs	r0, #0
+ 1416 001c FFF7FEFF 		bl	PS2_Cmd
+ 1417              	.LVL126:
+ 202:Core/Src/PS2.c **** 	PS2_Cmd(0x01); //analog=0x01;digital=0x00  软件设置发送模式
+ 1418              		.loc 1 202 2 view .LVU438
+ 1419 0020 0120     		movs	r0, #1
+ 1420 0022 FFF7FEFF 		bl	PS2_Cmd
+ 1421              	.LVL127:
+ 203:Core/Src/PS2.c **** 	PS2_Cmd(0xEE); //Ox03锁存设置，即不可通过按键“MODE”设置模式。
+ 1422              		.loc 1 203 2 view .LVU439
+ 1423 0026 EE20     		movs	r0, #238
+ 1424 0028 FFF7FEFF 		bl	PS2_Cmd
+ 1425              	.LVL128:
+ 204:Core/Src/PS2.c **** 				         //0xEE不锁存软件设置，可通过按键“MODE”设置模式。
+ 205:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1426              		.loc 1 205 2 view .LVU440
+ 1427 002c 0020     		movs	r0, #0
+ 1428 002e FFF7FEFF 		bl	PS2_Cmd
+ 1429              	.LVL129:
+ 206:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1430              		.loc 1 206 2 view .LVU441
+ 1431 0032 0020     		movs	r0, #0
+ 1432 0034 FFF7FEFF 		bl	PS2_Cmd
+ 1433              	.LVL130:
+ 207:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1434              		.loc 1 207 2 view .LVU442
+ 1435 0038 0020     		movs	r0, #0
+ 1436 003a FFF7FEFF 		bl	PS2_Cmd
+ 1437              	.LVL131:
+ 208:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1438              		.loc 1 208 2 view .LVU443
+ 1439 003e 0020     		movs	r0, #0
+ 1440 0040 FFF7FEFF 		bl	PS2_Cmd
+ 1441              	.LVL132:
+ 209:Core/Src/PS2.c **** 	CS_H;
+ 1442              		.loc 1 209 2 view .LVU444
+ 1443 0044 2046     		mov	r0, r4
+ 1444 0046 0122     		movs	r2, #1
+ 1445 0048 4021     		movs	r1, #64
+ 1446 004a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1447              	.LVL133:
+ 1448              		.loc 1 209 6 view .LVU445
+ 210:Core/Src/PS2.c **** 	delay_us(16);
+ 1449              		.loc 1 210 2 view .LVU446
+ 1450              	.LBB88:
+ 1451              	.LBI88:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 35
+
+
+  18:Core/Src/PS2.c **** {
+ 1452              		.loc 1 18 6 view .LVU447
+ 1453              	.LBB89:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1454              		.loc 1 20 5 view .LVU448
+ 1455              	.LBE89:
+ 1456              	.LBE88:
+ 211:Core/Src/PS2.c **** }
+ 1457              		.loc 1 211 1 is_stmt 0 view .LVU449
+ 1458 004e BDE81040 		pop	{r4, lr}
+ 1459              	.LCFI21:
+ 1460              		.cfi_restore 14
+ 1461              		.cfi_restore 4
+ 1462              		.cfi_def_cfa_offset 0
+ 1463              	.LBB91:
+ 1464              	.LBB90:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1465              		.loc 1 20 23 view .LVU450
+ 1466 0052 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1467              	.LVL134:
+ 1468              	.L73:
+ 1469 0056 00BF     		.align	2
+ 1470              	.L72:
+ 1471 0058 00000240 		.word	1073872896
+ 1472              	.LBE90:
+ 1473              	.LBE91:
+ 1474              		.cfi_endproc
+ 1475              	.LFE143:
+ 1477              		.section	.text.PS2_VibrationMode,"ax",%progbits
+ 1478              		.align	1
+ 1479              		.p2align 2,,3
+ 1480              		.global	PS2_VibrationMode
+ 1481              		.syntax unified
+ 1482              		.thumb
+ 1483              		.thumb_func
+ 1485              	PS2_VibrationMode:
+ 1486              	.LFB144:
+ 212:Core/Src/PS2.c **** //振动设置
+ 213:Core/Src/PS2.c **** void PS2_VibrationMode(void)
+ 214:Core/Src/PS2.c **** {
+ 1487              		.loc 1 214 1 is_stmt 1 view -0
+ 1488              		.cfi_startproc
+ 1489              		@ args = 0, pretend = 0, frame = 0
+ 1490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215:Core/Src/PS2.c **** 	CS_L;
+ 1491              		.loc 1 215 2 view .LVU452
+ 214:Core/Src/PS2.c **** 	CS_L;
+ 1492              		.loc 1 214 1 is_stmt 0 view .LVU453
+ 1493 0000 10B5     		push	{r4, lr}
+ 1494              	.LCFI22:
+ 1495              		.cfi_def_cfa_offset 8
+ 1496              		.cfi_offset 4, -8
+ 1497              		.cfi_offset 14, -4
+ 1498              		.loc 1 215 2 view .LVU454
+ 1499 0002 104C     		ldr	r4, .L76
+ 1500 0004 0022     		movs	r2, #0
+ 1501 0006 4021     		movs	r1, #64
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 36
+
+
+ 1502 0008 2046     		mov	r0, r4
+ 1503 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1504              	.LVL135:
+ 1505              		.loc 1 215 6 is_stmt 1 view .LVU455
+ 216:Core/Src/PS2.c **** 	delay_us(16);
+ 1506              		.loc 1 216 2 view .LVU456
+ 1507              	.LBB96:
+ 1508              	.LBI96:
+  18:Core/Src/PS2.c **** {
+ 1509              		.loc 1 18 6 view .LVU457
+ 1510              	.LBB97:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1511              		.loc 1 20 5 view .LVU458
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1512              		.loc 1 20 23 is_stmt 0 view .LVU459
+ 1513 000e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1514              	.LVL136:
+  21:Core/Src/PS2.c **** 	{
+ 1515              		.loc 1 21 5 is_stmt 1 view .LVU460
+  23:Core/Src/PS2.c **** 	}
+ 1516              		.loc 1 23 3 view .LVU461
+  21:Core/Src/PS2.c **** 	{
+ 1517              		.loc 1 21 12 view .LVU462
+  21:Core/Src/PS2.c **** 	{
+ 1518              		.loc 1 21 12 is_stmt 0 view .LVU463
+ 1519              	.LBE97:
+ 1520              	.LBE96:
+ 217:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1521              		.loc 1 217 2 is_stmt 1 view .LVU464
+ 1522 0012 0120     		movs	r0, #1
+ 1523 0014 FFF7FEFF 		bl	PS2_Cmd
+ 1524              	.LVL137:
+ 218:Core/Src/PS2.c **** 	PS2_Cmd(0x4D);  
+ 1525              		.loc 1 218 2 view .LVU465
+ 1526 0018 4D20     		movs	r0, #77
+ 1527 001a FFF7FEFF 		bl	PS2_Cmd
+ 1528              	.LVL138:
+ 219:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1529              		.loc 1 219 2 view .LVU466
+ 1530 001e 0020     		movs	r0, #0
+ 1531 0020 FFF7FEFF 		bl	PS2_Cmd
+ 1532              	.LVL139:
+ 220:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1533              		.loc 1 220 2 view .LVU467
+ 1534 0024 0020     		movs	r0, #0
+ 1535 0026 FFF7FEFF 		bl	PS2_Cmd
+ 1536              	.LVL140:
+ 221:Core/Src/PS2.c **** 	PS2_Cmd(0X01);
+ 1537              		.loc 1 221 2 view .LVU468
+ 1538 002a 0120     		movs	r0, #1
+ 1539 002c FFF7FEFF 		bl	PS2_Cmd
+ 1540              	.LVL141:
+ 222:Core/Src/PS2.c **** 	CS_H;
+ 1541              		.loc 1 222 2 view .LVU469
+ 1542 0030 2046     		mov	r0, r4
+ 1543 0032 0122     		movs	r2, #1
+ 1544 0034 4021     		movs	r1, #64
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 37
+
+
+ 1545 0036 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1546              	.LVL142:
+ 1547              		.loc 1 222 6 view .LVU470
+ 223:Core/Src/PS2.c **** 	delay_us(16);	
+ 1548              		.loc 1 223 2 view .LVU471
+ 1549              	.LBB98:
+ 1550              	.LBI98:
+  18:Core/Src/PS2.c **** {
+ 1551              		.loc 1 18 6 view .LVU472
+ 1552              	.LBB99:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1553              		.loc 1 20 5 view .LVU473
+ 1554              	.LBE99:
+ 1555              	.LBE98:
+ 224:Core/Src/PS2.c **** }
+ 1556              		.loc 1 224 1 is_stmt 0 view .LVU474
+ 1557 003a BDE81040 		pop	{r4, lr}
+ 1558              	.LCFI23:
+ 1559              		.cfi_restore 14
+ 1560              		.cfi_restore 4
+ 1561              		.cfi_def_cfa_offset 0
+ 1562              	.LBB101:
+ 1563              	.LBB100:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1564              		.loc 1 20 23 view .LVU475
+ 1565 003e FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1566              	.LVL143:
+ 1567              	.L77:
+ 1568 0042 00BF     		.align	2
+ 1569              	.L76:
+ 1570 0044 00000240 		.word	1073872896
+ 1571              	.LBE100:
+ 1572              	.LBE101:
+ 1573              		.cfi_endproc
+ 1574              	.LFE144:
+ 1576              		.section	.text.PS2_ExitConfing,"ax",%progbits
+ 1577              		.align	1
+ 1578              		.p2align 2,,3
+ 1579              		.global	PS2_ExitConfing
+ 1580              		.syntax unified
+ 1581              		.thumb
+ 1582              		.thumb_func
+ 1584              	PS2_ExitConfing:
+ 1585              	.LFB145:
+ 225:Core/Src/PS2.c **** //完成并保存配置
+ 226:Core/Src/PS2.c **** void PS2_ExitConfing(void)
+ 227:Core/Src/PS2.c **** {
+ 1586              		.loc 1 227 1 is_stmt 1 view -0
+ 1587              		.cfi_startproc
+ 1588              		@ args = 0, pretend = 0, frame = 0
+ 1589              		@ frame_needed = 0, uses_anonymous_args = 0
+ 228:Core/Src/PS2.c ****     CS_L;
+ 1590              		.loc 1 228 5 view .LVU477
+ 227:Core/Src/PS2.c ****     CS_L;
+ 1591              		.loc 1 227 1 is_stmt 0 view .LVU478
+ 1592 0000 10B5     		push	{r4, lr}
+ 1593              	.LCFI24:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 38
+
+
+ 1594              		.cfi_def_cfa_offset 8
+ 1595              		.cfi_offset 4, -8
+ 1596              		.cfi_offset 14, -4
+ 1597              		.loc 1 228 5 view .LVU479
+ 1598 0002 164C     		ldr	r4, .L80
+ 1599 0004 0022     		movs	r2, #0
+ 1600 0006 4021     		movs	r1, #64
+ 1601 0008 2046     		mov	r0, r4
+ 1602 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1603              	.LVL144:
+ 1604              		.loc 1 228 9 is_stmt 1 view .LVU480
+ 229:Core/Src/PS2.c **** 	delay_us(16);
+ 1605              		.loc 1 229 2 view .LVU481
+ 1606              	.LBB106:
+ 1607              	.LBI106:
+  18:Core/Src/PS2.c **** {
+ 1608              		.loc 1 18 6 view .LVU482
+ 1609              	.LBB107:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1610              		.loc 1 20 5 view .LVU483
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1611              		.loc 1 20 23 is_stmt 0 view .LVU484
+ 1612 000e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1613              	.LVL145:
+  21:Core/Src/PS2.c **** 	{
+ 1614              		.loc 1 21 5 is_stmt 1 view .LVU485
+  23:Core/Src/PS2.c **** 	}
+ 1615              		.loc 1 23 3 view .LVU486
+  21:Core/Src/PS2.c **** 	{
+ 1616              		.loc 1 21 12 view .LVU487
+  21:Core/Src/PS2.c **** 	{
+ 1617              		.loc 1 21 12 is_stmt 0 view .LVU488
+ 1618              	.LBE107:
+ 1619              	.LBE106:
+ 230:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1620              		.loc 1 230 2 is_stmt 1 view .LVU489
+ 1621 0012 0120     		movs	r0, #1
+ 1622 0014 FFF7FEFF 		bl	PS2_Cmd
+ 1623              	.LVL146:
+ 231:Core/Src/PS2.c **** 	PS2_Cmd(0x43);  
+ 1624              		.loc 1 231 2 view .LVU490
+ 1625 0018 4320     		movs	r0, #67
+ 1626 001a FFF7FEFF 		bl	PS2_Cmd
+ 1627              	.LVL147:
+ 232:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1628              		.loc 1 232 2 view .LVU491
+ 1629 001e 0020     		movs	r0, #0
+ 1630 0020 FFF7FEFF 		bl	PS2_Cmd
+ 1631              	.LVL148:
+ 233:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1632              		.loc 1 233 2 view .LVU492
+ 1633 0024 0020     		movs	r0, #0
+ 1634 0026 FFF7FEFF 		bl	PS2_Cmd
+ 1635              	.LVL149:
+ 234:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 1636              		.loc 1 234 2 view .LVU493
+ 1637 002a 5A20     		movs	r0, #90
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 39
+
+
+ 1638 002c FFF7FEFF 		bl	PS2_Cmd
+ 1639              	.LVL150:
+ 235:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 1640              		.loc 1 235 2 view .LVU494
+ 1641 0030 5A20     		movs	r0, #90
+ 1642 0032 FFF7FEFF 		bl	PS2_Cmd
+ 1643              	.LVL151:
+ 236:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 1644              		.loc 1 236 2 view .LVU495
+ 1645 0036 5A20     		movs	r0, #90
+ 1646 0038 FFF7FEFF 		bl	PS2_Cmd
+ 1647              	.LVL152:
+ 237:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 1648              		.loc 1 237 2 view .LVU496
+ 1649 003c 5A20     		movs	r0, #90
+ 1650 003e FFF7FEFF 		bl	PS2_Cmd
+ 1651              	.LVL153:
+ 238:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 1652              		.loc 1 238 2 view .LVU497
+ 1653 0042 5A20     		movs	r0, #90
+ 1654 0044 FFF7FEFF 		bl	PS2_Cmd
+ 1655              	.LVL154:
+ 239:Core/Src/PS2.c **** 	CS_H;
+ 1656              		.loc 1 239 2 view .LVU498
+ 1657 0048 2046     		mov	r0, r4
+ 1658 004a 0122     		movs	r2, #1
+ 1659 004c 4021     		movs	r1, #64
+ 1660 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1661              	.LVL155:
+ 1662              		.loc 1 239 6 view .LVU499
+ 240:Core/Src/PS2.c **** 	delay_us(16);
+ 1663              		.loc 1 240 2 view .LVU500
+ 1664              	.LBB108:
+ 1665              	.LBI108:
+  18:Core/Src/PS2.c **** {
+ 1666              		.loc 1 18 6 view .LVU501
+ 1667              	.LBB109:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1668              		.loc 1 20 5 view .LVU502
+ 1669              	.LBE109:
+ 1670              	.LBE108:
+ 241:Core/Src/PS2.c **** }
+ 1671              		.loc 1 241 1 is_stmt 0 view .LVU503
+ 1672 0052 BDE81040 		pop	{r4, lr}
+ 1673              	.LCFI25:
+ 1674              		.cfi_restore 14
+ 1675              		.cfi_restore 4
+ 1676              		.cfi_def_cfa_offset 0
+ 1677              	.LBB111:
+ 1678              	.LBB110:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1679              		.loc 1 20 23 view .LVU504
+ 1680 0056 FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 1681              	.LVL156:
+ 1682              	.L81:
+ 1683 005a 00BF     		.align	2
+ 1684              	.L80:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 40
+
+
+ 1685 005c 00000240 		.word	1073872896
+ 1686              	.LBE110:
+ 1687              	.LBE111:
+ 1688              		.cfi_endproc
+ 1689              	.LFE145:
+ 1691              		.section	.text.PS2_SetInit,"ax",%progbits
+ 1692              		.align	1
+ 1693              		.p2align 2,,3
+ 1694              		.global	PS2_SetInit
+ 1695              		.syntax unified
+ 1696              		.thumb
+ 1697              		.thumb_func
+ 1699              	PS2_SetInit:
+ 1700              	.LFB146:
+ 242:Core/Src/PS2.c **** //手柄配置初始化
+ 243:Core/Src/PS2.c **** void PS2_SetInit(void)
+ 244:Core/Src/PS2.c **** {
+ 1701              		.loc 1 244 1 is_stmt 1 view -0
+ 1702              		.cfi_startproc
+ 1703              		@ args = 0, pretend = 0, frame = 0
+ 1704              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245:Core/Src/PS2.c **** 	PS2_ShortPoll();
+ 1705              		.loc 1 245 2 view .LVU506
+ 1706              	.LBB152:
+ 1707              	.LBI152:
+ 166:Core/Src/PS2.c **** {
+ 1708              		.loc 1 166 6 view .LVU507
+ 1709              	.LBB153:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1710              		.loc 1 168 2 view .LVU508
+ 1711              	.LBE153:
+ 1712              	.LBE152:
+ 244:Core/Src/PS2.c **** 	PS2_ShortPoll();
+ 1713              		.loc 1 244 1 is_stmt 0 view .LVU509
+ 1714 0000 10B5     		push	{r4, lr}
+ 1715              	.LCFI26:
+ 1716              		.cfi_def_cfa_offset 8
+ 1717              		.cfi_offset 4, -8
+ 1718              		.cfi_offset 14, -4
+ 1719              	.LBB159:
+ 1720              	.LBB158:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1721              		.loc 1 168 2 view .LVU510
+ 1722 0002 784C     		ldr	r4, .L84
+ 1723 0004 0022     		movs	r2, #0
+ 1724 0006 4021     		movs	r1, #64
+ 1725 0008 2046     		mov	r0, r4
+ 1726 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1727              	.LVL157:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1728              		.loc 1 168 6 is_stmt 1 view .LVU511
+ 169:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1729              		.loc 1 169 2 view .LVU512
+ 1730              	.LBB154:
+ 1731              	.LBI154:
+  18:Core/Src/PS2.c **** {
+ 1732              		.loc 1 18 6 view .LVU513
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 41
+
+
+ 1733              	.LBB155:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1734              		.loc 1 20 5 view .LVU514
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1735              		.loc 1 20 23 is_stmt 0 view .LVU515
+ 1736 000e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1737              	.LVL158:
+  21:Core/Src/PS2.c **** 	{
+ 1738              		.loc 1 21 5 is_stmt 1 view .LVU516
+  23:Core/Src/PS2.c **** 	}
+ 1739              		.loc 1 23 3 view .LVU517
+  21:Core/Src/PS2.c **** 	{
+ 1740              		.loc 1 21 12 view .LVU518
+  21:Core/Src/PS2.c **** 	{
+ 1741              		.loc 1 21 12 is_stmt 0 view .LVU519
+ 1742              	.LBE155:
+ 1743              	.LBE154:
+ 170:Core/Src/PS2.c **** 	PS2_Cmd(0x42);  
+ 1744              		.loc 1 170 2 is_stmt 1 view .LVU520
+ 1745 0012 0120     		movs	r0, #1
+ 1746 0014 FFF7FEFF 		bl	PS2_Cmd
+ 1747              	.LVL159:
+ 171:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1748              		.loc 1 171 2 view .LVU521
+ 1749 0018 4220     		movs	r0, #66
+ 1750 001a FFF7FEFF 		bl	PS2_Cmd
+ 1751              	.LVL160:
+ 172:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1752              		.loc 1 172 2 view .LVU522
+ 1753 001e 0020     		movs	r0, #0
+ 1754 0020 FFF7FEFF 		bl	PS2_Cmd
+ 1755              	.LVL161:
+ 173:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1756              		.loc 1 173 2 view .LVU523
+ 1757 0024 0020     		movs	r0, #0
+ 1758 0026 FFF7FEFF 		bl	PS2_Cmd
+ 1759              	.LVL162:
+ 174:Core/Src/PS2.c **** 	CS_H;
+ 1760              		.loc 1 174 2 view .LVU524
+ 1761 002a 0020     		movs	r0, #0
+ 1762 002c FFF7FEFF 		bl	PS2_Cmd
+ 1763              	.LVL163:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1764              		.loc 1 175 2 view .LVU525
+ 1765 0030 0122     		movs	r2, #1
+ 1766 0032 4021     		movs	r1, #64
+ 1767 0034 2046     		mov	r0, r4
+ 1768 0036 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1769              	.LVL164:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1770              		.loc 1 175 6 view .LVU526
+ 176:Core/Src/PS2.c **** }
+ 1771              		.loc 1 176 2 view .LVU527
+ 1772              	.LBB156:
+ 1773              	.LBI156:
+  18:Core/Src/PS2.c **** {
+ 1774              		.loc 1 18 6 view .LVU528
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 42
+
+
+ 1775              	.LBB157:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1776              		.loc 1 20 5 view .LVU529
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1777              		.loc 1 20 23 is_stmt 0 view .LVU530
+ 1778 003a FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1779              	.LVL165:
+  21:Core/Src/PS2.c **** 	{
+ 1780              		.loc 1 21 5 is_stmt 1 view .LVU531
+  23:Core/Src/PS2.c **** 	}
+ 1781              		.loc 1 23 3 view .LVU532
+  21:Core/Src/PS2.c **** 	{
+ 1782              		.loc 1 21 12 view .LVU533
+  21:Core/Src/PS2.c **** 	{
+ 1783              		.loc 1 21 12 is_stmt 0 view .LVU534
+ 1784              	.LBE157:
+ 1785              	.LBE156:
+ 1786              	.LBE158:
+ 1787              	.LBE159:
+ 246:Core/Src/PS2.c **** 	PS2_ShortPoll();
+ 1788              		.loc 1 246 2 is_stmt 1 view .LVU535
+ 1789              	.LBB160:
+ 1790              	.LBI160:
+ 166:Core/Src/PS2.c **** {
+ 1791              		.loc 1 166 6 view .LVU536
+ 1792              	.LBB161:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1793              		.loc 1 168 2 view .LVU537
+ 1794 003e 0022     		movs	r2, #0
+ 1795 0040 4021     		movs	r1, #64
+ 1796 0042 2046     		mov	r0, r4
+ 1797 0044 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1798              	.LVL166:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1799              		.loc 1 168 6 view .LVU538
+ 169:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1800              		.loc 1 169 2 view .LVU539
+ 1801              	.LBB162:
+ 1802              	.LBI162:
+  18:Core/Src/PS2.c **** {
+ 1803              		.loc 1 18 6 view .LVU540
+ 1804              	.LBB163:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1805              		.loc 1 20 5 view .LVU541
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1806              		.loc 1 20 23 is_stmt 0 view .LVU542
+ 1807 0048 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1808              	.LVL167:
+  21:Core/Src/PS2.c **** 	{
+ 1809              		.loc 1 21 5 is_stmt 1 view .LVU543
+  23:Core/Src/PS2.c **** 	}
+ 1810              		.loc 1 23 3 view .LVU544
+  21:Core/Src/PS2.c **** 	{
+ 1811              		.loc 1 21 12 view .LVU545
+  21:Core/Src/PS2.c **** 	{
+ 1812              		.loc 1 21 12 is_stmt 0 view .LVU546
+ 1813              	.LBE163:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 43
+
+
+ 1814              	.LBE162:
+ 170:Core/Src/PS2.c **** 	PS2_Cmd(0x42);  
+ 1815              		.loc 1 170 2 is_stmt 1 view .LVU547
+ 1816 004c 0120     		movs	r0, #1
+ 1817 004e FFF7FEFF 		bl	PS2_Cmd
+ 1818              	.LVL168:
+ 171:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1819              		.loc 1 171 2 view .LVU548
+ 1820 0052 4220     		movs	r0, #66
+ 1821 0054 FFF7FEFF 		bl	PS2_Cmd
+ 1822              	.LVL169:
+ 172:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1823              		.loc 1 172 2 view .LVU549
+ 1824 0058 0020     		movs	r0, #0
+ 1825 005a FFF7FEFF 		bl	PS2_Cmd
+ 1826              	.LVL170:
+ 173:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1827              		.loc 1 173 2 view .LVU550
+ 1828 005e 0020     		movs	r0, #0
+ 1829 0060 FFF7FEFF 		bl	PS2_Cmd
+ 1830              	.LVL171:
+ 174:Core/Src/PS2.c **** 	CS_H;
+ 1831              		.loc 1 174 2 view .LVU551
+ 1832 0064 0020     		movs	r0, #0
+ 1833 0066 FFF7FEFF 		bl	PS2_Cmd
+ 1834              	.LVL172:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1835              		.loc 1 175 2 view .LVU552
+ 1836 006a 0122     		movs	r2, #1
+ 1837 006c 4021     		movs	r1, #64
+ 1838 006e 2046     		mov	r0, r4
+ 1839 0070 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1840              	.LVL173:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1841              		.loc 1 175 6 view .LVU553
+ 176:Core/Src/PS2.c **** }
+ 1842              		.loc 1 176 2 view .LVU554
+ 1843              	.LBB164:
+ 1844              	.LBI164:
+  18:Core/Src/PS2.c **** {
+ 1845              		.loc 1 18 6 view .LVU555
+ 1846              	.LBB165:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1847              		.loc 1 20 5 view .LVU556
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1848              		.loc 1 20 23 is_stmt 0 view .LVU557
+ 1849 0074 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1850              	.LVL174:
+  21:Core/Src/PS2.c **** 	{
+ 1851              		.loc 1 21 5 is_stmt 1 view .LVU558
+  23:Core/Src/PS2.c **** 	}
+ 1852              		.loc 1 23 3 view .LVU559
+  21:Core/Src/PS2.c **** 	{
+ 1853              		.loc 1 21 12 view .LVU560
+  21:Core/Src/PS2.c **** 	{
+ 1854              		.loc 1 21 12 is_stmt 0 view .LVU561
+ 1855              	.LBE165:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 44
+
+
+ 1856              	.LBE164:
+ 1857              	.LBE161:
+ 1858              	.LBE160:
+ 247:Core/Src/PS2.c **** 	PS2_ShortPoll();
+ 1859              		.loc 1 247 2 is_stmt 1 view .LVU562
+ 1860              	.LBB166:
+ 1861              	.LBI166:
+ 166:Core/Src/PS2.c **** {
+ 1862              		.loc 1 166 6 view .LVU563
+ 1863              	.LBB167:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1864              		.loc 1 168 2 view .LVU564
+ 1865 0078 0022     		movs	r2, #0
+ 1866 007a 4021     		movs	r1, #64
+ 1867 007c 2046     		mov	r0, r4
+ 1868 007e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1869              	.LVL175:
+ 168:Core/Src/PS2.c **** 	delay_us(16);
+ 1870              		.loc 1 168 6 view .LVU565
+ 169:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1871              		.loc 1 169 2 view .LVU566
+ 1872              	.LBB168:
+ 1873              	.LBI168:
+  18:Core/Src/PS2.c **** {
+ 1874              		.loc 1 18 6 view .LVU567
+ 1875              	.LBB169:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1876              		.loc 1 20 5 view .LVU568
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1877              		.loc 1 20 23 is_stmt 0 view .LVU569
+ 1878 0082 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1879              	.LVL176:
+  21:Core/Src/PS2.c **** 	{
+ 1880              		.loc 1 21 5 is_stmt 1 view .LVU570
+  23:Core/Src/PS2.c **** 	}
+ 1881              		.loc 1 23 3 view .LVU571
+  21:Core/Src/PS2.c **** 	{
+ 1882              		.loc 1 21 12 view .LVU572
+  21:Core/Src/PS2.c **** 	{
+ 1883              		.loc 1 21 12 is_stmt 0 view .LVU573
+ 1884              	.LBE169:
+ 1885              	.LBE168:
+ 170:Core/Src/PS2.c **** 	PS2_Cmd(0x42);  
+ 1886              		.loc 1 170 2 is_stmt 1 view .LVU574
+ 1887 0086 0120     		movs	r0, #1
+ 1888 0088 FFF7FEFF 		bl	PS2_Cmd
+ 1889              	.LVL177:
+ 171:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1890              		.loc 1 171 2 view .LVU575
+ 1891 008c 4220     		movs	r0, #66
+ 1892 008e FFF7FEFF 		bl	PS2_Cmd
+ 1893              	.LVL178:
+ 172:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1894              		.loc 1 172 2 view .LVU576
+ 1895 0092 0020     		movs	r0, #0
+ 1896 0094 FFF7FEFF 		bl	PS2_Cmd
+ 1897              	.LVL179:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 45
+
+
+ 173:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1898              		.loc 1 173 2 view .LVU577
+ 1899 0098 0020     		movs	r0, #0
+ 1900 009a FFF7FEFF 		bl	PS2_Cmd
+ 1901              	.LVL180:
+ 174:Core/Src/PS2.c **** 	CS_H;
+ 1902              		.loc 1 174 2 view .LVU578
+ 1903 009e 0020     		movs	r0, #0
+ 1904 00a0 FFF7FEFF 		bl	PS2_Cmd
+ 1905              	.LVL181:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1906              		.loc 1 175 2 view .LVU579
+ 1907 00a4 0122     		movs	r2, #1
+ 1908 00a6 4021     		movs	r1, #64
+ 1909 00a8 2046     		mov	r0, r4
+ 1910 00aa FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1911              	.LVL182:
+ 175:Core/Src/PS2.c **** 	delay_us(16);	
+ 1912              		.loc 1 175 6 view .LVU580
+ 176:Core/Src/PS2.c **** }
+ 1913              		.loc 1 176 2 view .LVU581
+ 1914              	.LBB170:
+ 1915              	.LBI170:
+  18:Core/Src/PS2.c **** {
+ 1916              		.loc 1 18 6 view .LVU582
+ 1917              	.LBB171:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1918              		.loc 1 20 5 view .LVU583
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1919              		.loc 1 20 23 is_stmt 0 view .LVU584
+ 1920 00ae FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1921              	.LVL183:
+  21:Core/Src/PS2.c **** 	{
+ 1922              		.loc 1 21 5 is_stmt 1 view .LVU585
+  23:Core/Src/PS2.c **** 	}
+ 1923              		.loc 1 23 3 view .LVU586
+  21:Core/Src/PS2.c **** 	{
+ 1924              		.loc 1 21 12 view .LVU587
+  21:Core/Src/PS2.c **** 	{
+ 1925              		.loc 1 21 12 is_stmt 0 view .LVU588
+ 1926              	.LBE171:
+ 1927              	.LBE170:
+ 1928              	.LBE167:
+ 1929              	.LBE166:
+ 248:Core/Src/PS2.c **** 	PS2_EnterConfing();		//进入配置模式
+ 1930              		.loc 1 248 2 is_stmt 1 view .LVU589
+ 1931              	.LBB172:
+ 1932              	.LBI172:
+ 179:Core/Src/PS2.c **** {
+ 1933              		.loc 1 179 6 view .LVU590
+ 1934              	.LBB173:
+ 181:Core/Src/PS2.c **** 	delay_us(16);
+ 1935              		.loc 1 181 5 view .LVU591
+ 1936 00b2 0022     		movs	r2, #0
+ 1937 00b4 4021     		movs	r1, #64
+ 1938 00b6 2046     		mov	r0, r4
+ 1939 00b8 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 46
+
+
+ 1940              	.LVL184:
+ 181:Core/Src/PS2.c **** 	delay_us(16);
+ 1941              		.loc 1 181 9 view .LVU592
+ 182:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 1942              		.loc 1 182 2 view .LVU593
+ 1943              	.LBB174:
+ 1944              	.LBI174:
+  18:Core/Src/PS2.c **** {
+ 1945              		.loc 1 18 6 view .LVU594
+ 1946              	.LBB175:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1947              		.loc 1 20 5 view .LVU595
+  20:Core/Src/PS2.c ****     while (delay--)
+ 1948              		.loc 1 20 23 is_stmt 0 view .LVU596
+ 1949 00bc FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 1950              	.LVL185:
+  21:Core/Src/PS2.c **** 	{
+ 1951              		.loc 1 21 5 is_stmt 1 view .LVU597
+  23:Core/Src/PS2.c **** 	}
+ 1952              		.loc 1 23 3 view .LVU598
+  21:Core/Src/PS2.c **** 	{
+ 1953              		.loc 1 21 12 view .LVU599
+  21:Core/Src/PS2.c **** 	{
+ 1954              		.loc 1 21 12 is_stmt 0 view .LVU600
+ 1955              	.LBE175:
+ 1956              	.LBE174:
+ 183:Core/Src/PS2.c **** 	PS2_Cmd(0x43);  
+ 1957              		.loc 1 183 2 is_stmt 1 view .LVU601
+ 1958 00c0 0120     		movs	r0, #1
+ 1959 00c2 FFF7FEFF 		bl	PS2_Cmd
+ 1960              	.LVL186:
+ 184:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1961              		.loc 1 184 2 view .LVU602
+ 1962 00c6 4320     		movs	r0, #67
+ 1963 00c8 FFF7FEFF 		bl	PS2_Cmd
+ 1964              	.LVL187:
+ 185:Core/Src/PS2.c **** 	PS2_Cmd(0x01);
+ 1965              		.loc 1 185 2 view .LVU603
+ 1966 00cc 0020     		movs	r0, #0
+ 1967 00ce FFF7FEFF 		bl	PS2_Cmd
+ 1968              	.LVL188:
+ 186:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 1969              		.loc 1 186 2 view .LVU604
+ 1970 00d2 0120     		movs	r0, #1
+ 1971 00d4 FFF7FEFF 		bl	PS2_Cmd
+ 1972              	.LVL189:
+ 187:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1973              		.loc 1 187 2 view .LVU605
+ 1974 00d8 0020     		movs	r0, #0
+ 1975 00da FFF7FEFF 		bl	PS2_Cmd
+ 1976              	.LVL190:
+ 188:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1977              		.loc 1 188 2 view .LVU606
+ 1978 00de 0020     		movs	r0, #0
+ 1979 00e0 FFF7FEFF 		bl	PS2_Cmd
+ 1980              	.LVL191:
+ 189:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 47
+
+
+ 1981              		.loc 1 189 2 view .LVU607
+ 1982 00e4 0020     		movs	r0, #0
+ 1983 00e6 FFF7FEFF 		bl	PS2_Cmd
+ 1984              	.LVL192:
+ 190:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 1985              		.loc 1 190 2 view .LVU608
+ 1986 00ea 0020     		movs	r0, #0
+ 1987 00ec FFF7FEFF 		bl	PS2_Cmd
+ 1988              	.LVL193:
+ 191:Core/Src/PS2.c **** 	CS_H;
+ 1989              		.loc 1 191 2 view .LVU609
+ 1990 00f0 0020     		movs	r0, #0
+ 1991 00f2 FFF7FEFF 		bl	PS2_Cmd
+ 1992              	.LVL194:
+ 192:Core/Src/PS2.c **** 	delay_us(16);
+ 1993              		.loc 1 192 2 view .LVU610
+ 1994 00f6 0122     		movs	r2, #1
+ 1995 00f8 4021     		movs	r1, #64
+ 1996 00fa 2046     		mov	r0, r4
+ 1997 00fc FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 1998              	.LVL195:
+ 192:Core/Src/PS2.c **** 	delay_us(16);
+ 1999              		.loc 1 192 6 view .LVU611
+ 193:Core/Src/PS2.c **** }
+ 2000              		.loc 1 193 2 view .LVU612
+ 2001              	.LBB176:
+ 2002              	.LBI176:
+  18:Core/Src/PS2.c **** {
+ 2003              		.loc 1 18 6 view .LVU613
+ 2004              	.LBB177:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2005              		.loc 1 20 5 view .LVU614
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2006              		.loc 1 20 23 is_stmt 0 view .LVU615
+ 2007 0100 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 2008              	.LVL196:
+  21:Core/Src/PS2.c **** 	{
+ 2009              		.loc 1 21 5 is_stmt 1 view .LVU616
+  23:Core/Src/PS2.c **** 	}
+ 2010              		.loc 1 23 3 view .LVU617
+  21:Core/Src/PS2.c **** 	{
+ 2011              		.loc 1 21 12 view .LVU618
+  21:Core/Src/PS2.c **** 	{
+ 2012              		.loc 1 21 12 is_stmt 0 view .LVU619
+ 2013              	.LBE177:
+ 2014              	.LBE176:
+ 2015              	.LBE173:
+ 2016              	.LBE172:
+ 249:Core/Src/PS2.c **** 	PS2_TurnOnAnalogMode();	//“红绿灯”配置模式，并选择是否保存
+ 2017              		.loc 1 249 2 is_stmt 1 view .LVU620
+ 2018              	.LBB178:
+ 2019              	.LBI178:
+ 196:Core/Src/PS2.c **** {
+ 2020              		.loc 1 196 6 view .LVU621
+ 2021              	.LBB179:
+ 198:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 2022              		.loc 1 198 2 view .LVU622
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 48
+
+
+ 2023 0104 0022     		movs	r2, #0
+ 2024 0106 4021     		movs	r1, #64
+ 2025 0108 2046     		mov	r0, r4
+ 2026 010a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2027              	.LVL197:
+ 198:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 2028              		.loc 1 198 6 view .LVU623
+ 199:Core/Src/PS2.c **** 	PS2_Cmd(0x44);  
+ 2029              		.loc 1 199 2 view .LVU624
+ 2030 010e 0120     		movs	r0, #1
+ 2031 0110 FFF7FEFF 		bl	PS2_Cmd
+ 2032              	.LVL198:
+ 200:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2033              		.loc 1 200 2 view .LVU625
+ 2034 0114 4420     		movs	r0, #68
+ 2035 0116 FFF7FEFF 		bl	PS2_Cmd
+ 2036              	.LVL199:
+ 201:Core/Src/PS2.c **** 	PS2_Cmd(0x01); //analog=0x01;digital=0x00  软件设置发送模式
+ 2037              		.loc 1 201 2 view .LVU626
+ 2038 011a 0020     		movs	r0, #0
+ 2039 011c FFF7FEFF 		bl	PS2_Cmd
+ 2040              	.LVL200:
+ 202:Core/Src/PS2.c **** 	PS2_Cmd(0xEE); //Ox03锁存设置，即不可通过按键“MODE”设置模式。
+ 2041              		.loc 1 202 2 view .LVU627
+ 2042 0120 0120     		movs	r0, #1
+ 2043 0122 FFF7FEFF 		bl	PS2_Cmd
+ 2044              	.LVL201:
+ 203:Core/Src/PS2.c **** 				         //0xEE不锁存软件设置，可通过按键“MODE”设置模式。
+ 2045              		.loc 1 203 2 view .LVU628
+ 2046 0126 EE20     		movs	r0, #238
+ 2047 0128 FFF7FEFF 		bl	PS2_Cmd
+ 2048              	.LVL202:
+ 205:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2049              		.loc 1 205 2 view .LVU629
+ 2050 012c 0020     		movs	r0, #0
+ 2051 012e FFF7FEFF 		bl	PS2_Cmd
+ 2052              	.LVL203:
+ 206:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2053              		.loc 1 206 2 view .LVU630
+ 2054 0132 0020     		movs	r0, #0
+ 2055 0134 FFF7FEFF 		bl	PS2_Cmd
+ 2056              	.LVL204:
+ 207:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2057              		.loc 1 207 2 view .LVU631
+ 2058 0138 0020     		movs	r0, #0
+ 2059 013a FFF7FEFF 		bl	PS2_Cmd
+ 2060              	.LVL205:
+ 208:Core/Src/PS2.c **** 	CS_H;
+ 2061              		.loc 1 208 2 view .LVU632
+ 2062 013e 0020     		movs	r0, #0
+ 2063 0140 FFF7FEFF 		bl	PS2_Cmd
+ 2064              	.LVL206:
+ 209:Core/Src/PS2.c **** 	delay_us(16);
+ 2065              		.loc 1 209 2 view .LVU633
+ 2066 0144 0122     		movs	r2, #1
+ 2067 0146 4021     		movs	r1, #64
+ 2068 0148 2046     		mov	r0, r4
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 49
+
+
+ 2069 014a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2070              	.LVL207:
+ 209:Core/Src/PS2.c **** 	delay_us(16);
+ 2071              		.loc 1 209 6 view .LVU634
+ 210:Core/Src/PS2.c **** }
+ 2072              		.loc 1 210 2 view .LVU635
+ 2073              	.LBB180:
+ 2074              	.LBI180:
+  18:Core/Src/PS2.c **** {
+ 2075              		.loc 1 18 6 view .LVU636
+ 2076              	.LBB181:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2077              		.loc 1 20 5 view .LVU637
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2078              		.loc 1 20 23 is_stmt 0 view .LVU638
+ 2079 014e FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 2080              	.LVL208:
+  21:Core/Src/PS2.c **** 	{
+ 2081              		.loc 1 21 5 is_stmt 1 view .LVU639
+  23:Core/Src/PS2.c **** 	}
+ 2082              		.loc 1 23 3 view .LVU640
+  21:Core/Src/PS2.c **** 	{
+ 2083              		.loc 1 21 12 view .LVU641
+  21:Core/Src/PS2.c **** 	{
+ 2084              		.loc 1 21 12 is_stmt 0 view .LVU642
+ 2085              	.LBE181:
+ 2086              	.LBE180:
+ 2087              	.LBE179:
+ 2088              	.LBE178:
+ 250:Core/Src/PS2.c **** 	PS2_VibrationMode();	//开启震动模式
+ 2089              		.loc 1 250 2 is_stmt 1 view .LVU643
+ 2090              	.LBB182:
+ 2091              	.LBI182:
+ 213:Core/Src/PS2.c **** {
+ 2092              		.loc 1 213 6 view .LVU644
+ 2093              	.LBB183:
+ 215:Core/Src/PS2.c **** 	delay_us(16);
+ 2094              		.loc 1 215 2 view .LVU645
+ 2095 0152 0022     		movs	r2, #0
+ 2096 0154 4021     		movs	r1, #64
+ 2097 0156 2046     		mov	r0, r4
+ 2098 0158 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2099              	.LVL209:
+ 215:Core/Src/PS2.c **** 	delay_us(16);
+ 2100              		.loc 1 215 6 view .LVU646
+ 216:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 2101              		.loc 1 216 2 view .LVU647
+ 2102              	.LBB184:
+ 2103              	.LBI184:
+  18:Core/Src/PS2.c **** {
+ 2104              		.loc 1 18 6 view .LVU648
+ 2105              	.LBB185:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2106              		.loc 1 20 5 view .LVU649
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2107              		.loc 1 20 23 is_stmt 0 view .LVU650
+ 2108 015c FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 50
+
+
+ 2109              	.LVL210:
+  21:Core/Src/PS2.c **** 	{
+ 2110              		.loc 1 21 5 is_stmt 1 view .LVU651
+  23:Core/Src/PS2.c **** 	}
+ 2111              		.loc 1 23 3 view .LVU652
+  21:Core/Src/PS2.c **** 	{
+ 2112              		.loc 1 21 12 view .LVU653
+  21:Core/Src/PS2.c **** 	{
+ 2113              		.loc 1 21 12 is_stmt 0 view .LVU654
+ 2114              	.LBE185:
+ 2115              	.LBE184:
+ 217:Core/Src/PS2.c **** 	PS2_Cmd(0x4D);  
+ 2116              		.loc 1 217 2 is_stmt 1 view .LVU655
+ 2117 0160 0120     		movs	r0, #1
+ 2118 0162 FFF7FEFF 		bl	PS2_Cmd
+ 2119              	.LVL211:
+ 218:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2120              		.loc 1 218 2 view .LVU656
+ 2121 0166 4D20     		movs	r0, #77
+ 2122 0168 FFF7FEFF 		bl	PS2_Cmd
+ 2123              	.LVL212:
+ 219:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 2124              		.loc 1 219 2 view .LVU657
+ 2125 016c 0020     		movs	r0, #0
+ 2126 016e FFF7FEFF 		bl	PS2_Cmd
+ 2127              	.LVL213:
+ 220:Core/Src/PS2.c **** 	PS2_Cmd(0X01);
+ 2128              		.loc 1 220 2 view .LVU658
+ 2129 0172 0020     		movs	r0, #0
+ 2130 0174 FFF7FEFF 		bl	PS2_Cmd
+ 2131              	.LVL214:
+ 221:Core/Src/PS2.c **** 	CS_H;
+ 2132              		.loc 1 221 2 view .LVU659
+ 2133 0178 0120     		movs	r0, #1
+ 2134 017a FFF7FEFF 		bl	PS2_Cmd
+ 2135              	.LVL215:
+ 222:Core/Src/PS2.c **** 	delay_us(16);	
+ 2136              		.loc 1 222 2 view .LVU660
+ 2137 017e 0122     		movs	r2, #1
+ 2138 0180 4021     		movs	r1, #64
+ 2139 0182 2046     		mov	r0, r4
+ 2140 0184 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2141              	.LVL216:
+ 222:Core/Src/PS2.c **** 	delay_us(16);	
+ 2142              		.loc 1 222 6 view .LVU661
+ 223:Core/Src/PS2.c **** }
+ 2143              		.loc 1 223 2 view .LVU662
+ 2144              	.LBB186:
+ 2145              	.LBI186:
+  18:Core/Src/PS2.c **** {
+ 2146              		.loc 1 18 6 view .LVU663
+ 2147              	.LBB187:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2148              		.loc 1 20 5 view .LVU664
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2149              		.loc 1 20 23 is_stmt 0 view .LVU665
+ 2150 0188 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 51
+
+
+ 2151              	.LVL217:
+  21:Core/Src/PS2.c **** 	{
+ 2152              		.loc 1 21 5 is_stmt 1 view .LVU666
+  23:Core/Src/PS2.c **** 	}
+ 2153              		.loc 1 23 3 view .LVU667
+  21:Core/Src/PS2.c **** 	{
+ 2154              		.loc 1 21 12 view .LVU668
+  21:Core/Src/PS2.c **** 	{
+ 2155              		.loc 1 21 12 is_stmt 0 view .LVU669
+ 2156              	.LBE187:
+ 2157              	.LBE186:
+ 2158              	.LBE183:
+ 2159              	.LBE182:
+ 251:Core/Src/PS2.c **** 	PS2_ExitConfing();		//完成并保存配置
+ 2160              		.loc 1 251 2 is_stmt 1 view .LVU670
+ 2161              	.LBB188:
+ 2162              	.LBI188:
+ 226:Core/Src/PS2.c **** {
+ 2163              		.loc 1 226 6 view .LVU671
+ 2164              	.LBB189:
+ 228:Core/Src/PS2.c **** 	delay_us(16);
+ 2165              		.loc 1 228 5 view .LVU672
+ 2166 018c 0022     		movs	r2, #0
+ 2167 018e 4021     		movs	r1, #64
+ 2168 0190 2046     		mov	r0, r4
+ 2169 0192 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2170              	.LVL218:
+ 228:Core/Src/PS2.c **** 	delay_us(16);
+ 2171              		.loc 1 228 9 view .LVU673
+ 229:Core/Src/PS2.c **** 	PS2_Cmd(0x01);  
+ 2172              		.loc 1 229 2 view .LVU674
+ 2173              	.LBB190:
+ 2174              	.LBI190:
+  18:Core/Src/PS2.c **** {
+ 2175              		.loc 1 18 6 view .LVU675
+ 2176              	.LBB191:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2177              		.loc 1 20 5 view .LVU676
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2178              		.loc 1 20 23 is_stmt 0 view .LVU677
+ 2179 0196 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 2180              	.LVL219:
+  21:Core/Src/PS2.c **** 	{
+ 2181              		.loc 1 21 5 is_stmt 1 view .LVU678
+  23:Core/Src/PS2.c **** 	}
+ 2182              		.loc 1 23 3 view .LVU679
+  21:Core/Src/PS2.c **** 	{
+ 2183              		.loc 1 21 12 view .LVU680
+  21:Core/Src/PS2.c **** 	{
+ 2184              		.loc 1 21 12 is_stmt 0 view .LVU681
+ 2185              	.LBE191:
+ 2186              	.LBE190:
+ 230:Core/Src/PS2.c **** 	PS2_Cmd(0x43);  
+ 2187              		.loc 1 230 2 is_stmt 1 view .LVU682
+ 2188 019a 0120     		movs	r0, #1
+ 2189 019c FFF7FEFF 		bl	PS2_Cmd
+ 2190              	.LVL220:
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 52
+
+
+ 231:Core/Src/PS2.c **** 	PS2_Cmd(0X00);
+ 2191              		.loc 1 231 2 view .LVU683
+ 2192 01a0 4320     		movs	r0, #67
+ 2193 01a2 FFF7FEFF 		bl	PS2_Cmd
+ 2194              	.LVL221:
+ 232:Core/Src/PS2.c **** 	PS2_Cmd(0x00);
+ 2195              		.loc 1 232 2 view .LVU684
+ 2196 01a6 0020     		movs	r0, #0
+ 2197 01a8 FFF7FEFF 		bl	PS2_Cmd
+ 2198              	.LVL222:
+ 233:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 2199              		.loc 1 233 2 view .LVU685
+ 2200 01ac 0020     		movs	r0, #0
+ 2201 01ae FFF7FEFF 		bl	PS2_Cmd
+ 2202              	.LVL223:
+ 234:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 2203              		.loc 1 234 2 view .LVU686
+ 2204 01b2 5A20     		movs	r0, #90
+ 2205 01b4 FFF7FEFF 		bl	PS2_Cmd
+ 2206              	.LVL224:
+ 235:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 2207              		.loc 1 235 2 view .LVU687
+ 2208 01b8 5A20     		movs	r0, #90
+ 2209 01ba FFF7FEFF 		bl	PS2_Cmd
+ 2210              	.LVL225:
+ 236:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 2211              		.loc 1 236 2 view .LVU688
+ 2212 01be 5A20     		movs	r0, #90
+ 2213 01c0 FFF7FEFF 		bl	PS2_Cmd
+ 2214              	.LVL226:
+ 237:Core/Src/PS2.c **** 	PS2_Cmd(0x5A);
+ 2215              		.loc 1 237 2 view .LVU689
+ 2216 01c4 5A20     		movs	r0, #90
+ 2217 01c6 FFF7FEFF 		bl	PS2_Cmd
+ 2218              	.LVL227:
+ 238:Core/Src/PS2.c **** 	CS_H;
+ 2219              		.loc 1 238 2 view .LVU690
+ 2220 01ca 5A20     		movs	r0, #90
+ 2221 01cc FFF7FEFF 		bl	PS2_Cmd
+ 2222              	.LVL228:
+ 239:Core/Src/PS2.c **** 	delay_us(16);
+ 2223              		.loc 1 239 2 view .LVU691
+ 2224 01d0 2046     		mov	r0, r4
+ 2225 01d2 0122     		movs	r2, #1
+ 2226 01d4 4021     		movs	r1, #64
+ 2227 01d6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 2228              	.LVL229:
+ 239:Core/Src/PS2.c **** 	delay_us(16);
+ 2229              		.loc 1 239 6 view .LVU692
+ 240:Core/Src/PS2.c **** }
+ 2230              		.loc 1 240 2 view .LVU693
+ 2231              	.LBB192:
+ 2232              	.LBI192:
+  18:Core/Src/PS2.c **** {
+ 2233              		.loc 1 18 6 view .LVU694
+ 2234              	.LBB193:
+  20:Core/Src/PS2.c ****     while (delay--)
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 53
+
+
+ 2235              		.loc 1 20 5 view .LVU695
+ 2236              	.LBE193:
+ 2237              	.LBE192:
+ 2238              	.LBE189:
+ 2239              	.LBE188:
+ 252:Core/Src/PS2.c **** }
+ 2240              		.loc 1 252 1 is_stmt 0 view .LVU696
+ 2241 01da BDE81040 		pop	{r4, lr}
+ 2242              	.LCFI27:
+ 2243              		.cfi_restore 14
+ 2244              		.cfi_restore 4
+ 2245              		.cfi_def_cfa_offset 0
+ 2246              	.LBB197:
+ 2247              	.LBB196:
+ 2248              	.LBB195:
+ 2249              	.LBB194:
+  20:Core/Src/PS2.c ****     while (delay--)
+ 2250              		.loc 1 20 23 view .LVU697
+ 2251 01de FFF7FEBF 		b	HAL_RCC_GetHCLKFreq
+ 2252              	.LVL230:
+ 2253              	.L85:
+ 2254 01e2 00BF     		.align	2
+ 2255              	.L84:
+ 2256 01e4 00000240 		.word	1073872896
+ 2257              	.LBE194:
+ 2258              	.LBE195:
+ 2259              	.LBE196:
+ 2260              	.LBE197:
+ 2261              		.cfi_endproc
+ 2262              	.LFE146:
+ 2264              		.global	MASK
+ 2265              		.section	.data.MASK,"aw"
+ 2266              		.align	2
+ 2269              	MASK:
+ 2270 0000 0100     		.short	1
+ 2271 0002 0200     		.short	2
+ 2272 0004 0300     		.short	3
+ 2273 0006 0400     		.short	4
+ 2274 0008 0500     		.short	5
+ 2275 000a 0600     		.short	6
+ 2276 000c 0700     		.short	7
+ 2277 000e 0800     		.short	8
+ 2278 0010 0900     		.short	9
+ 2279 0012 0A00     		.short	10
+ 2280 0014 0B00     		.short	11
+ 2281 0016 0C00     		.short	12
+ 2282 0018 0D00     		.short	13
+ 2283 001a 0E00     		.short	14
+ 2284 001c 0F00     		.short	15
+ 2285 001e 1000     		.short	16
+ 2286              		.global	Data
+ 2287              		.section	.bss.Data,"aw",%nobits
+ 2288              		.align	2
+ 2291              	Data:
+ 2292 0000 00000000 		.space	9
+ 2292      00000000 
+ 2292      00
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 54
+
+
+ 2293              		.global	Comd
+ 2294              		.section	.data.Comd,"aw"
+ 2295              		.align	2
+ 2298              	Comd:
+ 2299 0000 0142     		.ascii	"\001B"
+ 2300              		.global	Handkey
+ 2301              		.section	.bss.Handkey,"aw",%nobits
+ 2302              		.align	1
+ 2305              	Handkey:
+ 2306 0000 0000     		.space	2
+ 2307              		.text
+ 2308              	.Letext0:
+ 2309              		.file 2 "d:\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2310              		.file 3 "d:\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2311              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 2312              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 2313              		.file 6 "Core/Inc/PS2.h"
+ 2314              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ARM GAS  D:\MSYS2\tmp\cc8fjMyS.s 			page 55
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 PS2.c
+D:\MSYS2\tmp\cc8fjMyS.s:21     .text.delay_us:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:28     .text.delay_us:00000000 delay_us
+D:\MSYS2\tmp\cc8fjMyS.s:45     .text.PS2_Cmd:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:52     .text.PS2_Cmd:00000000 PS2_Cmd
+D:\MSYS2\tmp\cc8fjMyS.s:276    .text.PS2_Cmd:000000c8 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2291   .bss.Data:00000000 Data
+D:\MSYS2\tmp\cc8fjMyS.s:284    .text.PS2_RedLight:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:291    .text.PS2_RedLight:00000000 PS2_RedLight
+D:\MSYS2\tmp\cc8fjMyS.s:345    .text.PS2_RedLight:00000034 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2298   .data.Comd:00000000 Comd
+D:\MSYS2\tmp\cc8fjMyS.s:352    .text.PS2_ReadData:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:359    .text.PS2_ReadData:00000000 PS2_ReadData
+D:\MSYS2\tmp\cc8fjMyS.s:582    .text.PS2_ReadData:000000ec $d
+D:\MSYS2\tmp\cc8fjMyS.s:590    .text.PS2_DataKey:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:597    .text.PS2_DataKey:00000000 PS2_DataKey
+D:\MSYS2\tmp\cc8fjMyS.s:964    .text.PS2_DataKey:0000011c $d
+D:\MSYS2\tmp\cc8fjMyS.s:2269   .data.MASK:00000000 MASK
+D:\MSYS2\tmp\cc8fjMyS.s:2305   .bss.Handkey:00000000 Handkey
+D:\MSYS2\tmp\cc8fjMyS.s:971    .text.PS2_AnologData:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:978    .text.PS2_AnologData:00000000 PS2_AnologData
+D:\MSYS2\tmp\cc8fjMyS.s:997    .text.PS2_AnologData:00000008 $d
+D:\MSYS2\tmp\cc8fjMyS.s:1002   .text.PS2_ClearData:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1009   .text.PS2_ClearData:00000000 PS2_ClearData
+D:\MSYS2\tmp\cc8fjMyS.s:1031   .text.PS2_ClearData:0000000c $d
+D:\MSYS2\tmp\cc8fjMyS.s:1036   .text.PS2_Vibration:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1043   .text.PS2_Vibration:00000000 PS2_Vibration
+D:\MSYS2\tmp\cc8fjMyS.s:1157   .text.PS2_Vibration:00000060 $d
+D:\MSYS2\tmp\cc8fjMyS.s:1164   .text.PS2_ShortPoll:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1171   .text.PS2_ShortPoll:00000000 PS2_ShortPoll
+D:\MSYS2\tmp\cc8fjMyS.s:1256   .text.PS2_ShortPoll:00000044 $d
+D:\MSYS2\tmp\cc8fjMyS.s:1263   .text.PS2_EnterConfing:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1270   .text.PS2_EnterConfing:00000000 PS2_EnterConfing
+D:\MSYS2\tmp\cc8fjMyS.s:1371   .text.PS2_EnterConfing:0000005c $d
+D:\MSYS2\tmp\cc8fjMyS.s:1378   .text.PS2_TurnOnAnalogMode:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1385   .text.PS2_TurnOnAnalogMode:00000000 PS2_TurnOnAnalogMode
+D:\MSYS2\tmp\cc8fjMyS.s:1471   .text.PS2_TurnOnAnalogMode:00000058 $d
+D:\MSYS2\tmp\cc8fjMyS.s:1478   .text.PS2_VibrationMode:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1485   .text.PS2_VibrationMode:00000000 PS2_VibrationMode
+D:\MSYS2\tmp\cc8fjMyS.s:1570   .text.PS2_VibrationMode:00000044 $d
+D:\MSYS2\tmp\cc8fjMyS.s:1577   .text.PS2_ExitConfing:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1584   .text.PS2_ExitConfing:00000000 PS2_ExitConfing
+D:\MSYS2\tmp\cc8fjMyS.s:1685   .text.PS2_ExitConfing:0000005c $d
+D:\MSYS2\tmp\cc8fjMyS.s:1692   .text.PS2_SetInit:00000000 $t
+D:\MSYS2\tmp\cc8fjMyS.s:1699   .text.PS2_SetInit:00000000 PS2_SetInit
+D:\MSYS2\tmp\cc8fjMyS.s:2256   .text.PS2_SetInit:000001e4 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2266   .data.MASK:00000000 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2288   .bss.Data:00000000 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2295   .data.Comd:00000000 $d
+D:\MSYS2\tmp\cc8fjMyS.s:2302   .bss.Handkey:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_RCC_GetHCLKFreq
+HAL_GPIO_WritePin
+HAL_GPIO_ReadPin
